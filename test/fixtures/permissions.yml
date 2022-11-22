@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+admin:
+  read_record: true
+  write_record: true
+  create_record: true
+  delete_record: true
+  name: 'Admin'
+  object_name: 'admin'
+  admin: true
+
+<% 100.times do |i| %>
+permission_<%=i%>:
+    read_record: false
+    write_record: false
+    create_record: false
+    delete_record: false
+    name: <%= "permission #{i}"%>
+    object_name: <%= "object #{i}" %>
+    admin: false
+<%end%>

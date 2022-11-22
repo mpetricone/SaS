@@ -1,0 +1,9 @@
+<%= render partial: 'shared/error_form_uc' , locals: { result: @client_email, object_name: ClientEmail.model_name.human, object_action: form_action } %>
+<%= form_for [@client, @client_email] do |f| %>
+    <div class='row'>
+        <%= render_field_group f, t(:label_primary_info),
+            [{label: :email, name: :email, type: :text_field},
+             {label: :description, name: :description, type: :text_field}]%>
+    </div>
+    <%= render_actions f, clients_show2_path(@client) %>
+<% end %>

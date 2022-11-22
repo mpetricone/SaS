@@ -1,0 +1,13 @@
+<%= render partial: "shared/error_form_uc", locals: { 
+    result: @ticket_note, 
+    object_name: TicketNote.model_name.human, 
+    object_action: form_action } %>
+<div class='row'>
+  <%= form_for [@ticket, @ticket_note] do |f| %>
+    <%= render_field_group f, TicketNote.human_attribute_name(:subject),
+    [{ label: nil , name: :subject, type: :text_field, options: { size: '50'}} ]%>
+    <%= render_field_group f, TicketNote.human_attribute_name(:body),
+    [{ label: nil , name: :body, type: :text_area, options: { rows: '10', cols: '50'}}]  %>
+    <%= render_actions f, @ticket %>
+  <%end%>
+</div>

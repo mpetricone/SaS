@@ -1,0 +1,10 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @ticket_time, object_name: TicketTime.model_name.human, object_action: form_action} %>
+<%= form_for [@ticket, @ticket_time] do |f| %>
+  <div class='form-body'>
+    <%= render_field_group f, t(:label_primary_info),
+      [{label: :date, name: :date, type: :date_field},
+       {label: :time_start, name: :time_start, type: :time_select, options: {time_separator: '', ampm: true}},
+       {label: :time_end, name: :time_end, type: :time_select,  options: {time_separator: '', ampm: true}}] %>
+  </div>
+  <%= render_actions f, @ticket %>
+<% end %>

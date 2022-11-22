@@ -1,0 +1,6 @@
+<%= render_show_title "#{OuPaymentType.model_name.human} #{@ou_payment_type.name}", edit_ou_payment_type_path(@ou_payment_type), ou_payment_types_path %>
+<div class='row'>
+  <%=renderShowValues(@ou_payment_type, t(:label_primary_info), [ :name, :method], [record: :ou, title: :ou, name: :name])%>
+  <%=renderShowValues(@ou_payment_type, t(:label_dates), [:date_enabled, :date_retired]) %>
+  <%=renderShowValues(@ou_payment_type, OuPaymentType.human_attribute_name(:info), [:info]) %>
+</div>

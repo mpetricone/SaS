@@ -1,0 +1,6 @@
+<%= render partial: 'shared/form_page_title', locals: {
+  title: t(
+    :title_edit_for,
+    title: TicketAction.model_name.human,
+    for: "#{Ticket.model_name.human} #{@ticket_action.ticket.id}") } %>
+  <%= render partial: 'form', locals: {form_action: 'edited' } %>

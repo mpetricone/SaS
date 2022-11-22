@@ -1,0 +1,12 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @rate, object_name: Rate.model_name.human, object_action: form_action } %>
+<%= form_for @rate do |f| %>
+    <div class='row'>
+        <%= render_field_group f, Rate.model_name.human,
+            [{label: :rate, name: :rate, type: :text_field},
+            {label: :current, name: :current, type: :check_box}] %>
+        <%= render_field_group f, t(:label_dates),
+            [{ label: :date_implemented, name: :date_implemented, type: :date_field},
+             { label: :date_retired, name: :date_retired, type: :date_field, options: { include_blank: true}}] %>
+    </div>
+    <%= render_actions f, rates_path %>
+<% end %>

@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row">
+    <div class="well">
+      <div class="h2">
+        <%= t(:title_client_statement) %>
+      </div>
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <%= t(:label_invoices_range, start: params[:start_date], end: params[:end_date]) %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-xs-4">
+      <%= render partial: 'shared/show_address', locals: { name: current_employee.ou.name, address: current_employee.ou.addresses.first } %>
+    </div>
+    <div class="col-md-4 col-xs-1"></div>
+    <div class="col-md-4 col-xs-7">
+      <%= image_tag("logos/corp_logo.png") %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-xs-4">
+      <%= render partial: 'shared/show_address', locals: { name: t(:title_bill_to, client: @client.name), address: @client.default_invoice_address } %>
+    </div>
+    <div class="col-md-2 col-xs-1"></div>
+    <div class="col-md-6 col-xs-7">
+      <%= render partial: 'statement_summary' %>
+    </div>
+  </div>
+  <div class="row">
+    <%= render partial: 'show' %>
+  </div>
+  <div class="row">
+    <div class="well well-sm text-center">
+      <%= t(:text_checks_payable_to, payee: current_employee.ou.name) %>
+    </div>
+  </div>
+</div>

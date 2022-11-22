@@ -1,0 +1,31 @@
+<div class='row'>
+  <div class='col-12'>
+    <div class="card title-placard">
+      <div class='row g-0'>
+        <div class='col-md-4'>
+          <%= image_tag "logos/corp_logo.png", class: "pull-left logo" %>
+        </div>
+        <div class='col-md-8'>
+          <div class='card-body gx-0'>
+            <h1>
+              Sales and Services Systems
+            </h1>
+            <h4>
+              IT Customer Management and POS
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if logged_in %>
+
+
+  <div class="row" id="tickets">
+  </div>
+  <div class="row" id="employee_tickets">
+    <%= render partial: "tickets/index_latest", locals: { title: "#{current_employee.name}'s open tickets", tickets: @employee_tickets } %>
+  </div>
+<% end %>

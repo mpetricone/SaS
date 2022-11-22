@@ -1,0 +1,31 @@
+<%= render_show_title "#{Rate.model_name.human} #{@rate.rate}", edit_rate_path(@rate), rates_path %>
+<div class='row'>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><%= Rate.model_name.human %></h4>
+      </div>
+      <div class='card-body'>
+        <div class='field'>
+          <strong>Rate:</strong>
+          <%= @rate.rate %>
+        </div>
+
+        <div class='field'>
+          <strong>Current:</strong>
+          <%= @rate.current %>
+        </div>
+
+        <div class='field'>
+          <strong>Date implemented:</strong>
+          <%= @rate.date_implemented %>
+        </div>
+
+        <div class='field'>
+          <strong>Date retired:</strong>
+          <%= @rate.date_retired %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

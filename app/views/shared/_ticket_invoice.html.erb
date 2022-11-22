@@ -1,0 +1,351 @@
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='col-12'>
+      <table class='email-body'>
+        <tr>
+          <td>
+            <table class='email-table'>
+              <tr>
+                <td>
+                  <img src="<%= MAILER_LOGO_PATH %>" alt="<%=@ticket.ou.name%>" >
+                </td>
+                <td>
+                  <h2>
+                    <% type = "Invoice" %>
+                    <% begin %>
+                      <% if params.has_key?(:receipt) && params[:receipt]=="true" then %>
+                        <% type = "Receipt" %>
+                      <% end %>
+                    <% rescue %>
+                    <% end %>
+                    <%= "#{type} for #{@ticket.client.name}, #{@ticket.invoice_or_ticket_date.strftime("%m/%d/%Y")},Reference # #{@ticket.id}" %>
+                    <br/>
+                    <small><%= "#{@ticket.short_description}" %></small>
+                    <% if @ticket.field_location %>
+                      <br/>
+                      <small><%= "#{Ticket.human_attribute_name(:field_location)}: #{@ticket.field_location}" %></small>
+                    <% end %>
+                  </h2>
+                </td>
+              </tr>
+            </table>
+            <table class='email-table email-table-separator'>
+              <tr>
+                <td class='email-item-border'>
+                  <address>
+                    <% if @ticket.employee.contact.full_name != @ticket.ou.name %>
+                      <%= @ticket.employee.contact.full_name %><br/>
+                    <% end %>
+                    <%= @ticket.ou.name %><br />
+                    <%= @ou_delivery.formal_out true %><br/>
+                    <%= @ticket.employee.contact.contact_phones[0].number %>
+                  </address>
+                </td>
+                <td class='email-item-border'>
+                  <address>
+                    <% if @ticket.client.name != @ticket.contact.full_name %>
+                      <%= @ticket.client.name %><br/>
+                      c/o
+                    <% end %>
+                    <%= @ticket.contact.full_name %><br/>
+                    <%= @ticket.ticket_invoice_address.formal_out true %>
+                  </address>
+                </td>
+              </tr>
+            </table>
+            <% if @ticket.work_types.count >0 %>
+              <table class='email-sub-table'>
+                <thead>
+                  <tr>
+                    <th class='email-title'>
+                      <%= content_tag :h4, WorkType.model_name.human(count: @ticket.work_types.count) %>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <% @ticket.work_types.each do |type| %>
+                        <%= content_tag :div, "[#{type.name}] ", class: 'email-work-type' %>
+                      <% end %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            <% end %>
+
+            <% if @ticket.product_tickets.count >0 %>
+              <table class='email-sub-table'>
+                <thead>
+                  <tr>
+                    <th class='email-title' colspan=4>
+                      <h4><%= ProductTicket.model_name.human count: @ticket.product_tickets.count %></h4>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>
+                      Quantity
+                    </th>
+                    <th>
+                      Item
+                    </th>
+                    <th>
+                      Price
+                    </th>
+                    <th>
+                      Total
+                    </th>
+                  </tr>
+                </thead>
+                <% @ticket.product_tickets.each do |product| %>
+                  <tr>
+                    <td>
+                      <%= product.quantity %>
+                    </td>
+                    <td>
+                      <%= product.product.name %>
+                    </td>
+                    <td>
+                      <%= number_to_currency product.price %>
+                    </td>
+                    <td>
+                      <%= number_to_currency product.total %>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr class='email-sub-totals'>
+                  <td colspan=3>
+                    Total:
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:product] %>
+                  </td>
+                </tr>
+              </table>
+            <% end %>
+
+            <% if @ticket.ticket_actions.count >0 %>
+              <table class='email-sub-table'>
+                <thead>
+                  <tr>
+                    <th class='email-title' colspan='3'>
+                      <%= content_tag :h4, TicketAction.model_name.human %>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>
+                      Date
+                    </th>
+                    <th>
+                      Action Taken
+                    </th>
+                    <th>
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <% @ticket.ticket_actions.each do |action| %>
+                  <tr>
+                    <td>
+                      <%= action.date_taken.strftime("%Y-%m-%d") %>
+                    </td>
+                    <td>
+                      <%= action.action %>
+                    </td>
+                    <td>
+                      <%= action.ticket_action_status.status %>
+                    </td>
+                  </tr>
+                <% end %>
+              </table>
+            <% end %>
+            <% if @ticket.billing_hourly %>
+              <table class='email-sub-table'>
+                <thead>
+                  <tr>
+                    <th class='email-title' colspan='4'>
+                      <%= content_tag :h4, t(:label_billing_hourly) %>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>
+                      Date
+                    </th>
+                    <th>
+                      Start
+                    </th>
+                    <th>
+                      End
+                    </th>
+                    <th>
+                      Hours
+                    </th>
+                  </tr>
+                </thead>
+                <% @ticket.ticket_times.each do |time| %>
+                  <tr>
+                    <td>
+                      <%= time.date %>
+                    </td>
+                    <td>
+                      <%= time.time_start.strftime "%k:%M" %>
+                    </td>
+                    <td>
+                      <%= time.time_end.strftime "%k:%M" %>
+                    </td>
+                    <td>
+                      <%= time.hours %>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr class='email-sub-totals' >
+                  <td>
+                    Rate:
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket.rate.rate %>
+                  </td>
+                  <td>
+                    Total Hours:
+                  </td>
+                  <td>
+                    <%= @ticket_totals[:hours] %>
+                  </td>
+                </tr>
+                <tr class='email-sub-totals'>
+                  <td></td><td></td>
+                  <td>Cost</td>
+                  <td><%= number_to_currency @ticket_totals[:hourly_cost] %></td>
+                </tr>
+              </table>
+            <% end %>
+
+            <% if @ticket.ticket_expenses.length >0 %>
+              <table class='email-sub-table'>
+                <thead>
+                  <tr>
+                    <th colspan='3' class='email-title'>
+                      <%= content_tag :h4, TicketExpense.model_name.human %>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th><%= t(:label_date) %></th>
+                    <th><%= TicketExpense.human_attribute_name :expense_type %></th>
+                    <th><%= TicketExpense.human_attribute_name :cost %></th>
+                  </tr>
+                </thead>
+                <% @ticket.ticket_expenses.each do |e| %>
+                  <tr>
+                    <td><%= e.date_incurred %></td>
+                    <td><%= e.expense_type.name %></td>
+                    <td><%= number_to_currency e.cost %></td>
+                  </tr>
+                <% end %>
+                <tr class='email-sub-totals'>
+                  <td></td>
+                  <td><%= t(:label_cost) %></td>
+                  <td><%= number_to_currency @ticket_totals[:expenses] %></td>
+                </tr>
+              </table>
+            <% end %>
+
+            <% if @ticket.billing_fixed %>
+              <table class='email-table'>
+                <thead>
+                  <tr>
+                    <th class='email-title'>
+                      <%= content_tag :h4, t(:label_billing_fixed) %>
+                    </th>
+                  </tr>
+                </thead>
+                <tr>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:service] %>
+                  </td>
+                </tr>
+              </table>
+            <% end %>
+
+            <table class='email-sub-table'>
+              <thead>
+                <tr>
+                  <th class='email-title' colspan='2'>
+                    <%= content_tag :h4, "Totals" %>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    Total Labor Cost
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:labor] %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Expense Totals
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:expenses] %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Product Totals
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:product] %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Sub Total
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:sub] %>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <%= "Tax @ #{@ticket.tax_rate}" %>
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:tax] %>
+                  </td>
+                </tr>
+                <tr class='email-sub-totals'>
+                  <td>
+                    Total
+                  </td>
+                  <td>
+                    <%= number_to_currency @ticket_totals[:grand] %>
+                  </td>
+                </tr>
+                <% begin %>
+                  <% if params.has_key?(:receipt) %>
+                    <tr>
+                      <td colspan='2' class='text-center'>
+                        <%= content_tag :strong, t(:label_paid) %>
+                      </td>
+                    </tr>
+                  <% end %>
+                <% rescue %>
+                <% end %>
+              </tbody>
+            </table>
+            <table class='email-table email-footer'>
+              <tr>
+                <td>
+                  <%= content_tag :h4, "Thank you for your business." %>
+                  <div class='email-copyright'>
+                    SaS <%= Version::Version.copyright_version %>
+                </div>
+                </td>
+              </tr>
+            </table>
+      </table>
+    </div>
+  </div>
+</div>

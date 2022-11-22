@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @contacts,
+    show_fields: [:lname, :fname, :mname, :description ],
+    delete_msg: "Really delete #{Contact.model_name.human}?",
+    delete_msg_ident: :full_name } %>

@@ -1,0 +1,15 @@
+<h1>Contact E-mail Record</h1>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @contact_email.address %>
+</p>
+
+<p>
+  <strong>Contact:</strong>
+  <%= @contact.fname %> <%= @contact.lname %>
+</p>
+
+<%= link_to 'Edit', edit_contact_contact_email_path(@contact, @contact_email) %> |
+<%= link_to 'Back', contact_contact_emails_path(@contact) %>

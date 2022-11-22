@@ -1,0 +1,22 @@
+<% # title: title %>
+<% # edit_path: edit link path %>
+<% # return_path: return link path %>
+<div class='row'>
+  <div class='cal-md-12'>
+    <div class='card border-0'>
+      <div class='card-body'>
+        <div class='d-flex justify-content-between'>
+          <div>
+            <%= content_tag :h2, title %>
+          </div>
+          <div>
+            <div class='btn-group pull-right' role="group" aria-label="title-buttons">
+              <%= link_to ficon("edit", "Edit"), edit_path, class: "btn btn-primary" %>
+              <%= link_to ficon("arrow-left", "Return"), return_path, class: "btn btn-warning" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

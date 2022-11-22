@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  description: MyString
+<% 100.times do |i| %>
+    <%4.times do |j| %>
+distributer_email_<%="#{i}_#{j}"%>:
+    email: <%= "distributer_email@#{j}.#{i}" %>
+    description: <%= "distributer email #{i} #{j}" %>
+    distributer: <%= "distributer_#{i}" %>
+    <%end%>
+<%end%> 

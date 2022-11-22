@@ -1,0 +1,18 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @ou_payment_type, object_name: OuPaymentType.model_name.human, object_action: form_action} %>
+<%= form_for(@ou_payment_type) do |f| %>
+  <div class='row'>
+    <%= render_field_group f, t(:label_primary_info),
+        [{label: :name, name: :name, type: :text_field},
+        {label: :method, name: :method, type: :text_field},
+        {label: :ou_id, name: :ou_id, type: :collection_select,
+         ext_params: { collection: Ou.all, value_method: :id, text_method: :name}}] %>
+   <%= render_field_group f, t(:label_dates),
+       [{label: :date_enabled, name: :date_enabled, type: :date_field},
+        {label: :date_retired, name: :date_retired, type: :date_field,
+         options: {include_blank: true}}] %>
+  <%= render_field_group f, OuPaymentType.human_attribute_name(:info),
+      [{label: nil, name: :info, type: :text_area,
+        options: {rows:5, cols: 35}}] %>
+  </div>
+  <%= render_actions f, ou_payment_types_path %>
+<% end %>

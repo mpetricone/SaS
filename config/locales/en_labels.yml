@@ -1,0 +1,68 @@
+en:
+  label_primary_info: "Primary Info"
+  label_employee_name: "Employee Name"
+  label_employer_info: "Employer Info"
+  label_select_contact: "Select a Contact"
+  label_dates: "Dates"
+  label_date_start: "Start date"
+  label_date_end: "End Date"
+  label_identifiers: "Identifiers"
+  label_address_options: "Address Options"
+  label_in_house_info: "In House Info"
+  label_client_info: "Client Info"
+  label_billing_hourly: "Billing - Hourly"
+  label_billing_fixed: "Service Cost"
+  label_payment_info: "Payment Info"
+  label_name: "Name"
+  label_purchase_limits: "Purchase Limits"
+  label_product_info: "Product Info"
+  label_classification: "Classification"
+  label_total: "Total"
+  label_totals: "Totals"
+  label_income: "Income"
+  label_income_by_ticket: "Income by ticket"
+  label_income_by_type: "Income by type"
+  label_income_type: 'Income type'
+  label_income_type_taxed: 'Taxed Income'
+  label_income_type_no_tax: 'Non Taxed Income'
+  label_profit_loss: "Profit / Loss"
+  label_hours_billed: "Hours Billed"
+  label_default_addresses: 'Default Addresseses'
+  label_start_date: 'Start Date'
+  label_end_date: 'End Date'
+  label_search: 'Search %{for}'
+  label_search_short: 'Search'
+  label_paid: 'Paid'
+  label_location: Location
+  label_recent_tickets: Recent Tickets
+  label_client_details: Client Details
+  label_amount_receivable: Amount Receivable
+  label_new_ticket: New Ticket
+  label_remove: Remove
+  label_cost: Cost
+  label_date: Date
+  label_total_no_tax: Income
+  label_payments: Payments
+  label_total_sale: Total Sale
+  label_amount_outstanding: Outstanding Balance
+  label_new_ticket: New Ticket
+  label_none: 'None'
+  label_default_address: Default Address
+  label_default_addresses: Default Addresses
+  label_search_statement_period: Search Statement Period
+  label_statement_for: Statement for %{for}
+  label_total_due: Total Due
+  label_outstanding_balance: Oustaning Balance
+  label_date_range: "Dates From: %{start} To: %{end}"
+  label_invoice_amount: Invoice Amount
+  label_invoices_range: Invoices from %{start} to %{end}
+  label_payment_status: Payment Status
+  label_send_invoice_to: Send Invoice To
+  label_version: "Version: %{number}"
+  label_contact: "Contact %{contact}"
+  label_built_for: "Built for"
+  menu_about: About
+  menu_help: Help
+  label_is_expense_payed: ''
+  label_payment_details: 'Payment Details'
+  label_reset: "Reset"

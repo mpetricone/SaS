@@ -1,0 +1,3 @@
+FontAwesomeConfig = {
+	mutateApproach: 'sync'
+}

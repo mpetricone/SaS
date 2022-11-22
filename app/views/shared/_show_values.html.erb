@@ -1,0 +1,30 @@
+<%
+    # display block for show pages
+  # title: title of block
+  # model: active record model
+  # values: name of attribute %>
+<div class='col12 col-lg-6'>
+  <div class='card'>
+    <div class='card-header'>
+      <%= content_tag :h4, title %>
+    </div>
+    <div class='card-body'>
+      <table class='table table-sm'>
+        <% values.each do |v| %>
+          <tr>
+            <td><strong><%= model.class.human_attribute_name v %></strong></td>
+            <td><%= model.send v %></td>
+          </tr>
+        <% end %>
+        <% if sub_values %>
+          <% sub_values.each do |s| %>
+            <tr>
+              <td><strong><%= model.class.human_attribute_name s[:title] %></strong></td>
+              <td><%= model.send(s[:record]).send(s[:name]) %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </table>
+    </div>
+  </div>
+</div>

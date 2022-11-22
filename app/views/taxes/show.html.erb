@@ -1,0 +1,4 @@
+<%= render_show_title "#{Tax.model_name.human} #{@tax.name}", edit_tax_path(@tax), taxes_path %>
+<div class='row'>
+<%= render partial: 'shared/show_item', locals: { model: @tax, attribs: [ :name, :rate, :region, :date_enabled, :date_retired]} %>
+</div>

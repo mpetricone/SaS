@@ -1,0 +1,20 @@
+<%
+  #  navbar dropdown partial
+  #  locals
+  #  title: menu title
+  #  items: array of hashes
+  #  { type: link, div, text
+  #    view: string
+  #    link: string
+%>
+<li class='nav-item dropdown'>
+  <a
+    class='nav-link dropdown-toggle'
+    href='#'
+    role='button'
+    data-bs-toggle='dropdown'
+    aria-expanded='false'>
+    <%= title %>
+  </a>
+  <%= render partial: 'shared/nav/dropdown_item', locals: { items: items } %>
+</li>

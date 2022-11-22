@@ -1,0 +1,9 @@
+en:
+  notice_ticket_opened: 'Ticket Opened'
+  notice_ticket_already_opened: 'Ticket was already opened. No changes made.'
+  notice_added: 'Added %{item}'
+  notice_updated: 'Updated %{item}'
+  notice_removed: 'Removed %{item}'
+  notice_image_attached: 'Image Attached.'
+  notice_image_updated: 'Image Updated.'
+  notice_image_deleted: 'Image Deleted.'

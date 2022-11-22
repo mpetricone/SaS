@@ -1,0 +1,11 @@
+<%# Show a simple search for for SearchEngine %>
+<%# search_id: the html id for the search text field %>
+<%# search_name: the "for" value for label %>
+<% search_group_id = "search-addon-#{search_id}" %>
+<div class='input-group'>
+	<%= content_tag :span, class: 'input-group-addon', id: search_group_id  do %>
+		<%= ficon :search %>
+	<% end %>
+	<%= text_field_tag search_id, "", class: 'form-control' ,id: search_id,
+		'aria-describedby': search_group_id,  placeholder: t(:label_search, for: search_name) %>
+</div>

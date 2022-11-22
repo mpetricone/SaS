@@ -1,0 +1,35 @@
+<%= render partial: 'shared/error_form_uc',
+  locals: { result: @distributer_product, object_name: DistributerProduct.model_name.human, object_action: form_action } %>
+<%= form_for [@product, @distributer_product] do |f| %>
+  <div class='row'>
+    <%= render_field_group f, Distributer.model_name.human,
+      [{label: nil, name: :distributer_id, type: :collection_select,
+        ext_params: {collection: Distributer.all, value_method: :id, text_method: :name}}] %>
+      <div class='col-full-half'>
+        <div class='card'>
+          <div class='card-header'>
+            <%= content_tag :h4, "Cost" %>
+          </div>
+          <div class='card-body'>
+            <%= " #{Product.model_name.human} #{Product.human_attribute_name :base_cost}: $#{@product.base_cost}" %><br/>
+            <%= f.label :current_cost %>
+            <%= f.text_field :current_cost %>
+          </div>
+        </div>
+      </div>
+      <div class='col-full-half'>
+        <div class='card'>
+          <div class='card-header'>
+            <%= content_tag :h4, "#{Product.human_attribute_name :item_number}" %>
+          </div>
+          <div class='card-body'>
+            <%= "#{Product.model_name.human} #{Product.human_attribute_name :item_number}: #{@product.item_number}" %><br/>
+            <%= "#{Product.model_name.human} #{Product.human_attribute_name :sku}: #{@product.sku}" %><br/>
+            <%= f.label :dist_item_number %>
+            <%= f.text_field :dist_item_number %>
+          </div>
+        </div>
+      </div>
+  </div>
+  <%= render_actions f, @product %>
+<% end %>

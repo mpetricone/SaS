@@ -1,0 +1,8 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @expenses,
+    show_fields: [:name, :cost, :date_incurred, :paid, :invoice_number  ],
+    belongs_to_models: [ :ou],
+    belongs_to_fields: { ou: [:name] },
+    delete_msg: "Delete #{Expense.model_name.human} **?",
+    delete_ident: :name } %>

@@ -1,0 +1,619 @@
+<%= render partial: 'shared/show_page_title',
+  locals: { title: "#{@ticket.client.name} #{Ticket.model_name.human} #{@ticket.id}", edit_path: edit_ticket_path(@ticket), return_path: tickets_path } %>
+<div class='ticket-row'>
+  <div class='col'>
+    <div id='ticket-info-card p-0'>
+      <div class='card-body'>
+        <div class='row'>
+          <div class='col'>
+            <div class='row'>
+              <div class='col'>
+                <div class='card'>
+                  <div class='card-header'>
+                    <%= t(:sub_title_invoice_payment) %>
+                  </div>
+                  <div class='card-body'>
+                    <div class='card'>
+                      <div class='card-body'>
+                        <div class='row'>
+                          <div class='col'>
+                            <%= @ticket.payment_requested ? 'Invoice sent' : 'Invoice Witheld' %>
+                            <% if @ticket.invoice_date %>
+                              : <strong><%= @ticket.invoice_date.strftime('%m/%d/%Y') %></strong>
+                            <% end %>
+                            <br>
+                            <%= t(:label_payment_status) %>:
+                            <%= @ticket.payment_received ? 'Bill Payed' : 'Awaiting payment' %>
+                          </div>
+                        </div>
+                        <div class='row'>
+                          <div class='col panel-mid-header'>
+                            <%= t(:label_send_invoice_to) %>:
+                          </div>
+                        </div>
+                        <div class='row'>
+                          <div class='col'>
+                            <p>
+                              <%= @ticket.contact.full_name %><br>
+                              <% @ticket.contact.contact_emails.each do |email| %>
+                                <%= link_to(
+                                          ficon("envelope", email.address ),
+                                          billing_ticket_mail_path(@ticket,mail_to: email.address ),
+                                          method: :post,
+                                          data: {confirm: "Send bill to #{email.address}"},
+                                          class: 'btn-nowrap btn-primary btn-sm') %>
+                                <br>
+                              <% end %>
+                            </p>
+                          </div>
+                          <div class='col'>
+                            <p>
+                              <%= Client.model_name.human %><br>
+                              <% @ticket.client.client_emails.each do |email| %>
+                                <%= link_to(ficon('envelope', "#{email.email}") , billing_ticket_mail_path(@ticket, mail_to: email.email), method: :post, data: {confirm: "Send bill to #{email.email}?"},class: 'btn-nowrap btn-primary btn-sm') %><br>
+                              <% end %>
+                            </p>
+                          </div>
+                        </div>
+                        <div class='row'>
+                          <div class='col text-center'>
+                            <%= link_to ficon("print", "Print Invoice"), ticket_print_view_path(@ticket, hide_user: true),
+                              target: "_blank",class: 'btn-nowrap btn-secondary btn-sm' %>
+                            <%= link_to ficon("print", "Print Receipt"), ticket_print_view_path(@ticket, hide_user: true, receipt:true), target: "_blank",class: 'btn-nowrap btn-secondary btn-sm' %>
+                            <%= link_to ficon("print", "Print Tech Info"), ticket_show_tech_info_path(@ticket, hide_user: true),
+                              target: "_blank", class: 'btn-nowrap btn-secondary btn-sm' %>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='row'>
+                      <div class='col'>
+                        <div class='card'>
+                          <div class='card-body table-responsive'>
+                            <table class='table'>
+                              <thead>
+                                <tr>
+                                  <th>
+                                    Payments
+                                  </th>
+                                  <th>
+                                    <%= link_to ficon("credit-card", "Record Payment"), new_ticket_ticket_payment_path(@ticket),class: 'btn-nowrap btn-primary btn-sm', role: 'button' %>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <% @ticket.ticket_payments.each do |t| %>
+                                <tr>
+                                  <td class='col5'>
+                                    &#36;
+                                    <%= t.payment %>
+                                  </td>
+                                  <td class='col7'>
+                                    <div class='btn-group' role='group' aria-label='payment-button-group'>
+                                      <%= link_to ficon('remove', "Remove payment"), ticket_ticket_payment_path(@ticket, t), method: :delete, data: {confirm: "Remove Payment of #{t.payment}?" },class: 'btn-nowrap btn-danger btn-sm', type: 'button' %>
+                                      <%= link_to ficon('edit', "Edit payment"), edit_ticket_ticket_payment_path(@ticket, t),class: 'btn-nowrap btn-secondary btn-sm', type: 'button' %>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% end %>
+                            </table>
+                            <div class='row'>
+                              <div class='col'>
+                                <strong><%= Ticket.human_attribute_name :ticket_status_id %>:</strong>
+                                <%= @ticket.ticket_status ? @ticket.ticket_status.name : t(:ticket_no_status) %>
+                              </div>
+                              <div class='col'>
+                                <% if @ticket.is_closed %>
+                                  <%= link_to ficon('toggle-on', 'Re-Open ticket'),
+                                    open_ticket_path(@ticket), data: { confirm: "Re-Open #{Ticket.model_name.human}"}, method: :patch , class: 'btn-nowrap btn-warning btn-sm' %>
+                                <% else %>
+                                  <%= link_to  ficon('toggle-off', "Close ticket"),
+                                    close_ticket_path(@ticket), data: {
+                                      confirm: "Close #{Ticket.model_name.human}?"},method: :patch, class: 'btn-nowrap btn-warning btn-sm' %>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class='col'>
+            <div class='row'>
+              <div class='col'>
+                <div class='card'>
+                  <div class='card-header'>
+                    <%= t(:sub_title_ticket_info) %>
+                  </div>
+                  <div class='card-body text-center'>
+                    <%= content_tag :h4, "#{Ticket.human_attribute_name :short_description}: #{@ticket.short_description}" %>
+                    <%= content_tag :h4, "#{Ticket.human_attribute_name :field_location}: #{@ticket.field_location}" %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col'>
+                <div class='card'>
+                  <div class='card-body'>
+                    <div class='row'>
+                      <div class='col'>
+                        <%= content_tag :td, "#{Ticket.human_attribute_name(:date_created)}<br/>#{@ticket.date_created}".html_safe,class: 'ticket-show-label' %>
+                      </div>
+                      <div class='col'>
+                        <%= content_tag :td, "#{Ticket.human_attribute_name(:updated_at)}<br/>#{@ticket.updated_at}".html_safe, class: 'ticket-show-label' %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col'>
+                <strong><%= Ticket.human_attribute_name :default_delivery_address %></strong>
+                <address>
+                  <%= simple_format @ticket.ticket_delivery_address.formal_out %>
+                </address>
+              </div>
+              <div class='col'>
+                <strong><%= Ticket.human_attribute_name :default_invoice_address %></strong>
+                <address>
+                  <%= simple_format @ticket.ticket_invoice_address.formal_out %>
+                </address>
+              </div>
+            </div>
+            <div class='row'>
+              <div class='col'>
+                <ul class='nav flex-column'>
+                  <% if @ticket.ticket_notes.length > 0 %>
+                    <li class='nav-link-active'>
+                      <%= link_to(t(:item_attached,
+                    item: TicketNote.model_name.human(count: @ticket.ticket_notes.length)),
+              "#ticket_notes") %>
+                    </li>
+                  <% end %>
+                  <% if @ticket.ticket_pictures.length > 0 %>
+                    <li class='nav-link-active'>
+                      <%= link_to( t(:item_attached,
+                  item: TicketPicture.model_name.human(count: @ticket.ticket_pictures.length)),
+                  "#ticket_pictures") %>
+                    </li>
+                  <% end %>
+                  <% if @ticket.billing_hourly %>
+                    <li class='nav-link-active'>
+                      <%= link_to t(:jump_to_item, item: TicketTime.model_name.human), "#ticket_times" %>
+                    </li>
+                  <% end %>
+                  <li class='nav-link-active'>
+                    <%= link_to t(:jump_to_item, item: TicketExpense.model_name.human(count: 2)), "#ticket_expenses" %>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='ticket-row'>
+  <div class='col'>
+    <div class='card'>
+      <%= render partial: 'shared/ticket_sub_title',
+        locals: {
+          ticket: @ticket,
+          mod: TicketWorkType,
+          path: new_ticket_ticket_work_type_path(@ticket)
+        } %>
+      <div class='card-body'>
+        <% @ticket.ticket_work_types.each do |wt| %>
+          <span class='label-badge bg-dark'>
+            <%= wt.work_type.name %>
+            <%= link_to ficon('xmark'), ticket_ticket_work_type_path(@ticket, wt), method: :delete, class: 'btn-nowrap btn-danger btn-sm' %>
+          </span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='ticket-row'>
+  <div class='col'>
+    <div class='card'>
+      <%= render partial: 'shared/ticket_sub_title',
+        locals: {
+          ticket: @ticket,
+          mod: TicketAction,
+          path: new_ticket_ticket_action_path(@ticket)} %>
+      <div class='card-body table-responsive'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th scope='col'>Action</th>
+              <th scope='col' colspan='2'>Status</th>
+            </tr>
+          </thead>
+          <% @ticket.ticket_actions.each do |ta| %>
+            <tr>
+              <td>
+                <%= ta.action %>
+              </td>
+              <td>
+                <% if ta.ticket_action_status %>
+                  <%= ta.ticket_action_status.status %>
+                <% end %>
+              </td>
+              <td class='text-center'>
+                <div class='btn-group text-nowrap' role='group' aria-label='ticket-action-btns'>
+                  <%= link_to ficon('remove', "Remove"), ticket_ticket_action_path(@ticket, ta),
+                      method: :delete, data: {confirm: "Remove #{TicketAction.model_name.human}?" },class: 'btn-nowrap btn-danger btn-sm' %>
+                  <%= link_to ficon('edit', "Edit"), edit_ticket_ticket_action_path(@ticket, ta),class: 'btn-nowrap btn-secondary btn-sm' %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='ticket-row'>
+  <div class='col'>
+    <div class="card">
+      <%= render partial: 'shared/ticket_sub_title',
+        locals: {
+          ticket: @ticket,
+          mod: Product,
+          path: new_ticket_product_ticket_path(@ticket) } %>
+      <div class='card-body table-responsive'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th class='product-quantity'>
+                <%= ProductTicket.human_attribute_name :quantity %>
+              </th>
+              <th class='product-name'>
+                <%= ProductTicket.human_attribute_name :name %>
+              </th>
+              <th class='roduct-price'>
+                <%= ProductTicket.human_attribute_name :price %>
+              </th>
+              <th class='product-total' colspan=2>
+                Total
+              </th>
+            </tr>
+          </thead>
+          <% if @ticket.product_tickets.count >0 %>
+            <% @ticket.product_tickets.each do |pt| %>
+              <tr>
+                <td>
+                  <%= pt.quantity %>
+                </td>
+                <td>
+                  <%= pt.product.name %>
+                </td>
+                <td>
+                  <%= number_to_currency pt.price %>
+                </td>
+                <td>
+                  <%= number_to_currency pt.total %>
+                </td>
+                <td>
+                  <%= link_to ficon('xmark', "Void"), ticket_product_ticket_path(@ticket, pt),
+                      method: :delete, data: {confirm: "Void sale of #{pt.product.name}?" },class: 'btn-nowrap btn-danger btn-xs' %>
+                </td>
+              </tr>
+            <% end %>
+          <% end %>
+          <tr>
+            <td colspan=3>
+              <strong>Total:</strong>
+            </td>
+            <td colspan=2>
+              <%= number_to_currency @ticket_totals[:product] %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<% if @ticket.billing_hourly %>
+  <div class='ticket-row' id="ticket_times">
+    <div class='col'>
+      <div class='card'>
+        <%= render partial: 'shared/ticket_sub_title',
+          locals: {
+            ticket: @ticket,
+            mod: TicketTime,
+            path: new_ticket_ticket_time_path(@ticket) } %>
+        <div class='card-body table-responsive'>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th>
+                  <%= TicketTime.human_attribute_name :date %>
+                </th>
+                <th>
+                  <%= TicketTime.human_attribute_name :time_start %>
+                </th>
+                <th>
+                  <%= TicketTime.human_attribute_name :time_end %>
+                </th>
+                <th colspan=2>
+                  <%= TicketTime.human_attribute_name :hours %>
+                </th>
+              </tr>
+            </thead>
+            <% @ticket.ticket_times.each do |times| %>
+              <tr>
+                <td>
+                  <%= times.date %>
+                </td>
+                <td>
+                  <%= times.time_start %>
+                </td>
+                <td>
+                  <%= times.time_end %>
+                </td>
+                <td>
+                  <%= times.hours %>
+                </td>
+                <td>
+                  <%= link_to ficon('remove', "Remove") , ticket_ticket_time_path(@ticket,times),
+                      method: :delete, data: { confirm: "Remove entry?" },class: 'btn-nowrap btn-danger btn-xs' %>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td colspan=3>
+                <strong>Total hourly labor</strong>
+              </td>
+              <td colspan=2>
+                <%= @ticket_totals[:hours] %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong><%= Rate.model_name.human %></strong>
+              </td>
+              <td>
+                <% if (!@ticket.rate) %>
+                  No Rate
+                <% else %>
+                  <%= number_to_currency @ticket.rate.rate %>
+                <% end %>
+              </td>
+              <td>
+                <strong>Total hourly labor cost</strong>
+              </td>
+              <td colspan=2>
+                <%= number_to_currency @ticket_totals[:hourly_cost] %>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+<div class='ticket-row' id="ticket_expenses">
+  <div class='col'>
+    <div class='card'>
+      <%= render partial: 'shared/ticket_sub_title',
+        locals: {
+          ticket: @ticket,
+          mod: TicketExpense,
+          path: new_ticket_ticket_expense_path(@ticket) } %>
+      <div class='card-body table-responsive'>
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>
+                <%= TicketExpense.human_attribute_name :date_incurred %>
+              </th>
+              <th>
+                <%= TicketExpense.human_attribute_name :expense_type %>
+              </th>
+              <th>
+                <%= TicketExpense.human_attribute_name :cost %>
+              </th>
+              <th>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @ticket.ticket_expenses.each do |e| %>
+              <tr>
+                <td>
+                  <%= e.date_incurred %>
+                </td>
+                <td>
+                  <%= e.expense_type.name %>
+                </td>
+                <td>
+                  <%= number_to_currency e.cost %>
+                </td>
+                <td>
+                  <%= link_to ficon('remove', t(:label_remove)), ticket_ticket_expense_path(@ticket, e),
+                      method: :delete, data: {confirm: t(:prompt_remove, item:  TicketExpense.model_name.human) },
+                      class: 'btn-nowrap btn-danger btn-xs' %>
+                </td>
+              </tr>
+            <% end %>
+            <tr>
+              <td colspan=3>
+                <%= t(:label_totals) %>
+              </td>
+              <td>
+                <%= number_to_currency @ticket_totals[:expenses] %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='ticket-row'>
+  <div class='col'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= t :label_totals %>
+      </div>
+      <div class='card-body table-responsive'>
+        <table class='table table-bordered'>
+          <% if @ticket.billing_fixed %>
+            <tr>
+              <td>Service Cost </td>
+              <td><%= number_to_currency @ticket_totals[:service] %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td>
+              Total Labor Cost
+            </td>
+            <td>
+              <%= number_to_currency @ticket_totals[:labor] %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Product Total
+            </td>
+            <td>
+              <%= number_to_currency @ticket_totals[:product] %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Expense Total
+            </td>
+            <td>
+              <%= number_to_currency @ticket_totals[:expenses] %>
+            </td>
+            <tr>
+              <td>
+                Sub Total
+              </td>
+              <td>
+                <%= number_to_currency @ticket_totals[:sub] %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Tax @ <%= @ticket.tax_rate %>
+              </td>
+              <td>
+                <%= number_to_currency @ticket_totals[:tax] %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Total
+              </td>
+              <td>
+                <%= number_to_currency @ticket_totals[:grand] %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Amount Payed
+              </td>
+              <td>
+                <%= number_to_currency @ticket.calculate_total_payments %>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='ticket-row' id="ticket_pictures">
+  <div class='col'>
+    <div class='card'>
+      <%= render partial: 'shared/ticket_sub_title',
+            locals: {
+              ticket: @ticket,
+               mod: TicketPicture,
+               path: new_ticket_ticket_picture_path(@ticket) } %>
+      <div class='card-body'>
+        <div>
+          <div class='card-body'>
+            <div class='row'>
+              <% @ticket.ticket_pictures.each do |p| %>
+                <div class='col-md-4'>
+                  <div class='card'>
+                    <%= link_to(image_tag(p.image.variant(:thumb)),
+                    ticket_ticket_picture_path(@ticket, p),
+                    class: 'd-flex justify-content-center border-bottom') %>
+                    <div class='card-body p-0'>
+                      <div>
+                        <h5> <%= p.description %></h3>
+                        <p>
+                          <%= p.note %>
+                        </p>
+                      </div>
+                      <div class='flex-row justify-content-center p-0 m-0 b-0'>
+                        <div class='btn-group col-12' role='group' aria-label="Picture Options">
+                          <%= link_to ficon("edit", "Edit"), edit_ticket_ticket_picture_path(@ticket, p), class: 'btn btn-primary', role: :button %>
+                          <%= link_to ficon("remove", "Delete"),ticket_ticket_picture_path(@ticket, p),
+                        method: :delete,
+                        class: 'btn btn-danger',
+                        role: :button,
+                        data: { confirm: "Delete Picture?"} %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='ticket-row' id="ticket_notes">
+  <div class='col'>
+    <div class='card'>
+      <%= render partial: 'shared/ticket_sub_title',
+      locals: {
+      ticket: @ticket,
+      mod: TicketNote,
+      path: new_ticket_ticket_note_path(@ticket) } %>
+      <div class='card-body'>
+        <ul class='list-group'>
+          <% @ticket.ticket_notes.each do |tn| %>
+            <li class='list-group-item d-flex justify-content-between'>
+              <div class='col'>
+                <h5>
+                  <%= tn.subject %>
+                </h5>
+                <p class='text-wrap'>
+                  <%= tn.body %>
+                </p>
+              </div>
+              <div class='col-md-auto'>
+                <div class='btn-group'>
+                  <%= link_to ficon('edit',"Edit"), edit_ticket_ticket_note_path(@ticket, tn),
+                  role: :button,
+                  class: 'btn btn-primary' %>
+                  <%= link_to ficon('remove', 'Delete'), ticket_ticket_note_path(@ticket, tn),
+                  method: :delete,
+                  role: :button,
+                  data: { confirm: 'Delete Note'},
+                  class: 'btn btn-danger' %>
+                </div>
+              </div>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

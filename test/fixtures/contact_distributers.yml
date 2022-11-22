@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contact_id: 
+  distributer_id: 
+  description: MyString
+
+<% 100.times do |i| %>
+    <% 2.times do |j|%>
+contact_distributer_<%="#{i}_#{j}"%>:
+    distributer: <%= "distributer_#{i}" %>
+    contact: <%= "contact_#{i}" %>
+    description: <%= "contact distributer #{i} #{j}"%>
+    <%end%>
+<%end%>

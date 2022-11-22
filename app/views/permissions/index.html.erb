@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @permissions,
+    show_fields: [:name, :object_name, :read_record, :write_record, :create_record, :delete_record, :admin],
+    delete_msg: "Really delete #{Permission.model_name.human}? This could criple the system",
+    delete_msg_ident: :name} %>

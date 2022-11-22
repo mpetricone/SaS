@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  amount: 10.00
+  identifier: MyString
+  ou_payment_type: one 
+  expense: one
+
+<% 100.times do |i| %>
+<% 30.times do |j| %>
+espense_payments_<%="#{i}_#{j}"%>:
+  amount: <%=Random.new().rand(10) %>
+  identifier: ident_<%="#{i}_#{j}"%>
+  expense: expense_<%=i%>
+<% end %>
+<%end%>

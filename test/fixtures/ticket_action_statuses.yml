@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 100.times do |i| %>
+ticket_action_status_<%=i%>:
+    status: <%="status #{i}"%>
+<%end%>

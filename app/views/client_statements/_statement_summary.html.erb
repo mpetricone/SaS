@@ -1,0 +1,22 @@
+<div class="panel-ext panel-default">
+  <div class="panel-heading">
+    <div class="h4">
+      <%= t(:title_statement_summary) %>
+    </div>
+  </div>
+  <table class="table table-condensed">
+    <tr>
+      <th colspan="2">
+        <%= t(:label_invoices_range, start: params[:start_date], end: params[:end_date]) %>
+      </th>
+    </tr>
+    <tr>
+      <th>
+        <%= t(:label_total_due) %>
+      </th>
+      <th>
+        <%= number_to_currency(@ar[:total]) %>
+      </th>
+    </tr>
+  </table>
+</div>

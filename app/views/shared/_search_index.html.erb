@@ -1,0 +1,20 @@
+<%# Search view for indexes %>
+<%# url: the url for form query %>
+<%# model: ActiveRecord for the index %>
+<div class='card' id='index-search'>
+  <%= content_tag :div, t(:sub_title_search, for: model.model_name.human(count: 2)), class: 'card-header' %>
+  <div class='card-body'>
+    <%= form_tag url, method: :get, class: 'form-inline' do |f| %>
+      <div class='form-group'>
+        <%= label_tag t(:label_name), nil, for: :search_name, class: 'sr-only' %>
+        <div class='input-group'>
+          <%= content_tag :div, ficon('search'), class: 'input-group-addon' %>
+          <%= text_field_tag :search_name, nil, class: 'form-control', placeholder: t(:label_name) %>
+          <div class='input-group-btn'>
+            <%= submit_tag t(:label_search_short), class: 'btn btn-info' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

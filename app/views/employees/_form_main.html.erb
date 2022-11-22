@@ -1,0 +1,20 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @employee, object_name: Employee.model_name.human, object_action: form_action } %>
+<%= form_for @employee do |f| %>
+	<% if defined? @contact %>
+		<div class='well'>
+			Making <%= link_to "#{@contact.fname} #{@contact.lname}", contact_path(@contact) , target: '_blank', class: 'label-badge label-primary' %> an Employee.
+			<%= f.hidden_field :contact_id, value: @contact.id %>
+		</div>
+	<% end %>
+	<div class='form-cont'>
+		<%= render_field_group f, t(:label_primary_info),[
+			{ label: :user_name, name: :user_name, type: :text_field },
+			{ label: :password, name: :password, type: :password_field },
+			{ label: :password_confirmation, name: :password_confirmation, type: :password_field }] %>
+		<%= render_field_group f, t(:label_employer_info),[
+			{ label: :ou_id, name: :ou_id, type: :collection_select, ext_params: {collection: Ou.all, value_method: :id, text_method: :name}},
+			{label: :position, name: :position, type: :text_field},
+			{label: :date_hired, name: :date_hired, type: :date_field}] %>
+	</div>
+	<%= render_actions f, employees_path %>
+<% end %>

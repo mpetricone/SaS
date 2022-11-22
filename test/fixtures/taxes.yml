@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rate: 9.99
+  name: MyString
+  date_enabled: 2015-05-26 22:34:57
+  date_retired: 2015-05-26 22:34:57
+  region: MyString
+
+<% 100.times do |i| %>
+tax_<%=i%>:
+    rate: <%= "1"%>
+    name: <%= "tax_#{i}"%>
+    region: <%= "region_#{i}"%>
+    date_enabled: <%= Date.today %>
+    date_retired: <%= Date.today+1 %>
+<%end%>

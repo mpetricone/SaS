@@ -1,0 +1,11 @@
+<%= render_show_title "#{WorkType.model_name.human} '#{@work_type.name}'", edit_work_type_path(@work_type), work_types_path %>
+<div class='row'>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= content_tag :h4, WorkType.human_attribute_name(:name) %>
+      </div>
+        <%= content_tag :div, @work_type.name, class: 'card-body' %>
+    </div>
+  </div>
+</div>

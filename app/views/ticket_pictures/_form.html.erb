@@ -1,0 +1,23 @@
+<%= render partial: 'shared/error_form_uc', locals: { 
+  result: @ticket_picture, 
+  object_name: TicketPicture.name, 
+  object_action: form_action
+  } %>
+<%= form_for [@ticket, @ticket_picture] do |f| %>
+  <div class='form-body'>
+    <%= render_field_group f, TicketPicture.human_attribute_name(:description),
+  [
+    {label: :description, name: :description, type: :text_field },
+    {label: :note, name: :note, type: :text_area},
+    {label: :taken_at, name: :taken_at, type: :datetime_select}
+    ]%>
+    <div class='col'>
+      <div class='card'>
+        <div class='card-body'>
+          <%= f.file_field :image, direct_upload: true %>
+        </div>
+      </div>
+    </div>
+    <%= render_actions f, @ticket %>
+  </div>
+<%end%>

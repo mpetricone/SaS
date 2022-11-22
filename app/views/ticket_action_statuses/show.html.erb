@@ -1,0 +1,11 @@
+<%= render_show_title "#{TicketActionStatus.model_name.human} '#{@ticket_action_status.status}'", edit_ticket_action_status_path(@ticket_action_status), ticket_action_statuses_path %>
+<div class='row'>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= content_tag :h4, TicketActionStatus.human_attribute_name(:status)%>
+      </div>
+      <%= content_tag :div, @ticket_action_status.status, class: 'card-body' %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+.login {
+	display: flex;
+	border: $login_border;
+	float: none;
+	margin: 5px 0px 5px 0px;
+}
+.login_title {
+	border: $login_title_border;
+	font-size: $login_title_text_size;
+	font-weight: $login_title_font_weight;
+}

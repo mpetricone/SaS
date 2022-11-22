@@ -1,0 +1,63 @@
+<%= render partial: 'shared/show_page_title',
+  locals: {
+    title: "#{Distributer.model_name.human} #{@distributer.name}",
+    edit_path: edit_distributer_path(@distributer),
+    return_path: distributers_path } %>
+  <div class='row'>
+    <div class='col-full-half'>
+      <div class='card'>
+        <div class='card-header'>
+          <h4><%= t(:sub_title_limits) %></h4>
+        </div>
+        <div class='card-body'>
+          <div>
+            <%= "#{Distributer.human_attribute_name :min_purchase}: $#{@distributer.min_purchase}" %>
+          </div>
+          <div>
+            <%= "#{Distributer.human_attribute_name :min_purchase_freq}: #{@distributer.min_purchase_freq}" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='col-full-half'>
+      <div class='card'>
+        <div class='card-header'>
+          <%= content_tag :h4, t(:sub_title_dates) %>
+        </div>
+        <div class='card-body'>
+          <div class='form-group'>
+            <%= label_tag "#{Distributer.human_attribute_name :date_enabled}" %>
+            <%= date_field :distributer, :date_enabled, disabled: true %>
+          </div>
+          <div class='form-group'>
+            <%= label_tag "#{Distributer.human_attribute_name :date_disabled}" %>
+            <%= date_field :distributer, :date_disabled, disabled: true %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= render partial: 'shared/show_sub_list',
+      locals: {
+        main_model: @distributer,
+        sub_model: @distributer.contact_distributers,
+        join_table: :contact,
+        show_fields: [ :fname, :lname ],
+        extra_fields: [ :description ] } %>
+      <%= render partial: 'shared/show_sub_list',
+        locals: {
+          main_model: @distributer,
+          sub_model: @distributer.address_distributers,
+          join_table: :address,
+          show_fields: [ :street1, :street2, :city, :state],
+          extra_fields: [:delivery, :invoice ] } %>
+        <%= render partial: 'shared/show_sub_list',
+      locals: {
+      main_model: @distributer,
+      sub_model: @distributer.distributer_phones,
+      show_fields: [ :number, :description ] } %>
+    <%= render partial: 'shared/show_sub_list',
+      locals: {
+        main_model: @distributer,
+        sub_model: @distributer.distributer_emails,
+        show_fields: [ :email, :description]} %>
+  </div>

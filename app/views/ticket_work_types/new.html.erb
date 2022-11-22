@@ -1,0 +1,3 @@
+<%= render partial: 'shared/form_page_title', locals: { 
+  title: t(:title_new, title: TicketWorkType.model_name.human)  } %>
+<%= render partial: 'form', locals: { form_action: 'created' } %>

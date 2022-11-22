@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  date_enabled: 2015-12-01
+  date_retired: 2015-12-01
+  method: MyString
+  info: MyText
+  ou: one
+
+two:
+  name: ByString
+  date_enabled: 2015-12-01
+  date_retired: 2015-12-01
+  method: MyString
+  info: MyText
+  ou: one

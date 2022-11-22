@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+
+<% 100.times do |i| %>
+ticket_<%=i%>:
+    client: <%="client_#{i}"%>
+    contact: <%="contact_#{i}"%>
+    employee: <%="employee_#{i}"%>
+    rate: <%="rate_#{i}"%>
+    ticket_status: <%="ticket_status_#{i}"%>
+    short_description: <%="description #{i}"%>
+    billing_hourly: true
+    billing_fixed: true
+    billing_fixed_value: <%=i*10%>
+    payment_requested: false
+    payment_received: false
+    ou: <%="ou_#{i}"%>
+    payed_in_full: false
+    tax_rate: <%=".#{i}"%>
+    ticket_delivery_address: <%= "address_#{i}" %>
+    ticket_invoice_address: <%= "address_#{i}" %>
+<%end%>

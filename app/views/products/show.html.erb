@@ -1,0 +1,48 @@
+<%= render partial: 'shared/show_page_title',
+  locals: {
+  title: "#{Product.model_name.human} #{@product.name}",
+  edit_path: edit_product_path(@product),
+  return_path: products_path } %>
+<div class='row'>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4>Product</h4>
+      </div>
+      <div class='card-body'>
+        <div>
+          <%= content_tag :label, Product.human_attribute_name(:base_cost) %>:
+          <%= "#{@product.base_cost}" %>
+        </div>
+        <div>
+          <%= content_tag :label, Product.human_attribute_name(:category) %>:
+          <%= "#{@product.category}" %>
+        </div>
+        <div>
+          <%= content_tag :label, Product.human_attribute_name(:item_number) %>:
+          <%= "#{@product.item_number}" %>
+        </div>
+        <div>
+          <%= content_tag :label, Product.human_attribute_name(:sku) %>:
+          <%= "#{@product.sku}" %>
+        </div>
+        <div>
+          <%= content_tag :label, Product.human_attribute_name(:descripton) %>:
+          <%= "#{@product.description}" %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%= render partial: 'shared/show_sub_list',
+    locals: {
+    main_model: @product,
+    sub_model: @product.product_notes,
+    show_fields: [ :title, :note ] } %>
+  <%= render partial: 'shared/show_sub_list',
+    locals: {
+    main_model: @product,
+    sub_model: @product.distributer_products,
+    join_table: :distributer,
+    show_fields: [:name],
+    extra_fields: [ :current_cost, :dist_item_number]} %>
+  </div>

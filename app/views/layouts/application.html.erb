@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sas</title>
+    <%= javascript_include_tag( 'application', 'data-turbolinks-track': 'reload') %>
+    <%= stylesheet_link_tag( 'application', media: 'all', 'data-turbolinks-track': true)%>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+    <div class='container-fluid'>
+      <div class='row justify-content-center alert gx-0'>
+        <% flash.each do | key, msg | %>
+          <div id='alert-cont' class='col-md-12'>
+            <%# the class needs to have "alert" for js. there is a conflict between flash key and bootstrap class" %>
+            <div class="<%= "#{key}-alert" %>" role="alert">
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+              </button>
+              <%= "#{msg}" %>
+            </div>
+          <%end%>
+          </div>
+      </div>
+
+      <%= render partial: 'shared/nav/main_navbar' %>
+
+      <%= yield %>
+
+      <% if not params[:hide_user] %>
+        <div class='d-none navbar navbar-expand-lg fixed-bottom justify-content-between navbar-light bg-light'>
+          <div class='container'>
+            <%= link_to 'SaS', home_index_path, class: 'navbar-brand' %>
+            <%= link_to(ficon('home', "Go Home!"), home_index_path, class: 'navbar-text') %>
+            <div class='navbar-text copyright'><%= Version::Version.copyright_version %></div>
+          </div>
+        </div>
+      <% end %>
+    </div><!-- container-->
+  </body>
+</html>

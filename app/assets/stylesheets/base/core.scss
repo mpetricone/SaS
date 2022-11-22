@@ -1,0 +1,61 @@
+//Colors
+html, .card {
+	background-color: $main_color_background;
+}
+body {
+	background-color: $main_color_background;
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+// Cards
+.card {
+  border: $main_card_border;
+  border-collapse: collapse;
+}
+.card .card-header{
+  //background-color: $main_card_header_background;
+  color: $main_card_header_color;
+  background-color: $main_card_header_background;
+}
+//Tables
+thead {
+  background-color: $table_header_background;
+}
+// similar to old badges
+.label-badge { //Use with label styles
+	@extend .badge !optional;
+	display: inline-block;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.panel-mid-header {
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+//end addons
+div.title-box {
+	@extend .row;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: $show_title_border_radius;
+	border: $show_title_border;
+}
+.text-center {
+	text-align: center;
+}
+.col-full-half {
+	@extend .col-12;
+	@extend .col-lg-6;
+}
+a {
+  text-decoration: none;
+}
+//Nav
+.dropdown-menu {
+  background-color: $navbar_dropdown_background;
+}
+#main-navbar-top {
+  background-color: $main_navbar_background;
+}

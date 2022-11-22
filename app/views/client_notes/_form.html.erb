@@ -1,0 +1,9 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @client_note, object_name: ClientNote.model_name.human, object_action: form_action } %>
+<%= form_for [@client, @client_note] do |f| %>
+    <div class='row'>
+        <%= render_field_group f, ClientNote.human_attribute_name(:note),
+            [{label: :title, name: :title, type: :text_field, options: {size: 70}},
+             {label: :note, name: :note, type: :text_area, options: {cols: 60, rows: 10}}] %>
+    </div>
+    <%= render_actions f, clients_show2_path(@client) %>
+<% end %>

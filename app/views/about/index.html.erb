@@ -1,0 +1,36 @@
+<div class='row justify-content-center'>
+  <div class='col-md-5'>
+    <div class='card'>
+      <div class='card-header text-center'>
+        <h2><%= t(:about_title, p_name: t(:product_name)) %></h2>
+      </div>
+      <ul class="list-group list-group-flush">
+        <li class='list-group-item'>
+          <%= t(:label_version, number: Version::Version.version) %><br/>
+        </li>
+        <li class='list-group-item'>
+          <%= Version::Version.copyright %>
+        </li>
+        <li class='list-group-item'>
+          <%= Version::Version.build_note %>
+        </li>
+        <li class='list-group-item'>
+          <%= mail_to Version::Version.contact_email , t(:label_contact, contact: Version::Version.contact_name) %>
+        </li>
+        <li class='list-group-item'>
+          <div class='col-md4 align-middle d-inline-block'>
+            <%= t :built_for %>
+          </div>
+          <div class='col-md8 d-inline-block'>
+            <%= image_tag "logos/corp_logo.png" %>
+          </div>
+        </li>
+        <li class='list-group-item d-flex justify-content-center'>
+          <div>
+            <%= render partial: 'shared/license' %>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

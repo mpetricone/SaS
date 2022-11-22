@@ -1,0 +1,23 @@
+<%= render partial: 'shared/error_form_uc', locals: {result: @expense_payment, object_name: ExpenseType.model_name.human, object_action: form_action} %>
+<%= form_for [@expense, @expense_payment] do |f| %>
+  <div class='row'>
+    <div class='col12 col-lg-6'>
+      <div class='card'>
+        <div class='card-header'>
+          <%= content_tag :div, t(:label_is_expense_payed) %>
+        </div>
+        <div class='card-body'>
+          <%= getPaymentInfo %>
+        </div>
+      </div>
+    </div>
+    <%= render_field_group f, t(:label_primary_info),[
+      {label: :amount, name: :amount, type: :text_field},
+      {label: :identifier, name: :identifier, type: :text_field},
+      {label: :date_payed, name: :date_payed, type: :date_field},
+      {label: :ou_payment_type_id, name: :ou_payment_type_id, type: :collection_select, ext_params: {
+        collection: OuPaymentType.all, value_method: :id, text_method: :name
+      }}] %>
+</div>
+<%= render_actions f, @expense %>
+<% end %>

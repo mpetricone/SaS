@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list', 
+    locals: {
+    main_model: @addresses, 
+    show_fields: [ :street1, :street2, :city, :state, :postal_code, :country, :status],
+    delete_msg: "Really delete #{Address.model_name.human} **?  This could cause deliveries and bills to go missing!",
+    delete_msg_ident: :name_long} %>

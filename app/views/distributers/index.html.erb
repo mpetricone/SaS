@@ -1,0 +1,13 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @distributers,
+    show_fields: [:name, :min_purchase, :min_purchase_freq, :date_enabled, :date_disabled],
+    related_models: [:distributer_phones, :distributer_emails],
+    related_field_names: [
+        DistributerPhone.model_name.human,
+        DistributerEmail.model_name.human ],
+        related_fields: {
+            distributer_phones: [:number],
+            distributer_emails: [:email] },
+        delete_msg: "Really delete #{Distributer.model_name.human} **? It's usually best to set the disabled date.",
+        delete_msg_ident: :name } %>

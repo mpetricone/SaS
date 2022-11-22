@@ -1,0 +1,18 @@
+<%# form: form var; field_label: label ; field field; it: input type , params [{:whatevs}] %>
+<% if it == :breakpoint %>
+  <div class='w-100'></div>
+<% else %>
+  <%= content_tag :div, class: 'col-auto mx-auto' do %>
+    <% unless field_label==nil %>
+      <%= form.label field_label %>:
+    <% end %>
+    <% case it %>
+    <% when :collection_select %>
+      <%= form.send(it, field, ext_params[:collection],ext_params[:value_method], ext_params[:text_method], options, html_options) %>
+    <% when :time_select %>
+      <%= form.send(it, field, options, html_options) %>
+    <% else %>
+      <%= form.send(it, field, options) %>
+    <% end %>
+  <% end %>
+<%end%>

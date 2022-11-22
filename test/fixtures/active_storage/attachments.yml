@@ -1,0 +1,8 @@
+<% 100.times do |i| %>
+  <% 5.times do |j| %>
+  ticket_picture_<%="#{i}_#{j}"%>_image:
+    name: image
+    record: ticket_picture_<%="#{i}_#{j}"%> (TicketPicture)
+    blob: ticket_picture_blob
+<%end%>
+<%end%>

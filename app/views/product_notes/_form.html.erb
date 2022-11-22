@@ -1,0 +1,9 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @product_note, object_name: ProductNote.model_name.human, object_action: form_action } %>
+<%= form_for [@product, @product_note] do |f| %>
+    <div class='row'>
+        <%= render_field_group f, ProductNote.model_name.human,
+            [{label: :title, name: :title, type: :text_field},
+             {label: :note, name: :note, type: :text_area, options: {cols: 50, rows: 6}}]%>
+    </div>
+    <%= render_actions f, @product %>
+<% end %>

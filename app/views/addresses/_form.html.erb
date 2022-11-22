@@ -1,0 +1,14 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @address, object_name: 'Address', object_action: form_action } %>
+<%= form_for @address do |f| %>
+    <div class='row'>
+        <%= render_field_group f, Address.model_name.human, 
+            [{ label: :street1, name: :street1, type: :text_field },
+            { label: :street2, name: :street2, type: :text_field },
+            { label: :city, name: :city, type: :text_field },
+            { label: :postal_code, name: :postal_code, type: :text_field },
+            { label: :country, name: :country, type: :text_field }] %>
+        <%= render_field_group f, Address.human_attribute_name(:status),
+            [{ label: nil, name: :status, type: :text_field }] %>
+    </div>
+    <%= render_actions f, @address %>
+<% end %>

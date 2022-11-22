@@ -1,0 +1,6 @@
+en:
+  alert_ticket_not_opened: 'Ticket could not be (re-)opened. Please try again later.'
+  alert_missing_required_ticket_status_active: "The system is missing a required Ticket Status 'ACTIVE'. Contact a system admin."
+  alert_client_need_deliverable_addresses: "Please ensure the client has an address suitable for all deliverables."
+  alert_not_removed: '%{item} could not be removed. Please try again later.'
+  alert_imaged_not_deleted: 'Image could not be deleted. Please try again later.'

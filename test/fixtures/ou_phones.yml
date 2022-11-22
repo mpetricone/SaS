@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+
+<% 100.times do |i| %>
+    <% 2.times do |j| %>
+ou_phone_<%="#{i}_#{j}"%>:
+    ou: <%="ou_#{i}"%>
+    number: <%="#{i}.#{j}"%>
+    description: <%= "phone #{i}-#{j}"%>
+    <%end%>
+<%end%>

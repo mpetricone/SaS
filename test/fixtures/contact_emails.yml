@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 100.times do |i| %>
+    <% 3.times do |j| %>
+contact_email_<%="#{i}_#{j}"%>:
+    contact: contact_<%=i%>
+    address: <%= "#{j}@#{i}.com" %>
+    contact: <%= "contact_#{i}" %>
+    <%end%>
+<%end%>
+

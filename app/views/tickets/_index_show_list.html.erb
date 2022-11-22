@@ -1,0 +1,22 @@
+<div class='col'>
+  <div class='card'>
+      <div class='card-header d-flex justify-content-between'>
+         <h3>
+          <%= "#{@client.name}" %>
+         </h3>
+         <%= link_to ficon('plus-square', "New #{Ticket.model_name.human}"), new_ticket_path(client_id: @client.id), class: 'btn btn-primary pull-right' %>
+      </div>
+    <div class='card-body'>
+      <%= render partial: 'shared/index_list',
+        locals: {
+          main_model: @tickets,
+          show_fields: [:id, :date_created, :updated_at,  :short_description, :payment_received, :payment_received, :date_resolved ],
+          belongs_to_models: [ :ticket_status],
+          belongs_to_fields: {  ticket_status: [:name] },
+          delete_msg:  "Really delete #{Ticket.model_name.human} **? You would probably be better off closing it.",
+          delete_msg_ident: :short_description,
+          suppress_new: true,
+          bypass_pagination: true} %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<%= render partial: 'shared/index_list', 
+    locals: {
+    main_model: @ou_payment_types,
+    show_fields: [:name, :method, :date_enabled, :date_retired],
+    belongs_to_models: [:ou],
+    belongs_to_fields: {ou: [:name]},
+    delete_msg: "Remove #{OuPaymentType.model_name.human} **?",
+    delte_msg_ident: :name } %>

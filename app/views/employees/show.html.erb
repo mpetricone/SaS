@@ -1,0 +1,26 @@
+<%= render_show_title "#{Employee.model_name.human} #{@employee.contact.full_name}", edit_employee_path(@employee), employees_path %>
+<div class='show-flex-area'>
+	<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<%= t(:label_employee_name) %>
+		</div>
+		<%= content_tag :div, @employee.contact.full_name, class: 'panel-body' %>
+	</div>
+	<div class='panel panel-default'>
+		<div class='panel-heading'>
+			<%= t(:label_primary_info) %>
+		</div>
+		<div class='panel-body'>
+			<label><%= Ou.human_attribute_name :name %></label>: <%= @employee.ou.name %><br/>
+			<label><%= Employee.human_attribute_name :user_name %></label>: <%= @employee.user_name %><br/>
+			<label><%= Employee.human_attribute_name :position %></label>: <%= @employee.position %><br/>
+			<label><%= Employee.human_attribute_name :date_hired %></label>: <%= @employee.date_hired %><br/>
+		</div>
+	</div>
+	<%= render partial: 'shared/show_sub_list',
+		locals: {
+		main_model: @employee,
+		sub_model: @employee.employee_permissions,
+		join_table: :permission,
+		show_fields: [ :name, :object_name, :read_record, :write_record, :create_recod, :write_record, :admin ] } %>
+</div>

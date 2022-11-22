@@ -1,0 +1,21 @@
+<%
+=begin
+    locals: 
+    main_model: models (e.g @users)
+    param_name: probably :page - for modifiing query params from kaminari docs
+    remote: boolean, is this a remote query?
+=end%>
+<% if main_model.page(1).total_pages > 1%>
+<div id='pagination-bubble' draggable="true" data-pag_nav-target="container" class='d-flex text-center align-items-center pag-bubble-start-position' data-controller='pag_nav' data-action='mousedown->pag_nav#moveStart dragend->pag_nav#move mouseenter->pag_nav#show mouseleave->pag_nav#hide'>
+  <div class='pag-circle'>
+    <%= ficon('file-circle-plus') %>
+  </div>
+  <div id='pagination-body' data-pag_nav-target="view">
+    <% begin %>
+      <%= paginate main_model, remote: remote, param_name: param_name %>
+      <% rescue NoMethodError %>
+      <%= debug_noerror "Pagination not enabled" %>
+    <% end %>
+  </div>
+</div>
+<%end%>

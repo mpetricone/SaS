@@ -1,0 +1,31 @@
+<h1>Listing expense_payments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Identifier</th>
+      <th>Ou payment type</th>
+      <th>Expense</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @expense_payments.each do |expense_payment| %>
+      <tr>
+        <td><%= expense_payment.amount %></td>
+        <td><%= expense_payment.identifier %></td>
+        <td><%= expense_payment.ou_payment_type %></td>
+        <td><%= expense_payment.expense %></td>
+        <td><%= link_to 'Show', expense_payment %></td>
+        <td><%= link_to 'Edit', edit_expense_payment_path(expense_payment) %></td>
+        <td><%= link_to 'Destroy', expense_payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Expense payment', new_expense_payment_path %>

@@ -1,0 +1,182 @@
+<div class='col'>
+  <div class='card'>
+    <div class='card-header'>
+      <%= content_tag :h2, "Results from #{@dates[0]} to #{@dates[1]} :" %>
+    </div>
+    <div class='card-body'>
+      <div class='row'>
+        <div class='col-12'>
+          <div class='card'>
+            <div class='card-header'>
+              <h3><%= t(:label_income_by_ticket) %></h3>
+            </div>
+            <div class='card-body table-responsive'>
+              <table class='table table-sm'>
+                <thead>
+                  <tr>
+                    <th><%= Client.model_name.human %></th>
+                    <th><%= Ticket.human_attribute_name :id %></th>
+                    <th><%= Ticket.human_attribute_name :tax %></th>
+                    <th><%= TicketExpense.model_name.human %></th>
+                    <th><%= t(:label_total_no_tax) %></th>
+                    <th><%= t(:label_payments) %></th>
+                    <th><%= t(:label_total_sale) %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @tickets.each do |t| %>
+                    <% t_tot = t.calculate_totals %>
+                    <tr>
+                      <td><%= t.client.name %></td>
+                      <td><%= t.id %></td>
+                      <td><%= number_to_currency t_tot[:tax] %></td>
+                      <td><%= number_to_currency t_tot[:expenses] %></td>
+                      <td><%= number_to_currency t_tot[:sub_net] %></td>
+                      <td><%= number_to_currency t_tot[:payments] %></td>
+                      <td><%= number_to_currency t_tot[:grand] %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                <tfoot>
+                  <tr class='ir_totals'>
+                    <td colspan=2><%= t(:label_totals) %></td>
+                    <td><%= number_to_currency @ticket_totals[:tax] %></td>
+                    <td><%= number_to_currency @ticket_totals[:expenses] %></td>
+                    <td><%= number_to_currency @ticket_totals[:sub_net] %></td>
+                    <td><%= number_to_currency @ticket_totals[:payments] %></td>
+                    <td><%= number_to_currency @ticket_totals[:grand] %></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='col-12'>
+          <div class='card'>
+            <div class='card-header'>
+              <h3><%= t(:label_income_by_type) %></h3>
+            </div>
+            <div class='card-body table-responsive'>
+              <table class='table table-sm'>
+                <thead>
+                  <tr>
+                    <th><%= t(:label_income_type) %></th>
+                    <th><%= Client.human_attribute_name :tax %></th>
+                    <th><%= TicketExpense.model_name.human %></th>
+                    <th><%= t(:label_total_no_tax) %></th>
+                    <th><%= t(:label_payments) %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><%= t(:label_income_type_taxed) %></td>
+                    <td><%= number_to_currency @ticket_taxed_totals[:tax] %></td>
+                    <td><%= number_to_currency @ticket_taxed_totals[:expenses] %></td>
+                    <td><%= number_to_currency @ticket_taxed_totals[:sub_net] %></td>
+                    <td><%= number_to_currency @ticket_taxed_totals[:payments] %></td>
+                  </tr>
+                  <tr>
+                    <td><%= t(:label_income_type_no_tax) %></td>
+                    <td><%= number_to_currency @ticket_no_tax_totals[:tax] %></td>
+                    <td><%= number_to_currency @ticket_no_tax_totals[:expenses] %></td>
+                    <td><%= number_to_currency @ticket_no_tax_totals[:sub_net] %></td>
+                    <td><%= number_to_currency @ticket_no_tax_totals[:payments] %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='col-12'>
+          <div class='card'>
+            <div class='card-header'>
+              <h3><%= t(:label_income) %></h3>
+            </div>
+            <div class='card-body table-responsive'>
+              <table class='table table-sm'>
+                <thead>
+                  <tr>
+                    <th><%= Client.model_name.human %></th>
+                    <th><%= Ticket.human_attribute_name :short_description %></th>
+                    <th>Payment Received</th>
+                  </tr>
+                </thead>
+                <% @ticket_payments.each do|pay| %>
+                  <tr>
+                    <td>
+                      <%= pay.ticket.client.name %>
+                    </td>
+                    <td>
+                      <%= pay.ticket.short_description %>
+                    </td>
+                    <td>
+                      <%= number_to_currency pay.payment %>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr class='ir_totals'>
+                  <td colspan='2'>
+                    Total
+                  </td>
+                  <td><%= number_to_currency @payment_total %></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <%# if params.has_key? :search2 %>
+        <div class='col-12 col-lg-6'>
+          <div class='card'>
+            <div class='card-header'>
+              <h3><%= Expense.model_name.human count: 2 %></h3>
+            </div>
+            <div class='card-body table-responsive'>
+              <table class='table table-sm'>
+                <thead>
+                  <tr>
+                    <th><%= Expense.human_attribute_name :name %></th>
+                    <th><%= Expense.human_attribute_name :employee %></th>
+                    <th><%= Expense.human_attribute_name :expense_type %></th>
+                    <th><%= Expense.human_attribute_name :cost %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @expense_list.each do |e| %>
+                    <tr>
+                      <td><%= e.name %></td>
+                      <td><%= e.employee.contact.full_name %></td>
+                      <td><%= e.expense_type.name %></td>
+                      <td><%= e.cost %></td>
+                    </tr>
+                  <% end %>
+                </tbody>
+                <tfoot>
+                  <tr class='ir_totals'>
+                    <td colspan='3'><%= t(:label_total) %></td>
+                    <td><%= number_with_precision @expense_total, precision: 2 %></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='col-12 col-lg-6'>
+          <div class='card'>
+            <div class='card-header'>
+              <h3><%= t(:label_profit_loss) %></h3>
+            </div>
+            <div class='card-body'>
+              <h3 style="
+                <%= if @profit_loss <0
+                      "color: red"
+                    end
+                    %>">
+                <%= number_to_currency @profit_loss %>
+                <h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<%# shortcut: FormHelper::render_sub_address%>
+<%# PARAMS %>
+<%# form: form_for value %>
+<%# main_model: form for address %>
+<%# main_title: title for outer div %>
+<%# sub_model: usually :address, the sub-model %>
+<%# sub_title: title that goes in each sub-model header %>
+<%# exta_fields: [name:,label:, type:] %>
+<div class='col-12'>
+<div class='card' >
+  <%= content_tag :div, main_title, class: 'card-header'%>
+  <div class='card-body'>
+    <%= form.fields_for main_model do |ff| %>
+      <div class='row'>
+        <div class='col-12'>
+          <div class='card'>
+            <%= content_tag :div, sub_title, class: 'card-header' %>
+            <div class='card-body'>
+              <% if defined?(extra_fields) %>
+                <%= render_extra_fields(ff, extra_fields) %>
+              <%end%>
+              <%= ff.fields_for sub_model do |a| %>
+                <address>
+                  <%= render_field(a, :street1, :street1, :text_field)%>
+                  <%= render_field(a, :street2, :street2, :text_field)%>
+                  <%= render_field(a, :city, :city, :text_field)%>
+                  <%= render_field(a, :postal_code, :postal_code, :text_field)%>
+                  <%= render_field(a, :state, :state, :text_field)%>
+                  <%= render_field(a, :country, :country, :text_field)%>
+                  <%= render_field(a, :status, :status, :text_field)%>
+                </address>
+              <%end%>
+            </div>
+          </div>
+        </div>
+      </div>
+    <%end%>
+  </div>
+</div>
+</div>

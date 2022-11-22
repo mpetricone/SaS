@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  min_purchase: MyString
+  min_purchase_freq: MyString
+  date_enabled: 2015-02-04
+  date_disabled: 
+
+<% 100.times do |i| %>
+distributer_<%=i%>:
+    name: <%= "Distributer #{i}" %>
+    min_purchase: <%=i%>
+    min_purchase_freq: <%=i%>
+    date_enabled: <%= Date.today %>
+    date_disabled: <%= Date.today+1 %>
+<%end%> 

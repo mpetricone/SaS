@@ -1,0 +1,55 @@
+<div class='page-header'>
+  <div class="col">
+    <h2><%= Ticket.model_name.human count: 2 %></h2>
+  </div>
+</div>
+<div class="row" id='aj_search_box'>
+  <div class="col">
+    <div class='card'>
+      <div class='card-body'>
+        <%= form_tag tickets_search_clients_path, method: :get,  remote: true do %>
+          <div class="row justify-content-around">
+            <div class='col-xs-3'>
+              <div class="form-group">
+                <label for='client_name'>Search</label>
+                <%= text_field_tag :client_name, params[:client_name], placeholder: "Search for #{Client.model_name.human}", class: "form-control" %>
+              </div>
+            </div>
+            <div class='col-xs-3'>
+              <div class="form-row">
+                <div class="col">
+                  <%= check_box_tag :search_solved %>
+                  <label>Search Solved <%= Ticket.model_name.human count: 2 %></label>
+                </div>
+                <div class="col">
+                  <%= check_box_tag :search_dates %>
+                  <label>Use Date Range</label>
+                </div>
+              </div>
+              <div class='form-row'>
+                <div class='col'>
+                  <label for="date_start">Start</label>
+                  <%= date_field :date_params, :date_start, value: Date.today, class: 'form-control' %><br/>
+                </div>
+                <div class='col'>
+                  <label for="date_end">End</label>
+                  <%= date_field :date_params, :date_end, value: Date.today, class: 'form-control' %><br/>
+                </div>
+              </div>
+            </div>
+            <div class='col-xs-3'>
+              <div class='btn-group' role='group' aria-label='form_buttons'>
+                <%= button_tag ficon('search', "Search"),type: 'submit',  name: nil, class: 'btn btn-info' %>
+                <%= button_tag ficon('rotate-left','Reset'), type: 'reset', class: 'btn btn-warning' %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='row' id="aj_ticket_list">
+</div>
+<div id="paginator" class='flex-row'>
+</div>

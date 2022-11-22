@@ -1,0 +1,42 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @client, object_name: Client.model_name.human, object_action: form_action } %>
+<%= form_for @client do |f| %>
+  <div class='row'>
+    <%= render_field_group f, Client.human_attribute_name(:name),
+      [{label: :name, name: :name, type: :text_field}] %>
+    <%= render_fields_for f, ClientContact.model_name.human , :client_contacts,
+      [{search: true, search_id: 'client-search', search_name: Contact.model_name.human },
+       {label: :contact_id, name: :contact_id, type: :collection_select,
+        ext_params: { collection: @client.contacts, value_method: :id, text_method: :full_name_alphebetical},
+        options: { include_blank: true}}] %>
+      <%= render_field_group f, t(:label_default_addresses),
+        [{label: :default_invoice_id, name: :default_invoice_id, type: :collection_select,
+          ext_params: {collection: @client.addresses, value_method: :id, text_method: :name_long},
+          options:{selected: @client.default_invoice_id, include_blank: "None"}},
+      {label: :default_delivery_id, name: :default_delivery_id, type: :collection_select,
+       ext_params: {collection: @client.addresses, value_method: :id, text_method: :name_long},
+       options: { selected: @client.default_delivery_id, include_blank: "None"}}] %>
+     <%= render_sub_address_extra(f, :address_clients, AddressClient.model_name.human(count: 2),
+                                  :address, Address.model_name.human,
+                                  [{label: :delivery, name: :delivery, type: :check_box},
+                                   {label: :invoice, name: :invoice, type: :check_box}]) %>
+                                 <%= render_fields_for f, ClientPhone.model_name.human, :client_phones,
+      [{ label: :number, name: :number, type: :text_field},
+      { label: :description,name: :description, type: :text_field}] %>
+    <%= render_fields_for f, ClientEmail.model_name.human, :client_emails,
+      [{ label: :email, name: :email, type: :text_field},
+       {label: :description, name: :description, type: :text_field}] %>
+     <%= render_fields_for f, ClientRate.model_name.human, :client_rates,
+       [{label: :rate_id, name: :rate_id, type: :collection_select,
+         ext_params: { collection: Rate.where(current: true), value_method: :id, text_method: :rate}},
+     {label: :current, name: :current, type: :check_box},
+     {label: :date_implemented, name: :date_implemented, type: :date_select},
+     {label: :date_retired, name: :date_retired, type: :date_select, options: { include_blank: :true}}] %> 
+   <%= render_field_group f, Client.human_attribute_name(:standing_id),
+     [{ label: :standing_id, name: :standing_id, type: :collection_select,
+        ext_params: {collection: Standing.all, value_method: :id, text_method: :name }}] %>
+      <%= render_field_group f, Client.human_attribute_name(:tax_exemption),
+    [{ label: :tax_exemption, name: :tax_exemption, type: :text_field}] %>
+
+  </div>
+  <%= render_actions f, @client %>
+<% end %>

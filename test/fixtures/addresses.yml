@@ -1,0 +1,20 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  street1: MyString
+  street2: MyString
+  city: MyString
+  state: MyString
+  postal_code: MyString
+  status: 
+
+<% 100.times do |i| %>
+address_<%=i%>:
+    street1: <%= "Street1 #{i}"%>
+    street2: <%= "Street2 #{i}"%>
+    city: <%="City #{i}" %>
+    state: <%="State #{i}"%>
+    postal_code: <%=i%>
+    country: <%="Country #{i}"%>
+    status: 1
+<%end%>

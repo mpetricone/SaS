@@ -1,0 +1,4 @@
+<%= render partial: 'shared/form_page_title', locals: {
+	title: t(:title_record_time, client: @ticket.client.name, tid: @ticket.id),
+	subtitle:  @ticket.short_description } %>
+<%= render partial: 'form', locals: { form_action: 'added' } %>

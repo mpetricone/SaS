@@ -1,0 +1,76 @@
+<%= render partial: 'shared/show_page_title',
+  locals: { title: "#{Contact.model_name.human} #{@contact.full_name}", edit_path: edit_contact_path(@contact), return_path: contacts_path } %>
+<div class='row'>
+  <div class='col-12 col-lg-6'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4>Name</h4>
+      </div>
+      <div class='card-body'>
+        <table class='table table-sm'>
+          <tr>
+            <td>
+              <strong><%= Contact.human_attribute_name(:fname) %>:</strong>
+            </td>
+            <td>
+              <%= @contact.fname %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong><%= Contact.human_attribute_name(:lname) %>:</strong>
+            </td>
+            <td>
+              <%= @contact.lname %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong><%= Contact.human_attribute_name(:mname) %>:</strong>
+            </td>
+            <td>
+              <%= @contact.mname %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <strong><%= Contact.human_attribute_name(:Description) %>:</strong>
+            </td>
+            <td>
+              <%= @contact.description %>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class='col-12 col-lg-6'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><%= Contact.human_attribute_name(:standing_id) %></h4>
+      </div>
+      <div class='card-body'>
+        <%= @contact.standing.name %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='row'>
+  <%= render partial: 'shared/show_sub_list',
+    locals: {
+    main_model: @contact,
+    sub_model: @contact.address_contacts,
+    join_table: :address,
+    show_fields: [ :street1, :street2, :city, :state],
+    extra_fields: [:delivery, :invoice] } %>
+    <%= render partial: 'shared/show_sub_list',
+      locals: {
+      main_model: @contact,
+      sub_model: @contact.contact_phones,
+      show_fields: [:number] } %>
+    <%= render partial: 'shared/show_sub_list',
+      locals: {
+      main_model: @contact,
+      sub_model: @contact.contact_emails,
+      show_fields: [ :address ] } %>
+</div>

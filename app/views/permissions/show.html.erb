@@ -1,0 +1,47 @@
+<%= render_show_title "#{Permission.model_name.human} '#{@permission.name}'", edit_permission_path(@permission), permissions_path %>
+<div class='row'>
+
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><%=Permission.human_attribute_name(:name)%></h4>
+      </div>
+      <%= content_tag :div, @permission.name, class: 'card-body' %>
+    </div>
+  </div>
+
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4>
+          <%= Permission.human_attribute_name(:admin)%>
+        </h4>
+      </div>
+      <%= content_tag :div, @permission.admin, class: 'card-body' %>
+    </div>
+  </div>
+
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><%= Permission.human_attribute_name(:object_name)%>
+      </div>
+      <%= content_tag :div, @permission.object_name, class: 'card-body' %>
+    </div>
+  </div>
+
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><%= Permission.model_name.human(count: 2)%></h4>
+      </div>
+      <div class='card-body'>
+        <%= "#{Permission.human_attribute_name :read_record}: #{@permission.read_record}" %></br>
+        <%= "#{Permission.human_attribute_name :wite_record}: #{@permission.write_record}" %><br/>
+        <%= "#{Permission.human_attribute_name :create_record}: #{@permission.create_record}" %><br/>
+        <%= "#{Permission.human_attribute_name :delete_record}: #{@permission.delete_record}" %><br/>
+      </div>
+    </div>
+  </div>
+
+</div>

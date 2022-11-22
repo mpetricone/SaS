@@ -1,0 +1,22 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+#
+product_alt:
+  base_cost: 10.00
+  item_number: 1000.356
+  sku: 8827
+  category: test
+  manufacturer: tester
+  name: product_alt
+  description: "test for dist_prod"
+
+<% 100.times do |i| %>
+product_<%=i%>:
+    base_cost: <%=Random.rand(1...(i+10))%>
+    item_number: <%=i%>
+    sku: <%= "sku#{i}"%>
+    category: <%= "category #{i}" %>
+    manufacturer: <%= "manufacturer #{i}" %>
+    name: <%="product_#{i}"%>
+    description: <% "a thing of type #{i}" %>
+<%end%>
+

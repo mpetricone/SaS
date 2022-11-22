@@ -1,0 +1,8 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+<% 100.times do |i| %>
+<% 2.times do |j| %>
+client_contact_<%="#{i}_#{j}"%>:
+    client: <%= "client_#{i}" %>
+    contact: <%= "contact_#{i}" %>
+<%end%>
+<%end%>

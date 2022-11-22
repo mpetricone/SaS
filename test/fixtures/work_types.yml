@@ -1,0 +1,6 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 100.times do |i| %>
+work_type_<%=i%>:
+  name: <%= "work type #{i}" %>
+<%end%>

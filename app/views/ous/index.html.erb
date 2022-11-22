@@ -1,0 +1,9 @@
+<%= render partial: 'shared/index_list',
+   locals: {
+   main_model: @ous,
+   show_fields: [ :name, :description, :root_id],
+   related_models: [ :ou_phones, :addresses ],
+   related_field_names: [Ou.human_attribute_name(:ou_phone_id), Ou.human_attribute_name(:ou_address_id) ],
+   related_fields: { ou_phones: [:number], addresses: [ :name_long] },
+   delete_msg: "Really delete #{Ou.model_name.human} **?, This is usually not done.",
+   delete_msg_ident: :name } %>

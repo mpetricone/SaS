@@ -1,0 +1,8 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @employees,
+    show_fields: [:user_name, :position, :date_hired],
+    belongs_to_models: [ :contact, :ou],
+    belongs_to_fields: { contact: [ :lname, :fname ], ou: [:name] },
+    delete_msg: "Remove Employee **?",
+    delete_msg_ident: :user_name } %>

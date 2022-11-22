@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+<% 10.times do |i| %>
+<% 10.times do |j| %>
+ticket_expense_<%="#{i}_#{j}"%>:
+  ticket: <%="ticket_#{i}"%>
+  employee: <%="employee_#{i}"%>
+  cost: 1.0
+  expense_type: expense_type_2
+<%end%>
+<%end%>

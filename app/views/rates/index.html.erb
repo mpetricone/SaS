@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @rates,
+    show_fields: [:rate, :current, :date_implemented, :date_retired],
+    delete_msg: "Really delete #{Rate.model_name.human} **?",
+    delete_msg_ident: :rate} %>

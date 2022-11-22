@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list' ,
+    locals: {
+    main_model: @ticket_action_statuses,
+    show_fields: [:id, :status],
+    delete_msg: "Really delete #{TicketActionStatus.model_name.human} **? This could break many #{Ticket.model_name.human count: 2}.",
+        delete_msg_ident: :status } %>

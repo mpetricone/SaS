@@ -1,0 +1,13 @@
+<%# TODO: move search logic to controller %>
+<% if (params.has_key?(:sfname) && params.has_key?(:slname) && !params.has_key?(:contact_id)) %>
+	<div class='field-group-col'>
+		<%= content_tag :div, t(:label_select_contact), class: 'panel-heading' %>
+		<div class='panel-body'>
+			<% Contact.search_user(params[:sfname],params[:slname]) do |c| %>
+				<%= link_to  "#{c.fname} #{c.lname}", new_employee_path(contact_id: c.id), remote: :true, class: 'label-badge label-primary' %>
+			<% end %>
+		</div>
+	</div>
+<% elsif defined? @contact %>
+	<%= render partial: 'form_main', locals: { form_action: 'created' } %>
+<% end %>

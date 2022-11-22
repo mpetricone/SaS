@@ -1,0 +1,4 @@
+<%= render_show_title "#{Standing.model_name.human}: #{@standing.name}", edit_standing_path(@standing), standings_path %>
+<div class='row'>
+  <%= render partial: 'shared/show_item', locals: {model: @standing, attribs: [ :name ] }%>
+</div>

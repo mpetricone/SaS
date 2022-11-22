@@ -1,0 +1,29 @@
+<%= render_show_title "#{Expense.model_name.human} #{@expense.name}", edit_expense_path(@expense), expenses_path %>
+<div class='row'>
+  <div class='col12 col-lg-6'>
+    <div class='card'>
+      <%= content_tag :h4, t(:label_payment_details), class: 'card-header' %>
+      <div class='card-body'>
+        <% setPayedStatus %>
+          <%= content_tag :div, class: 'card-body' do %>
+            <b><%= getPaymentInfo %></b>
+          <% end %>
+      </div>
+    </div>
+  </div>
+  <%= renderShowValues(@expense, t(:label_primary_info),[
+    :name, :cost, :paid, :date_incurred] ) %>
+  <%= renderShowValues(@expense, t(:label_classification),[
+    :invoice_number],[
+      {record: :ou, title: :ou, name: :name},
+      {record: :expense_type, title: :expense_type, name: :name},
+      {record: :employee, title: :employee, name: :name}
+    ]) %>
+  <%= render partial: 'shared/show_sub_list',
+    locals: {
+    main_model: @expense,
+    join_table: :ou_payment_type,
+    sub_model: @expense.expense_payments,
+    show_fields: [:name],
+    extra_fields: [:date_payed, :identifier, :amount ]} %>
+</div>

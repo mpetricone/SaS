@@ -1,0 +1,14 @@
+<%= render_show_title "#{Address.model_name.human} #{@address.name_long}", edit_address_path(@address), addresses_path %>
+<div class='row'>
+  <%= render partial: 'shared/show_item', locals: {model:@address, attribs: [ :street1, :street2, :city, :state, :postal_code, :country]} %>
+  <div class='col-12 col-lg-3'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><%= Address.human_attribute_name(:status) %></h4>
+      </div>
+      <div class='card-body'>
+        <%= content_tag :div, @address.status, class: 'panel-body' %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+<%# main_title: title, assuming more fields later %>
+<%# form: form_for %>
+<%# fields: [{:label, :name, :type}] %>
+<%= content_tag :div, class: 'form-col' do %>
+  <div class='card'>
+    <%= content_tag :div, title, class: 'card-header' %>
+    <div class='card-body'>
+      <%= form.fields_for model do |ff| %>
+            <%= render_field_array(ff, fields) %>
+      <%end%>
+    </div>
+  </div>
+<%end%>

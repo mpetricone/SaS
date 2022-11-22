@@ -1,0 +1,154 @@
+<% if not params[:hide_user] #hide user info, header, footer  (usually for printing) %>
+  <nav class='navbar navbar-expand-lg navbar-dark fixed-top' id="main-navbar-top">
+    <div class='container-fluid'>
+      <button 
+         class='navbar-toggler' 
+         type='button' 
+         data-bs-toggle='collapse' 
+         data-bs-target='#mainNavbar'
+         aria-controls='mainNavbar'
+         aria-expanded='false',
+         aria-label='Main Menu'>
+        <span class='navbar-toggler-icon'></span>
+      </button>
+        <%= link_to 'SaS', home_index_path, class: 'navbar-brand' %>
+      <div class='collapse navbar-collapse', id='mainNavbar'>
+        <div class='flex-grow-1'>
+          <% if @current_employee %>
+            <ul class='navbar-nav'>
+              <%= render partial: 'shared/nav/nav_dropdown',
+                locals: {
+                  title: t(:menu_title_main),
+                  items: [ 
+                    { type: :link,
+                      view: Ticket.model_name.human(count: 2),
+                      link: tickets_path
+                    },
+                    { type: :link,
+                      view: Client.model_name.human(count: 2),
+                      link: clients_path
+                    },
+                    { type: :link,
+                      view: Contact.model_name.human(count: 2),
+                      link: contacts_path
+                    },
+                    { type: :div },
+                    { type: :link,
+                      view: Expense.model_name.human(count: 2),
+                      link: expenses_path
+                    },
+                    { type: :div},
+                    { type: :link,
+                      view: t(:button_income_report),
+                      link: income_report_path
+                    },
+                    { type: :link,
+                      view: t(:button_accounts_receivable),
+                      link: accounts_receivable_path
+                    },
+                    { type: :div },
+                    { type: :link,
+                      view: Distributer.model_name.human(count: 2),
+                      link: distributers_path
+                    },
+                    { type: :link,
+                      view: Product.model_name.human(count: 2),
+                      link: products_path
+                    }
+                  ]
+                }%>
+              <%= render partial: 'shared/nav/nav_dropdown',
+                locals: {
+                  title: t(:button_utility_menu),
+                  items: [
+                    { type: :link,
+                      view: Address.model_name.human(count: 2),
+                      link: addresses_path
+                    },
+                    { type: :link,
+                      view: Employee.model_name.human(count: 2),
+                      link: employees_path
+                    },
+                    { type: :link,
+                      view: Ou.model_name.human(count: 2),
+                      link: ous_path
+                    },
+                    { type: :link,
+                      view: Rate.model_name.human(count: 2),
+                      link: rates_path
+                    },
+                    { type: :link,
+                      view: Tax.model_name.human(count: 2),
+                      link: taxes_path
+                    }
+                  ]
+                }%>
+              <%= render partial: 'shared/nav/nav_dropdown',
+                locals: {
+                  title: t(:button_administration_menu),
+                  items: [
+                    { type: :link,
+                      view: Permission.model_name.human(count: 2),
+                      link: permissions_path
+                    },
+                    { type: :div },
+                    { type: :link,
+                      view: Standing.model_name.human(count: 2),
+                      link: standings_path
+                    },
+                    { type: :link,
+                      view: TicketStatus.model_name.human(count: 2),
+                      link: ticket_statuses_path,
+                    },
+                    { type: :link,
+                      view: TicketActionStatus.model_name.human(count: 2),
+                      link: ticket_action_statuses_path
+                    },
+                    { type: :link,
+                      view: ExpenseType.model_name.human(count: 2),
+                      link: expense_types_path
+                    },
+                    { type: :link,
+                      view: OuPaymentType.model_name.human(count: 2),
+                      link: ou_payment_types_path
+                    },
+                    { type: :link,
+                      view: WorkType.model_name.human(count: 2),
+                      link: work_types_path
+                    }
+                  ]
+                }%>
+              <%= render partial: 'shared/nav/nav_dropdown',
+                locals: {
+                  title: t(:menu_help),
+                  items: [ 
+                    { type: :link, 
+                      view: t(:menu_about),
+                      link: '/about/index.html'
+                    } 
+                  ] 
+                } %>
+            </ul><!-- navbar-nav -->
+
+          <%end%>
+        </div>
+
+        <div class='d-flex text-right'>
+          <% if @current_employee %>
+            <div class='nav-item navbar-text'>
+              <%= ficon('user-circle', "#{current_employee.contact.full_name}&nbsp") %>
+            </div>
+            <div class='nav-item navbar-text'>
+              <%= link_to ficon('power-off', "Logout"), logout_path, method: :delete %>
+            </div>
+          <%else%>
+            <div class='nav-item navbar-text'>
+              <%= link_to ficon('power-off', "Login"), login_path %>
+            </div>
+          <%end%>
+        </div>
+
+      </div>
+    </div>
+  </nav>
+<%end%>

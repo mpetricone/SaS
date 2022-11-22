@@ -1,0 +1,9 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @distributer_phone, object_name: DistributerPhone.model_name.human, object_action: form_action } %>
+<%= form_for [@distributer, @distributer_phone] do |f| %>
+    <div class='row'>
+        <%= render_field_group f, DistributerPhone.model_name.human,
+            [{label: :number, name: :number, type: :text_field},
+             {label: :description, name: :description, type: :text_field}] %>
+    </div>
+    <%= render_actions f, @distributer %>
+<% end %>

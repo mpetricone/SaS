@@ -1,0 +1,87 @@
+<%= render partial: 'shared/show_page_title',
+  locals: { title: "#{Client.model_name.human} #{@client.name}",edit_path: edit_client_path(@client), return_path: client_path(@client) } %>
+<div class='row'>
+  <%= render partial: 'shared/show_sub_list',
+    locals: {
+      main_model: @client,
+      sub_model: @client.client_contacts,
+      join_table: :contact,
+      show_fields: [ :fname, :lname]} %>
+    <div class='col-12 col-lg-6'>
+      <div class='card'>
+        <%= content_tag :div, class: 'card-header' do %>
+          <%= content_tag :h4,  t(:label_default_address) %>
+        <% end %>
+        <div class='card-body'>
+          <%= content_tag :strong, "#{Client.human_attribute_name :default_invoice_id}:" %>
+          <% if  @client.default_invoice_address %>
+            <%= @client.default_invoice_address.name_long %><br/>
+          <% end %>
+          <%= content_tag :strong, "#{Client.human_attribute_name :default_delivery_id}:" %>
+          <% if @client.default_delivery_address %>
+            <%= @client.default_delivery_address.name_long %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class='col-12 col-lg-6'>
+      <div class='card'>
+        <%= content_tag :div, class: 'card-header' do %>
+          <%= content_tag :h4, Client.human_attribute_name(:standing_id) %>
+        <%end%>
+        <%= content_tag :div, @client.standing.name, class: 'card-body' %>
+      </div>
+    </div>
+    <div class='col-12 col-lg-6'>
+      <div class='card'>
+        <%= content_tag :div, class: 'card-header' do %>
+          <%= content_tag :h4, Client.human_attribute_name(:refuse)%>
+        <%end%>
+        <%= content_tag :div,  @client.refuse, class: 'card-body' %>
+      </div>
+    </div>
+    <%= render partial: 'shared/show_sub_list',
+      locals: {
+        main_model: @client,
+        sub_model: @client.address_clients,
+        join_table: :address,
+        show_fields: [ :street1, :street2, :city ],
+        extra_fields: [ :invoice, :delivery ]} %>
+      <%= render partial: 'shared/show_sub_list',
+        locals: {
+          main_model: @client,
+          sub_model: @client.client_phones,
+          show_fields: [:number, :description]} %>
+        <%= render partial: 'shared/show_sub_list',
+        locals: {
+          main_model: @client,
+          sub_model: @client.client_emails,
+          show_fields: [:email, :description ]} %>
+
+        <%= render partial: 'shared/show_sub_list',
+          locals: {
+            main_model: @client,
+            sub_model: @client.client_rates,
+            join_table: :rate,
+            show_fields: [:rate],
+            extra_fields: [:current, :date_implemented, :date_retired] } %>
+          <div class='col-12 col-lg-6'>
+            <div class='card'>
+              <%= content_tag :div, class: 'card-header' do %>
+                <%= content_tag :h4, Client.human_attribute_name(:tax_exemption) %>
+              <%end%>
+              <div class='card-body'>
+                <% if @client.tax_exemption != nil && @client.tax_exemption != "" %>
+                  <%= @client.tax_exemption %>
+                <%else%>
+                  Not Exempt
+                <%end%>
+              </div>
+            </div>
+          </div>
+          <%= render partial: 'shared/show_sub_list',
+            locals: {
+              main_model: @client,
+              sub_model: @client.client_notes,
+              show_fields: [ :title, :note ] } %>
+</div>

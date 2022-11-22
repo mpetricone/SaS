@@ -1,0 +1,173 @@
+@import '../base/core_values';
+.ticket-row {
+  @extend .row;
+  @extend .mx-2;
+  @extend .my-1;
+}
+#ticket-info-card {
+  @extend .card;
+  border: none;
+}
+div.search_cont {
+  display: flex;
+  justify-content: flex-start;
+  align-items: top;
+  border: $ticket_search_border;
+  margin: 5px 0px 5px 0px;
+}
+div.ticket-title {
+  border-bottom: 1px solid #555;
+  padding: 5px 0px 5px 0px;
+}
+div.search_cont div  {
+  padding: 0px 10px 0px 10px;
+}
+div.search_cont h4 {
+  font-size: $index_search_h4_size;
+  padding: 0px;
+  margin: 0px;
+}
+div.ticket_title_box h1 {
+  display: inline-block;
+}
+div.control_buttons {
+  display: inline-block;
+}
+div.billing {
+  border: $ticket_billing_border;
+  border-collapse: collapse;
+}
+
+div.main-info {
+  border: $ticket_info_border;
+  border-collapse: collapse;
+}
+
+table.payment-summary {
+  width: $ticket_payment_summary_width;
+  border-collapse: collapse;
+}
+
+
+.payment-send {
+  border: $ticket_payment_send_border;
+}
+
+.print-options {
+  text-align: center;
+  border-top: $ticket_print_options_border_top;
+  border-bottom: $ticket_print_options_border_bottom;
+} 
+
+.top-float {
+  width: $ticket_show_width;
+  display: flex;
+}
+table.ticket-payments {
+  width: $ticket_payments_width;
+  border-collapse: collapse;
+}
+table.ticket-payments thead {
+  border-bottom: $ticket_payments_title_border;
+}
+.payment_title  {
+  font-size: $ticket_subtitle_font_size;
+}
+table.ticket-status {
+  width: $ticket_status_width;
+}
+table.ticket-primary-info {
+  height: 100%;
+  border-collapse: collapse;
+}
+td.ticket-client-info {
+  border-left: $ticket_client_info_border_left;
+}
+
+tr.ticket-dates {
+  border: $ticket_dates_border;
+}
+div.ticket-container {
+  width: $ticket_show_width;
+}
+table.ticket-types {
+  width: 100%;
+  border: $ticket_types_border;
+  border-collapse: collapse;
+}
+table.ticket_types thead {
+  border: 2px dotted white;
+}
+.table-key {
+ text-align: left;
+}
+.ticket-item {
+  width: 100%;
+}
+.top-border {
+  border-top: $ticket_item_title_border;
+}
+table.ticket_actions thead {
+  border: 2px dotted white;
+}
+table.product-list {
+  width: 100%;
+  border: $ticket_products_border;
+  border-collapse: collapse;
+}
+table.product_list .product_list_title {
+  border: 2px dotted white;
+}
+table.billing-hourly{
+  width: 100%;
+  border: $ticket_billing_hourly_border;
+  border-collapse: collapse;
+}
+table.billing-hourly .billing-hourly-title {
+  border: $ticket_billing_title_border;
+}
+table.billing-totals{
+  width: 100%;
+  border: $ticket_billing_border;
+  border-collapse: collapse;
+}
+td.billing_totals_left {
+  width: 250px;
+}
+div.billing-fixed {
+  border: $ticket_billing_fixed_border;
+  border-collapse: collapse;
+}
+.ticket_result_client_box {
+  border: $index_result_border;
+}
+.ticket-list-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: $ticket_list_title;
+}
+.ticket-list-title h1 {
+  display: inline-block;
+}
+.ticket_show_list_box {
+  border: $ticket_index_list_border;
+  border-collapse: collapse;
+}
+.ticket_sub_title {
+  padding: 0px;
+  margin: 0px;
+  border-bottom: $ticket_sub_title_border_bottom; 
+  border-collapse: collapse;
+}
+.ticket-show-description {
+  font-size: $ticket_subtitle_font_size;
+}
+.ticket-sub-title, .ticket-show-label {
+  font-size: $ticket_subtitle_font_size;
+}
+.ticket-item-title-text {
+  line-height: .7em;
+}
+.new-ticket {
+}

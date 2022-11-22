@@ -1,0 +1,6 @@
+<div class="container">
+  <div class="row">
+    <%= link_to(ficon('print', t(:button_print)), client_client_statements_generate_path(client_id: @client, start_date: params[:start_date], end_date: params[:end_date], hide_user: :yes), class: 'btn btn-primary', target: :_blank) %>
+  </div>
+</div>
+<%= render partial: 'show' %>

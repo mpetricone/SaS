@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  address_id: 
+  distributer_id: 
+  invoice: false
+  delivery: false
+
+<% 100.times do |i| %>
+    <% 10.times do |j| %>
+address_distributer_<%="#{i}_#{j}"%>:
+    address: <%="address_#{i}"%>
+    distributer: <%="distributer_#{j}"%>
+    invoice: true
+    delivery: true
+    <%end%>
+<%end%>

@@ -1,0 +1,107 @@
+<%# Instructions! %>
+<%# This partial is designed to automate listing of model relations for a model. repetition was driving me mad. %>
+<%# Can be used for join tables. For use in show.html.erb files. %>
+
+<%# Variables expected: %>
+<%# main_model: variable of the parent model %>
+<%# sub_model: variable of the has_many model %>
+<%# join_table: symbol of the model the join table should query, *optional* if excluded, sub_model is not a join table. %>
+<%# show_fields: array of symbols corresponding to either sub_model, or join_table* attributes. * if it exists, referenced instead of sub_model %>
+<%# extra_fields: array of symbols corresponding to sub_model attributes. %>
+<%# If join_table is passed, this can be used to grab info from the sub_model, as opposed to the join_table. I stick some extra info in join %>
+<%# tables sometimes. I wouldn't recomend using this without join_table %>
+<%# field_names: array of strings naming show_fields values, used for the legend in table header. %>
+<%# field_names:** and show_fields should have the same count. %>
+<%# edit_path:* symbol for the path to edit record %>
+<%# delete_path:* symbol for the path to delete record %>
+<%# new_path:* symbom for the path to create new record %>
+<%# not_nested: define if sub_model is not nested resource of sub_model %>
+<%# * paths are now automated, do not pass. %>
+<%# ** field_names are automated, using show_fields and either join_table or sub_model for human_attribute_names %>
+
+<% unless defined? not_nested %>
+  <% path_base =  main_model.class.model_name.i18n_key.to_s + "_" +sub_model.model_name.i18n_key.to_s+ "_path" %>
+<% else %>
+  <% path_base = sub_model.model_name.i18n_key.to_s+"_path" %>
+<% end %>
+<% paths = { edit_path: "edit_"+path_base, delete_path: path_base, new_path: "new_"+path_base } %>
+
+<div class='col-12 col-lg-6'>
+  <div class='card'>
+    <div class='card-header d-flex justify-content-between'>
+      <h4 class='d-inline-block'>
+        <%= sub_model.model_name.human count: sub_model.count %>
+      </h4>
+      <div class='d-inline-block'>
+        <%= link_to "New #{sub_model.model_name.human}", send(paths[:new_path].to_sym, main_model), class: 'btn btn-primary btn-sm pull-right' %>
+      </div>
+    </div>
+    <% field_count = show_fields.count+ (defined?(extra_fields) ? extra_fields.count : 0); #adjusted to accomodate for extra fields %>
+    <div class='card-body'>
+      <div class='table-responsive'>
+        <table class='table table-sm'>
+          <thead>
+            <tr>
+              <% show_fields.each do |name| %>
+                <th>
+                  <% if defined? join_table %>
+                    <%= join_table.to_s.classify.constantize.send(:human_attribute_name, name) %>
+                  <% else %>
+                    <%= sub_model.send(:human_attribute_name, name) %>
+                  <% end %>
+                </th>
+              <% end %>
+              <% if defined? extra_fields %>
+                <% extra_fields.each do |name| %>
+                  <th>
+                    <%= sub_model.send(:human_attribute_name, name) %>
+                  </th>
+                <% end %>
+              <% end %>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <%# = Make path names %>
+          <%# path_base  = "" %>
+          <% unless defined? not_nested %>
+            <% path_base =  main_model.class.model_name.i18n_key.to_s + "_" +sub_model.model_name.i18n_key.to_s+ "_path" %>
+          <% else %>
+            <% path_base = sub_model.model_name.i18n_key.to_s+"_path" %>
+          <% end %>
+          <% paths = { edit_path: "edit_"+path_base, delete_path: path_base, new_path: "new_"+path_base } %>
+          <% sub_model.each do |model| %>
+            <tr>
+              <% show_fields.each do |field | %>
+                <td>
+                  <% if defined? join_table %>
+                    <% display = model.send(join_table) %>
+                    <%# this probably needs to be checked for nil %>
+                    <% if display %>
+                      <%= display[field] %>
+                    <% end %>
+                  <% else %>
+                    <%= model[field] %>
+                  <% end %>
+                </td>
+              <% end %>
+              <% if defined? extra_fields %>
+                <% extra_fields.each do |field| %>
+                  <td>
+                    <%= model[field] %>
+                  </td>
+                <% end %>
+              <% end %>
+              <td>
+                <%= link_to 'Edit', send(paths[:edit_path].to_sym, main_model, model), class: 'btn btn-secondary btn-sm' %>
+                <%= link_to 'Remove',
+                  send(paths[:delete_path].to_sym, main_model, model),
+                  method: :delete,class: 'btn btn-danger btn-sm',
+                  data: {confirm: "Really delete #{sub_model.model_name.human}?"} %>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

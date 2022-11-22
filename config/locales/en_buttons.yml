@@ -1,0 +1,9 @@
+en:
+  button_main_menu: 'Main Menu'
+  button_income_report: 'Income Reports'
+  button_utility_menu: 'Utilities'
+  button_distribution_menu: 'Distribution'
+  button_administration_menu: 'Administration'
+  button_accounts_receivable: 'Accounts Receivable'
+  button_client_statement: 'Client Statements'
+  button_print: Print

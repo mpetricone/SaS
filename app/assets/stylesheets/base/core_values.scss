@@ -1,0 +1,200 @@
+/* core_values.scss -> SASS vars for easy layout changes
+    Mostly text sizes, border styles, color values, and some other values deemed safe for admins to alter
+
+    Theme: Default
+*/
+
+/* main values*/
+$main_color_background: #CCCCCC;//#FEEBA7;
+$main_color_text: #000000;
+$main_font_size: 12pt;
+$main_font_family: "Nimbus Mono L","Times", "Times New Roman",serif;
+$main_h1_size: 2.5em;
+$main_nav_color: #CCD;
+
+/* Bootstrap mods */
+/* cards - main */
+$main_card_header_background: #EED3F9;
+$main_card_header_color: #000000;
+$main_card_border: 1px solid #EEEEEE;
+// Tables
+$table_header_background: #e6e6e6; 
+//Nav
+$navbar_dropdown_background: #cbaecb;
+$main_navbar_background: #550080;
+
+//* button values */
+$button_gradient1: #abc2d1;
+$button_gradient2: #007ecc;
+$button_border_radius: 26px;
+$button_border: 0px;
+$button_font: Arial;
+$button_text_color: #f0f0f0;
+$button_font_size: 16px;
+$button_text_decoration: none;
+
+$button_hover_gradient1: #7bc9fa;
+$button_hover_gradient2: #408bbd;
+
+$btn_cancel_gradient1: #ff0000;
+$btn_cancel_gradient2: #8f0a0a;
+$btn_cancel_text_color: #ffffff;
+$btn_cancel_hover_gradient1: #ff5252;
+$btn_cancel_hover_gradient2: #cf0000;
+
+$btnsm_font_family: Arial;
+$btnsm_font_size: $main_font_size;
+$btnsm_font_weight: normal;
+$btnsm_border: 0px;
+$btnsm_text_decoration: none;
+$btnsm_border_radius: 5px;
+
+$btnsm_pos_gradient1: #2ec63d;
+$btnsm_pos_gradient2: #128414;
+$btnsm_pos_text_color: #ffffff;
+$btnsm_pos_hover_gradient1: #4ee65d;
+$btnsm_pos_hover_gradient2: #32a434;
+
+$btnsm_neu_gradient1: #2727cF;
+$btnsm_neu_gradient2: #141494;
+$btnsm_neu_text_color: #ffffff;
+$btnsm_neu_hover_gradient1: #5757ff;
+$btnsm_neu_hover_gradient2: #4444c3;
+
+$btnsm_neg_gradient1: #ff0000;
+$btnsm_neg_gradient2: #8f0a0a;
+$btnsm_neg_text_color: #ffffff;
+$btnsm_neg_hover_gradient1: #ff5252;
+$btnsm_neg_hover_gradient2: #cf0000;
+
+$btnsm_ca_gradient1: #cb34d9;
+$btnsm_ca_gradient2: #8a1d86;
+$btnsm_ca_text_color: #ffffff;
+$btnsm_ca_hover_gradient1: #d286db;
+$btnsm_ca_hover_gradient2: #9e6a9c;
+
+/* header values */
+$session_border: 0px;
+$session_border_top: 4px;
+$session_border_bottom: 4px;
+$session_border_style: ridge;
+
+/* footer values */
+$footer_border:  0px;
+$footer_border_top: 4px;
+$footer_border_bottom: 4px;
+$footer_border_style: ridge;
+
+/* login values */
+$login_title_border: 4px outset white;
+$login_border: 4px double white;
+$login_title_text_size: 3em;
+$login_title_font_weight: bold;
+
+/* home values */
+$mainmenu_color_background: #CCFFCC;
+$mainmenu_border: 10px outset white;
+$distmenu_color_background: $main_color_background;
+$distmenu_border: 10px inset white;
+$utilmenu_color_background: $main_color_background;
+$utilmenu_border: 10px inset white;
+$oumenu_color_background: #333300;
+$oumenu_border: 10px inset white;
+
+/* index values */
+$index_title_border: 5px groove white;
+$index_cell_border_style: dashed;
+$index_cell_border_width: 0px 1px 0px 1px;
+
+/* ticket search */
+$ticket_search_border: 4px inset white;
+/* ticket values */
+$ticket_element_border: 0px solid black;
+$ticket_title_border: 0px dotted white;
+$ticket_item_title_border: 1px solid #ddd;
+$ticket_subtitle_font_size: 1.2em;
+$ticket_show_width: 800px;
+$ticket_billing_border: $ticket_element_border;
+$ticket_info_border: $ticket_element_border;
+$ticket_payment_summary_width: calc($ticket_show_width/2);
+$ticket_payment_send_border: $ticket_title_border;
+$ticket_print_options_border_top: $ticket_element_border;
+$ticket_print_options_border_bottom: $ticket_element_border;
+$ticket_payments_width: calc($ticket_show_width/2);
+$ticket_payments_title_border: $ticket_title_border;
+$ticket_status_width: calc($ticket_show_width/2);
+$ticket_dates_border: $ticket_title_border;
+$ticket_client_info_border_left: $ticket_title_border;
+$ticket_types_border: $ticket_element_border;
+$ticket_actions_border: $ticket_element_border;
+$ticket_product_list_border: $ticket_element_border;
+$ticket_billind_totals_norder: $ticket_element_border;
+$ticket_billing_hourly_border: $ticket_element_border;
+$ticket_billing_title_border: $ticket_title_border;
+$ticket_billing_fixed_border: $ticket_element_border;
+$ticket_sub_title_border_bottom: 4px ridge white;
+$index_title_font_size: 3em;
+$index_title_border: 4px outset white;
+$index_search_h4_size: 1.1em;
+$index_result_border: 4px solid white;
+$ticket_index_list_border: 0px solid white;
+$ticket_list_title: 4px solid white;
+$ticket_products_border: $ticket_element_border;
+
+
+/* generic index values */
+$index_list_border:  1px solid black;
+$index_list_head_color_background: #DDDDDD;
+$index_list_head_border: 1px dashed black;
+
+/* for alternating row colors in most lists */
+$index_list_row_main_color_background:  #EFFFEF;/* main is first row*/
+$index_list_row_alt_color_background:  #BBCCBB;/* next row is alt*/
+
+/* generic edit values */
+$edit_title_font_size: 3em;
+$edit_title_border: 4px solid white;
+
+/* forms */
+$field_group_border: 4px double black;
+$field_group_col_border: 4px double black;
+$field_inner_group_col_border: 4px double black;
+$field_group_title_border_bottom: 1px solid black;
+$actions_border: 4px double black;
+
+/* show */
+$show_title_border: 4px outset white;
+$show_title_border_radius: 10px;
+$show_element_border:  5px double white;
+$show_element_title_font_size: 1.2em;
+$show_element_title_border_bottom: 2px solid white;
+
+/*invoice*/
+$invoice_default_border: 1px solid #000000;
+$invoice_mail_title_border_bottom: 2px solid black;
+$invoice_mail_title_font_size: 1.8em;
+$invoice_color_background: $main_color_background;
+$invoice_color_text: $main_color_text;
+$invoice_font_family: "Nimbus Mono L","Times", "Times New Roman",serif;
+$invoice_sub_title_border: $invoice_default_border;
+$invoice_th_border: $invoice_default_border;
+$invoice_sub_totals_font_weight: bold;
+$invoice_totals_font_weight: bold;
+$invoice_footer_font_size: 1.2em;
+$invoice_footer_font_weight: bold;
+$invoice_totals_border: $invoice_default_border;
+
+/* reports */
+
+$ir_search_date_border: 1px solid black;
+$ir_result_title_border: 4px outset white;
+$ir_result_title_font_weight: bold;
+$ir_result_title_font_size: 1.5em;
+$ir_result_border: 1px solid black;
+$ir_result_thead_border: 1px solid black;
+$ir_result_totals_font_weight: bold;
+$ir_result_totals_border_top: 1px solid black;
+
+/* Panels */
+$panel_preheader_bgc: #CCCCCC;
+$panel_preheader_br: 5px;

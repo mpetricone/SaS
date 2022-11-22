@@ -1,0 +1,4 @@
+#!/bin/bash
+dip=${1:-"127.0.0.1"}
+dpo=${2:-"3000"}
+RAILS_DEV_IP="$dip" RAILS_DEV_PORT="$dpo" foreman start -f Procfile.dev

@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @standings,
+    show_fields: [:name],
+    delete_msg: "Really delete #{Standing.model_name.human} **?",
+    delete_msg_ident: :name} %>

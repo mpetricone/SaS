@@ -1,0 +1,162 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  activerecord:
+    models:
+      expense:
+        one: 'Expense'
+        other: 'Expenses'
+      work_type:
+        one: "Work Type"
+        other: "Work Types"
+      ou_phone:
+        one: "OU Phone"
+        other: "OU Phones"
+      ou_address:
+        one: "OU Address"
+        other: "OU Addresses"
+      ou_email:
+        one: "OU E-Mail"
+        other: "OU E-Mail"
+      ou:
+        one: "OU"
+        other: "OUs"
+      permission:
+        one: "Permission"
+        other: "Permissions"
+      address_contact:
+        one: "Contact Address"
+        other: "Contact Addresses"
+      product:
+        one: "Product"
+        other: "Products"
+      contact_email:
+        one: "Contact E-Mail"
+        other: "Contact E-Mails"
+      contact_phone:
+        one: "Contact Phone Number"
+        other: "Contact Phone Number"
+      employee:
+        one: "Employee"
+        other: "Employees"
+      client:
+        one: "Client"
+        other: "Clients"
+      client_contact:
+        one: "Client Contact"
+        other: "Client Contacts"
+      client_phone:
+        one: 'Client phone number'
+        other: 'Client phone numbers'
+      address_client:
+        one: "Client Address"
+        other: "Client Addresses"
+      contact_distributer:
+        one: "Distributer Contact"
+        other: "Distributer Contacts"
+      address_distributer:
+        one: "Distributer Address"
+        other: "Distributer Addresses"
+      distributer_phone:
+        one: "Distributer Phone"
+        other: "Distributer Phones"
+      distributer_email:
+        one: "Distributer E-Mail"
+        other: "Distributer E-Mails"
+      distributer:
+        one: 'Distributer'
+        other: 'Distributers'
+      ticket:
+        one: "Ticket"
+        other: "Tickets"
+      ticket_work_type:
+        one: "Ticket Type"
+        other: "Ticket Types"
+      ticket_time:
+        one: 'Hours Billed'
+        other: 'Hours Billed'
+      ticket_picture:
+        one: 'Ticket Picture'
+        other: 'Ticket Pictures'
+      ticket_expense:
+        one: 'Ticket Expense'  
+        other: 'Ticket Expenses'
+      ticket_action:
+        one: 'Ticket Action'
+        other: 'Ticket Actions'
+      expense_type:
+        one: "Expense Type"
+        other: "Expense Types"
+      expense:
+        one: "Expense"
+        other: "Expenses"
+      ou_payment_type:
+        one: "Ou Payment Type"
+        other: "Ou Payment Types"
+      expense_payment:
+        one: "Expense Payment"
+        other: "Expense Payments"
+      product_ticket:
+        one: "Merchandise"
+        other: "Merchandise"
+    attributes:
+      ou:
+        name: "Ou Name"
+        ou_email_id: "OU E-Mail"
+        ou_phone_id: "OU Phone"
+        ou_address_id: "OU Address"
+      contact:
+        fname: "First Name"
+        lname: "Last Name"
+        mname: "Middle Name"
+      contact_phone:
+        number: "Phone number"
+        type: "Phone type"
+      contact_email:
+        address: "E-mail Address"
+      employee:
+        password_confirmation: "Confirm Password"
+      address:
+        street1: "Street (line 1)"
+        street2: "Street (line 2)"
+      distributer:
+        min_purchase: "Minimum Purchase"
+        min_purchase_freq: "Minimum Purchase Frequency"
+      distributer_email:
+        email: "E-mail"
+      distributer_product:
+        dist_item_number: "Distributer item number"
+      permission:
+        object_name: "Object Name"
+        read_record: "Read Record"
+        write_record: "Write Record"
+        create_record: "Create Record"
+        delete_record: "Delete Record"
+      client_phone:
+        number: "Phone Number"
+      client_email:
+        email: "E-Mail"
+      ticket:
+        default_delivery_address: "Delivery Address"
+        default_invoice_address: "Invoice Address"
+        id: Reference
+        ticket_payments: Payments Received

@@ -1,0 +1,9 @@
+<%# 
+    header for cards on ticket page.
+    locals:
+    ticket: ticket , mod: model, path: path to action 
+  %>
+<div class='card-header d-flex justify-content-between'>
+  <%= mod.model_name.human count: 2 %> 
+  <%= link_to ficon('plus-square', "Add #{mod.model_name.human}"), path, class: 'btn-nowrap btn-primary btn-sm pull-right' %>
+</div>

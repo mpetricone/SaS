@@ -1,0 +1,12 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @ticket_action, object_name: TicketAction.model_name.human, object_action: form_action } %>
+<%= form_for [@ticket, @ticket_action] do |f| %>
+<div class='form-body'>
+        <%= render_field_group f, TicketAction.human_attribute_name(:date_taken),
+            [{label: nil, name: :date_taken, type: :date_field }] %>
+        <%= render_field_group f, TicketAction.human_attribute_name(:action),
+            [{label: :action, name: :action, type: :text_area, options: {cols: 40, rows: 3}},
+             { label: :action_status_id, name: :action_status_id, type: :collection_select,
+               ext_params: {collection: TicketActionStatus.all, value_method: :id, text_method: :status}}] %>
+</div>
+    <%= render_actions f, @ticket %>
+<% end %>

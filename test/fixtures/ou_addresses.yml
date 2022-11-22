@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ou: one
+  address: one
+  delivery: false
+  invoice: false
+
+<% 100.times do |i| %>
+<% 3.times do |j| %>
+ou_address_<%="#{i}_#{j}"%>:
+    address: <%="address_#{i}"%>
+    ou: <%="ou_#{i}"%>
+    delivery: true
+    invoice: true
+<%end%>
+<%end%>

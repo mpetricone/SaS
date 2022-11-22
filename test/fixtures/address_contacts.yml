@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contact: one
+  address: one 
+  delivery: false
+  invoice: false
+<% 100.times do |i| %>
+    <% 4.times do |j| %>
+address_contact_<%="#{i}_#{j}"%>:
+    contact: contact_<%=i%>
+    address: <%= "address_#{i}" %>
+    delivery: true
+    invoice: true
+        <%end%>
+<%end%>

@@ -1,0 +1,2 @@
+<%= render partial: 'shared/form_page_title', locals: { title: t(:title_edit_for, title: ClientRate.model_name.human, for: @client.name) } %>
+<%= render partial: 'form', locals: { form_action: "edited" } %>

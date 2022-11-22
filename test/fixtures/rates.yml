@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  rate: MyString
+  current: 
+  date_implemented: 2015-02-03
+  date_retired: 2015-02-03
+
+<% 100.times do |i| %>
+rate_<%=i%>:
+    rate: <%=i%>
+    current: true
+    date_implemented: <%= Date.today %>
+    date_retired: <%= Date.today+1 %>
+<%end%>

@@ -1,0 +1,11 @@
+<%= render_show_title TicketStatus.model_name.human, edit_ticket_status_path(@ticket_status),ticket_statuses_path %>
+<div class='row'>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= content_tag :h4, "#{TicketStatus.model_name.human}"%>
+      </div>
+        <%= content_tag :div, @ticket_status.name, class: 'card-body' %>
+    </div>
+  </div>
+</div>

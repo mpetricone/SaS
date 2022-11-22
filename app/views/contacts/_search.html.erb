@@ -1,0 +1,5 @@
+  <div class='input-group'>
+    <span class='input-group-addon' id='search-addon'><%= ficon :search %></span>
+    <%= text_field_tag :contact_search, "", class: 'form-control' ,id: 'contact-search', 
+      'aria-describedby': 'search-addon', placeholder: t(:label_search, for: Contact.model_name.human(count: 2)) %>
+  </div>

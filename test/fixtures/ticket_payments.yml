@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+<% 100.times do |i| %>
+<% 3.times do |j| %>
+ticket_payment_<%="#{i}_#{j}"%>:
+    ticket: <%="ticket_#{i}"%>
+    payment: <%=i*10%>
+    date_received: <%=Date.today%>
+<%end%>
+<%end%>

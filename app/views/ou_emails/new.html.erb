@@ -1,0 +1,2 @@
+<%= render_form_title t(:title_new_for, title: OuEmail.model_name.human, for: @ou.name) %>
+<%= render partial: 'form' , locals: { form_action: 'created' } %>

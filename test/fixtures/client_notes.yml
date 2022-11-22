@@ -1,0 +1,14 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  client_id: 
+  note: MyText
+  title: MyString
+<% 100.times do |i| %>
+<% 12.times do |j| %>
+client_note_<%="#{i}_#{j}"%>:
+    client: <%="client_#{i}"%>
+    note: <%= "client note #{i} #{j}"%>
+    title: <%= "cn #{i} #{j}" %>
+<%end%>
+<%end%>

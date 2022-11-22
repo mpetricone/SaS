@@ -1,0 +1,76 @@
+@import 'bootstrap';
+@import '../base/core_values.scss';
+.email-body {
+}
+.email-table {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	border-collapse: separate;
+	width: 100%;
+	margin: 5px;
+}
+.email-sub-table {
+  @extend .table;
+  @extend .table-sm;
+  @extend .table-striped;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+.email-table-separator {
+	border-spacing: 5px;
+}
+.email-table tr td {
+	padding: 10px;
+}
+.email-border {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+.email-item-border {
+	border: 1px solid #ccc;
+	border-radius: 10px;
+}
+.email-work-type {
+  @extend .text-nowrap;
+  display: inline-block;
+	border: 2px solid #4444ff;
+	margin: 3px;
+	padding: 4px;
+	border-radius: 5px;
+}
+.email-sub-totals {
+	font-weight: bold;
+	border-top: 1px solid #ccc;
+}
+.email-table td, .email-table th {
+	padding: 5px;
+	border-bottom: 1px solid #ccc;
+}
+.email-table th {
+	font-weight: bold;
+}
+.email-table tr:last-child td {
+	border-bottom: 0;
+}
+.email-title {
+	border-bottom: 2px solid #ccc;
+	border-radius: 10px;
+	background-color: #eee;
+}
+.email-title h4 {
+	font-weight: bold;
+}
+.email-totals {
+	font-weight: bold;
+}
+.email-footer {
+	text-align: center;
+	background-color: #ddd;
+}
+.email-footer h4 {
+	font-weight: bold;
+}
+.email-copyright {
+	font-size: 7pt;
+	text-align: center;
+}

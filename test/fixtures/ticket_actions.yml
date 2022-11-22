@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 100.times do |i| %>
+<% 11.times do |j| %>
+ticket_action_<%="#{i}_#{j}"%>:
+    ticket: <%="ticket_#{i}"%>
+    ticket_action_status: <%="ticket_action_status_#{i}"%>
+    date_taken: <%=Date.today%>
+    action: <%= "action #{i} #{j}" %>
+    employee: <%= "employee_#{i}" %>
+<%end%>
+<%end%>

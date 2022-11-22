@@ -1,0 +1,17 @@
+<div class='form-control-buttons'>
+  <div class='col-auto'>
+    <div class='card'>
+      <div class='card-body'>
+        <div class='btn-group' role='group'>
+          <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
+            <% ficon 'save', 'Save'%>
+          <% end%>
+          <%= button_tag type: 'reset', class: 'btn btn-warning' do%>
+            <% ficon 'undo', 'Reset' %>
+          <%end%>
+          <%= link_to ficon('remove', "Cancel"), cancel, class: 'btn btn-danger' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

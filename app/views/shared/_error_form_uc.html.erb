@@ -1,0 +1,18 @@
+<% if result.errors.any? %>
+  <div class="row">
+    <div class='form-error text-bg-danger'>
+      <div class='form-error-header'>
+        <h2><%= pluralize result.errors.count, 'Issue' %>
+        preventing <%= result.class.model_name.human %> from being <%= object_action %>.
+        </h2>
+      </div>
+      <div class='form-error-body'>
+        <ul class='list-group list-group-numbered'>
+          <% result.errors.full_messages.each do  |e|%>
+            <li class='list-group-item list-group-item-danger'><%= e%></li>
+          <%end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+<%end%>

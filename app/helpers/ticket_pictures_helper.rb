@@ -1,0 +1,2 @@
+module TicketPicturesHelper
+end

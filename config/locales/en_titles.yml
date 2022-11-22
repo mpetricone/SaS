@@ -1,0 +1,33 @@
+en:
+  title_new: "New %{title}"
+  title_edit: "Editing %{title}"
+  title_new_for: "New %{title} for %{for}"
+  title_edit_for: "Edit %{title} for %{for}"
+  title_show_for: "%{title} for %{for}"
+  title_income_report: 'Income Report'
+  title_record_payment: Record Payment for %{client} Ticket %{tid}
+  title_record_time: Record labor time for %{client} Titcket %{tid}
+  title_add_to_ticket: Adding %{subject} for %{client} Ticket %{tid}
+  title_accounts_receivable: Accounts Receivable
+  title_statement: '%{client} Statement for period %{date_range}'
+  title_invoice_list: Invoices
+  title_client_statement: Statement of Invoices
+  title_bill_to: "Bill To: %{client}"
+  title_statement_summary: Statement Summary
+  title_outstanding_invoices: Outstanding Invoices
+  sub_title_by_ticket_date: 'By ticket date'
+  sub_title_ticket_info: 'Ticket Info'
+  sub_title_by_payment_date: 'By payment received date'
+  sub_title_by_payment: 'By payment'
+  sub_title_limits: 'Limits'
+  sub_title_dates: 'Dates'
+  sub_title_search: 'Search %{for}'
+  sub_title_invoice_payment: "Invoicing and Payments"
+  sub_title_client_info: "Client Info"
+  sub_title_addresses: "Addresses"
+  product_name: "Sales and Services"
+  about_title: "About %{p_name}"
+  menu_title_main: "Main Menu"
+  title_attach_image: 'Attach Image'
+  title_edit_image: 'Alter Image'
+  title_client_ticket: "Ticket %{ref} for %{client}"

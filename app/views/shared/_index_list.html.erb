@@ -1,0 +1,97 @@
+<%# main_model: active record of records to be displayed %>
+<%# show_fields: fields to list %>
+<%# related_models: array of has_many assosiations %>
+<%# related_fields: hash of array of fields for related models %>
+<%# delete_msg: message to display on delete click the first instance of '**' will be replaced by delete_msg_ident, if it is present %>
+<%# delete_msg_ident: symbol for delete msg identifier %>
+<% path = main_model.name.underscore.to_s+"_path" %>
+<% new_path = 'new_'+path %>
+<% begin %>
+  <%= render partial: 'shared/search_index', locals: { url: send(main_model.name.pluralize.underscore.to_s+'_search_by_name_path'), model: main_model.name.constantize } %>
+<%rescue %>
+<%end%>
+<div class="card">
+  <div class="card-header d-flex justify-content-between">
+    <h4><%= main_model.model_name.human( count: main_model.count) %></h4>
+    <% if not (defined?(:suppress_new)) %>
+      <% suppress_new=false %>
+    <% end %>
+    <% if not suppress_new==true %>
+      <%= link_to "New #{main_model.model_name.human}", send(new_path), class: 'btn btn-primary pull-right' %>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class='table table-sm table-striped table-hover'>
+        <thead>
+          <% show_fields.each do |field| %>
+            <th><%= main_model.human_attribute_name field %></th>
+          <% end %>
+          <% if (defined? related_models) && defined? (related_field_names) %>
+            <% related_field_names.each do |model| %>
+              <%= content_tag(:th ,model) %>
+            <% end %>
+          <% end %>
+          <% if (defined? belongs_to_models) && (defined? belongs_to_fields) %>
+            <% belongs_to_models.each do |b| %>
+              <% belongs_to_fields[b].each do |bfield| %>
+                <%= content_tag( :th,b.to_s.classify.constantize.human_attribute_name(bfield)) %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <th>Options</th>
+        </thead>
+        <tbody>
+          <% edit_path = "edit_"+path %>
+          <% main_model.each do |record| %>
+            <tr>
+              <% altrow=!altrow %>
+              <% show_fields.each do |field| %>
+                <td>
+                  <%= record[field] %>
+                </td>
+              <% end %>
+              <% if (defined? related_models) && (defined? related_fields) %>
+                <% related_models.each do |collection| %>
+                  <%# = content_tag :td,  related_fields[collection] %>
+                  <% related_fields[collection].each do |rfield| %>
+                    <%# = content_tag :td, rfield %>
+                    <td>
+                      <% record.send(collection).each do |model| %>
+                        <%= model.send(rfield) %><br/>
+                      <% end %>
+                    </td>
+                  <% end %>
+                <% end %>
+              <% end %>
+              <% if (defined? belongs_to_models) && (defined? belongs_to_fields) %>
+                <% belongs_to_models.each do |b| %>
+                  <% belongs_to_fields[b].each do |bfield| %>
+                    <td>
+                      <%= record.send(b)[bfield] %>
+                    </td>
+                  <% end %>
+                <% end %>
+              <% end %>
+
+              <td class='col-xs-2 text-center'>
+                <div class='btn-group' role='group'>
+                  <%= link_to "Edit", send(edit_path, record), class: 'btn btn-secondary' %>
+                  <%= link_to "Show", record, class: 'btn btn-primary' %>
+                  <% if defined? delete_msg_ident %>
+                    <% dmsg = delete_msg.sub '**', record.send( delete_msg_ident) %>
+                  <% else %>
+                    <% dmsg = delete_msg %>
+                  <% end %>
+                  <%= link_to "Delete", send(path, record),method: :delete,  data: {confirm: dmsg }, class: 'btn btn-danger' %></td>
+                </div>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<% unless defined?(bypass_pagination) %>
+<%= render partial: 'shared/pagination/pagination_bubble', locals: {remote: false, main_model: main_model, param_name: :page} %>
+<% end%>

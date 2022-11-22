@@ -1,0 +1,10 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @client_contact, object_name: ClientContact.model_name.human, object_action: form_action } %>
+<%= form_for [@client, @client_contact] do |f| %>
+	<div class='form-cont'>
+		<%= render_field_group f, Contact.model_name.human,[
+			{search: true, search_id: 'client-contact-search', search_name: Contact.model_name.human(count: 2) },
+			{label: nil, name: :contact_id, type: :collection_select,ext_params: {
+				collection: Contact.all, value_method: :id, text_method: :full_name_alphebetical}}] %>
+	</div>
+	<%= render_actions f, clients_show2_path(@client) %>
+<% end %>

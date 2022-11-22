@@ -1,0 +1,14 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: OK
+
+two:
+  name: PROBATION
+
+three:
+  name: DECLINE
+<% 100.times do |i| %>
+standing_<%=i%>:
+    name: <%="standing #{i}"%>
+<%end%>

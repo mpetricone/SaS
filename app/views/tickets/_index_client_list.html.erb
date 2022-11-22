@@ -1,0 +1,27 @@
+<% search_params = configure_params %>
+<div class="col">
+  <div class='card'>
+      <div class='card-header'>
+        <h4>Search results:</h4>
+      </div>
+      <div class="card-body">
+      <div class='table-responsive'>
+        <table class='table table-sm table-striped'>
+          <tbody>
+            <% @clients.each do |client| %>
+              <tr>
+                <td>
+                  <%= link_to client.name, tickets_show_list_path({client_id: client.id, search: search_params}),
+                    method: :get ,remote: true %>
+                </td>
+                <td>
+                  <%= link_to ficon('plus-square', "New #{Ticket.model_name.human}"), new_ticket_path( client_id: client.id), class: 'btn btn-primary btn-sm' %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

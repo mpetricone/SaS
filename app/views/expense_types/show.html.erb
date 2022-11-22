@@ -1,0 +1,19 @@
+<%= render_show_title "#{ExpenseType.model_name.human} '#{@expense_type.name}'", edit_expense_type_path(@expense_type), expense_types_path %>
+<div class='row'>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= content_tag :h4,ExpenseType.human_attribute_name(:name) %>
+      </div>
+      <%= content_tag :div, @expense_type.name, class: 'card-body' %>
+    </div>
+  </div>
+  <div class='col-full-half'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= content_tag :h4, ExpenseType.human_attribute_name(:description) %>
+      </div>
+      <%= content_tag :div, @expense_type.description, class: 'card-body' %>
+    </div>
+  </div>
+</div>

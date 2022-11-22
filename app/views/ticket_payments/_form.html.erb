@@ -1,0 +1,15 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @ticket_payment, object_name: TicketPayment.name, object_action: form_action } %>
+<div class='form-subheader' >
+	<h6 class='form-subheader-body'>
+	<%= @totals[:paid_in_full] ? "This #{Ticket.model_name.human} has been payed in full.": "There is an oustanding balance of #{@totals[:outstanding]}." %>
+	</div>
+</div>
+<%= form_for [@ticket, @ticket_payment]  do |f| %>
+	<div class='form-body'>
+		<%= render_field_group f, TicketPayment.human_attribute_name(:payment),
+			[{label: nil, name: :payment, type: :text_field}] %>
+		<%= render_field_group f, TicketPayment.human_attribute_name(:date_received),
+			[{label: nil, name: :date_received, type: :date_select}] %>
+	</div>
+	<%= render_actions f, @ticket %>
+<% end %>

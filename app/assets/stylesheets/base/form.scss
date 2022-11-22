@@ -1,0 +1,108 @@
+select {
+  @extend .form-control;
+}
+.date-group label {
+  display: block;
+}
+.date-group select {
+  width: 30%;
+  display: inline-block;
+}
+input[type='text'] {
+  @extend .form-control;
+}
+.field-group-col {
+  @extend .col-12;
+  @extend .col-lg-6;
+}
+.form-horizontal {
+  margin: 0px 5px 0px 5px;
+}
+.field-group-container .field-group-address {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 1.05em;
+}
+div.actions {
+  border: $actions_border;
+  margin: 5px;
+}
+div.field-group div {
+  @extend .col-auto;
+  @extend .mx-auto;
+}
+div.field-group-title {
+  font-weight: bold;
+  border-bottom: $field_group_title_border_bottom;
+}
+.edit-body-title {
+  text-align: center;
+  font-size: $edit_title_font_size;
+  font-weight: bold;
+  border: $edit_title_border;
+  margin-top: 5px;
+  padding: 0px 5px 0px 5px;
+}
+div.field {
+  margin: 0px 0px 5px 0px;
+}
+div.field-group-sub {
+  border: 1px solid black;
+  border-collapse: collapse;
+  margin: 0px 0px 5px 0px;
+  padding: 5px;
+}
+.form-error {
+  @extend .card;
+}
+.form-error-header {
+  @extend .card-header;
+}
+.form-error-body {
+  @extend .card-body;
+}
+.form-col {
+  @extend .col-12;
+  @extend .col-lg-6;
+  padding-bottom: 10px;
+}
+.form-subheader {
+  @extend .card;
+  border: 0px;
+}
+.form-body {
+  @extend .row;
+}
+.form-control-buttons {
+  @extend .row, .justify-content-center
+}
+.form-subheader-body {
+  @extend .card-body;
+}
+.form-group {
+  @extend .col-auto;
+  @extend .mx-auto;
+}
+.form-sub-group {
+  @extend .col-12;
+  @extend .mx-auto;
+}
+.form-row {
+  @extend .row;
+}
+.field_with_errors {
+  @extend .border;
+  @extend .border-3;
+  @extend .border-warning;
+  @extend .bg-warning;
+  @extend .bg-opacity-50;
+}
+.card:has( .field_with_errors) {
+  @extend .border;
+  @extend .border-3;
+  @extend .border-info;
+}
+.card:has(.field_with_errors) .card-header {
+  @extend .bg-info;
+}

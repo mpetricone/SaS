@@ -1,0 +1,7 @@
+.image-card {
+    @extend .card;
+    @extend .m-2;
+}
+.image-card-header {
+    @extend .card-header;
+}

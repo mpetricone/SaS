@@ -1,0 +1,2 @@
+<%= render partial: 'shared/form_page_title', locals: { title: t(:title_edit, title: Distributer.model_name.human ) } %>
+<%= render partial: 'form' , locals: { result: @distributer,object_name: Distributer.model_name.human, form_action: "edited" } %>

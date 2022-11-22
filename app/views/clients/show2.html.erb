@@ -1,0 +1,94 @@
+<%= render partial: 'shared/show_page_title',
+  locals: { title: "#{Client.model_name.human} #{@client.name}",edit_path: edit_client_path(@client), return_path: clients_path } %>
+<nav class='navbar navbar-expand-lg navbar-light'>
+  <div class='container-fluid justify-content-end' >
+    <div class='d-flex'>
+      <a class='navbar-brand' href='#'>Options</a>
+      <button class='navbar-toggler' 
+              type='button' 
+              data-bs-toggle='collapse' 
+              data-bs-target='#navbarClient' 
+              aria-controls='navbarClient' 
+              aria-expanded='false'
+              aria-label='Options'>
+        <span class='navbar-toggler-icon'></span>
+      </button>
+      <div class="collapse navbar-collapse text-right" id="navbarClient">
+        <ul class='navbar-nav'>
+          <li class='nav-item'>
+            <%= link_to t('label_client_details'), clients_show2_path(@client.id), class: 'btn btn-primary' %>
+          </li>
+          <li class='nav-item'>
+            <%= link_to t(:label_new_ticket), new_ticket_path(client_id: @client.id), class: 'btn btn-warning' %>
+          </li>
+          <li class='nav-item'>
+            <%= link_to t(:button_client_statement), client_client_statements_path(@client), class: 'btn btn-warning' %>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class='row'>
+  <div class='col-12 col-lg-6'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4>
+          <strong>
+            <%= "#{t(:label_amount_receivable)}: #{number_to_currency @ac[:total]}" %>
+          </strong>
+        </h4>
+      </div>
+      <div class='card-body'>
+        <div class='table-responsive'>
+          <table class='table table-sm table-striped table-hover'>
+            <thead>
+              <tr>
+                <th><%= Ticket.model_name.human %></th>
+                <th><%= Ticket.human_attribute_name(:short_description) %></th>
+                <th><%= Ticket.human_attribute_name(:updated_at) %></th>
+                <th><%= t(:label_amount_outstanding) %></th>
+            </thead>
+            <% @ac[:accounts].each do |a| %>
+              <tr class='clickable-row' data-href='<%= ticket_path(a[:ticket]) %>'>
+                <td><%= a[:ticket].id %></td>
+                <td><%= a[:ticket].short_description %></td>
+                <td><%= a[:ticket].updated_at %></td>
+                <td><%= number_to_currency a[:totals][:outstanding] %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='col-12 col-lg-6'>
+    <div class='card'>
+      <div class='card-header'>
+        <h4><strong><%= t(:label_recent_tickets) %></strong></h4>
+      </div>
+      <div class='card-body'>
+        <div class='table-responsive'>
+          <table class='table table-condensed table-striped table-hover'>
+            <thead>
+              <tr>
+                <th><%= Ticket.human_attribute_name(:id) %></th>
+                <th><%= Ticket.human_attribute_name(:updated_at) %></th>
+                <th><%= Ticket.human_attribute_name(:short_description) %></th>
+                <th><%= Ticket.human_attribute_name(:created_at) %></th>
+              </tr>
+            </thead>
+            <% @tickets.each do |t| %>
+              <tr class='clickable-row' data-href='<%= ticket_path(t) %>'>
+                <td><%= t.id %></td>
+                <td><%= t.updated_at %></td>
+                <td><%= t.short_description %></td>
+                <td><%= t.created_at %></td>
+              </tr>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

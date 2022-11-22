@@ -1,0 +1,15 @@
+<%
+    # model: active record model
+  # ident: identifier in title
+%>
+<div class='title-box'>
+  <div class='col-md-8'>
+    <h1> <%="#{model.class.model_name.human} #{ident}" %></h1>
+  </div>
+  <div class='col-md-4'>
+    <div class='control-buttons'>
+      <%= link_to "Edit", send(constructPath(model, 'edit'), model), class: 'btn' %>
+      <%= link_to("Return ", send(constructPath model), class: 'btn') %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+ticket_solved:
+  name: SOLVED
+ticket_closed:
+  name: CLOSED
+ticket_active:
+  name: ACTIVE
+
+<% 100.times do |i| %>
+ticket_status_<%=i%>:
+    name: <%="status #{i}"%>
+<%end%>

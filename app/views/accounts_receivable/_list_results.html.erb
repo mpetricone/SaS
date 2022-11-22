@@ -1,0 +1,58 @@
+<div class='col-12'>
+  <div class='card'>
+    <div class='card-header'>
+      <h4>Accounts Receivable by Client</h4>
+    </div>
+    <div class='card-body'>
+      <div class='card'>
+        <div class='card-body'>
+          <h3>
+            <%= @ar.count %> Clients due |
+            Total Receivable: <%= number_to_currency @total %>
+          </h3>
+        </div>
+      </div>
+      <% @ar.each do |a| %>
+        <div class='card'>
+          <div class='card-header'>
+            <%= link_to a[:client].name, a[:client] %>
+          </div>
+          <div class='card-body table-responsive'>
+
+            <table id='result-table' class='table table-sm table-striped table-hover'>
+              <tr>
+                <th><%= Ticket.human_attribute_name :id %></th>
+                <th><%= Ticket.human_attribute_name :invoice_date %></th>
+                <th><%= Ticket.human_attribute_name :short_description %></th>
+                <th><%= t(:label_amount_outstanding) %></th>
+              </tr>
+              </thead>
+              <tbody>
+                <% a[:ar].each do |r| %>
+                  <tr class='clickable-row' data-href='<%= ticket_path(r[:ticket]) %>'>
+                    <td>
+                      <%= r[:ticket].id %>
+                    </td>
+                    <td>
+                      <%= r[:ticket].invoice_date %>
+                    </td>
+                    <td>
+                      <%= r[:ticket].short_description %>
+                    </td>
+                    <td>
+                      <%= number_to_currency r[:totals][:outstanding] %>
+                    </td>
+                  </tr>
+                <% end %>
+                <tr class='totals'>
+                  <td colspan='3'><%= t(:label_total) %></td>
+                  <td><%= number_to_currency a[:tar] %></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

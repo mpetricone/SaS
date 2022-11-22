@@ -1,0 +1,37 @@
+// bootstrap loader with custom options
+@import 'bootstrap/scss/_functions';
+
+//custom mods
+@import 'base/core_values.scss';
+
+//required(ish)
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/maps";
+@import "bootstrap/scss/mixins";
+@import "bootstrap/scss/root";
+@import "bootstrap/scss/utilities";
+
+// optional
+@import "bootstrap/scss/reboot";
+@import "bootstrap/scss/forms";
+@import "bootstrap/scss/type";
+@import "bootstrap/scss/images";
+@import "bootstrap/scss/containers";
+@import "bootstrap/scss/grid";
+@import "bootstrap/scss/close";
+@import "bootstrap/scss/alert";
+@import "bootstrap/scss/card";
+@import "bootstrap/scss/buttons";
+@import "bootstrap/scss/button-group";
+@import "bootstrap/scss/nav";
+@import "bootstrap/scss/navbar";
+@import "bootstrap/scss/list-group";
+@import "bootstrap/scss/badge";
+@import "bootstrap/scss/tables";
+@import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/helpers";
+@import "bootstrap/scss/transitions";
+@import "bootstrap/scss/pagination";
+
+// bootstrap.scss had this last
+@import "bootstrap/scss/utilities/_api";

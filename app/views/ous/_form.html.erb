@@ -1,0 +1,22 @@
+<%= render partial:  'shared/error_form_uc' , locals: { result: @ou, object_action: form_action } %>
+<%= form_for @ou  do |f| %>
+    <div class='row'>
+        <%= render_field_group f, t(:label_primary_info),
+                               [{label: :name, name: :name, type: :text_field}, 
+                               { label: :description, name: :description, type: :text_field}]%>
+        <%= render_field_group f, Ou.human_attribute_name(:tax_id), 
+                               [{label: nil, name: :tax_id, type: :collection_select, 
+                                ext_params: { collection: Tax.all,value_method: :id, text_method: :description }}] %> 
+        <%= render_sub_address_extra(f, :ou_addresses, OuAddress.model_name.human(count: @ou.ou_addresses.count), :address, Address.model_name.human,
+                                                          [{name: :delivery, label: OuAddress.human_attribute_name(:delivery), type: :check_box}, 
+                                                           {name: :invoice, label: OuAddress.human_attribute_name(:invoice), type: :check_box}]) %>
+        <%= render_fields_for f, OuPhone.model_name.human, :ou_phones, 
+                                                           [{label: :number, name: :number, type: :text_field },
+                                                           { label: :description, name: :description, type: :text_field} ] %>
+        <%= render_fields_for f, OuEmail.model_name.human, :ou_emails, [{label: :address, name: :address, type: :text_field } ]%> 
+        <%= render_field_group f, Ou.human_attribute_name(:root_id), 
+            [{label: :root_id, name: :root_id, type: :collection_select, ext_params: 
+              { collection: Ou.all, value_method: :id, text_method: :description }, options: {include_blank: true }}]%>
+    </div>
+    <%= render_actions f, ous_path %>
+<% end %>

@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @work_types,
+    show_fields: [:name],
+    delete_msg: "Really delete #{WorkType.model_name.human} **?",
+    delete_msg_ident: :name } %>

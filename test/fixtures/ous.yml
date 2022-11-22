@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Main
+  description: Main
+
+<% 100.times do |i| %>
+ou_<%= i%>:
+    name: <%= "ou #{i}" %>
+    description: <%= "description for #{i}" %>
+    root: one
+<%end%>

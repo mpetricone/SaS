@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 100.times do |i| %>
+    <% 4.times do |j| %>
+contact_phone_<%="#{i}_#{j}"%>:
+    contact: <%= "contact_#{i}" %>
+    number: <%= "#{i}.#{j}" %>
+    <%end%>
+<%end%>

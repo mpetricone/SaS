@@ -1,0 +1,2 @@
+web: bin/rails server -p $RAILS_DEV_PORT -b $RAILS_DEV_IP
+js: yarn build --watch 

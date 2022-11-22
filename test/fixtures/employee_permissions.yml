@@ -1,0 +1,12 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+admin: 
+    employee: admin
+    permission: admin
+ 
+<% 100.times do |i| %>
+employee_permission_<%=i%>: 
+    employee: <%= "employee_#{i}"%>
+    permission: <%= "permission_#{i}" %>
+<%end%>
+

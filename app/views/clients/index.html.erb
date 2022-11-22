@@ -1,0 +1,19 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @clients,
+    show_fields: [:name, :default_invoice_id, :default_delivery_id],
+    related_models: [:contacts, :client_phones, :client_emails, :addresses],
+    related_field_names: [
+        ClientContact.model_name.human,
+        ClientPhone.model_name.human,
+        ClientEmail.model_name.human,
+        AddressClient.model_name.human],
+    related_fields: {
+            contacts: [:full_name],
+            client_phones: [:number],
+            client_emails: [:email],
+            addresses: [:name_long] },
+    belongs_to_models: [:standing],
+    belongs_to_fields: { standing: [:name] },
+    delete_msg: "Really delete #{Contact.model_name.human}? This could criple the system.",
+    delete_msg_ident: :name } %>

@@ -1,0 +1,12 @@
+<%= render partial: 'shared/error_form_uc', locals: { result: @contact_distributer, object_name: ContactDistributer.model_name.human, object_action: form_action } %>
+<%= form_for [@distributer, @contact_distributer] do |f| %>
+	<div class='row'>
+		<%= render_field_group f, t(:label_primary_info),[
+			{ search: true, search_id: 'distributer-contact-search', search_name: Contact.model_name.human(count: 2)},
+			{label: :contact_id, name: :contact_id, type: :collection_select, ext_params: {
+				collection: Contact.all, value_method: :id, text_method: :full_name_alphebetical}
+			},
+			{label: :description, name: :description, type: :text_field}] %>
+	</div>
+	<%= render_actions f, @distributer %>
+<% end %>

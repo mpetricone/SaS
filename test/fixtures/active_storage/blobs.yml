@@ -1,0 +1,1 @@
+ticket_picture_blob: <%= ActiveStorage::FixtureSet.blob filename: "tp.png", service_name: "test" %>

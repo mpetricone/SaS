@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+<% 100.times do |i| %>
+<% 10.times do |j| %>
+distributer_product_<%="#{i}_#{j}"%>:
+    distributer: <%= "distributer_#{i}"%>
+    product: <%= "product_#{j}" %>
+    current_cost: <%= Random.rand(i...(j+100)).to_s %>
+    dist_item_number: <%="#{i}-#{j}"%>
+<%end%>
+<%end%>

@@ -1,0 +1,204 @@
+<div class='flex-row justify-content-center'>
+  <div clas='col'>
+    <div class='card'>
+      <ul class='list-group list-group-flush'>
+        <li class='list-group-item'>
+          <div>
+            <div class='fw-bold'>
+              <%= "#{Ticket.model_name.human} #{@ticket.id}"%>
+            </div>
+            <%= t(:prepared_for, for: @ticket.client.name)%>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class='row d-flex justify-content-center'>
+    <div class='col'>
+      <div class='card'>
+        <ul class='list-group list-group-flush'>
+          <li class='list-group-item'>
+            <div>
+              <div class='fw-bold'>
+                <%=Ticket.human_attribute_name(:short_description)%>
+              </div>
+              <%=  @ticket.short_description %>
+            </div>
+          </li>
+          <li class='list-group-item'>
+            <div>
+              <div class='fw-bold'>
+                <%= Ticket.human_attribute_name(:field_location) %>
+              </div>
+              <%= @ticket.field_location %>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class='col'>
+      <div class='card'>
+        <ul class='list-group list-group-flush'>
+          <li class='list-group-item'>
+            <div>
+              <div class='fw-bold'>
+                <%=Ticket.human_attribute_name(:date_created)%>
+              </div>
+              <%=@ticket.date_created%>
+            </div>
+          </li>
+          <li class='list-group-item'>
+            <div>
+              <div class='fw-bold'>
+                <%= Ticket.human_attribute_name(:updated_at)%>
+              </div>
+              <%= @ticket.updated_at%>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class='flex-row'>
+    <div class='col'>
+      <div class='card'>
+        <div class='card-header'>
+          <%= WorkType.model_name.human %>
+        </div>
+        <ul class='list-group list-group-flush'>
+          <% @ticket.ticket_work_types.each do |wt| %>
+            <li class='list-group-item'>
+              <%= wt.work_type.name %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class='col'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= Product.model_name.human(count: 2)%>
+      </div>
+      <div class='card-body'>
+        <% if @ticket.product_tickets.length == 0%>
+          <%= t(:no_products_sold)%>
+        <%else%>
+          <table class='table table-sm'>
+            <thead>
+              <tr>
+                <th>
+                  <%=ProductTicket.human_attribute_name :quantity %>
+                </th>
+                <th>
+                  <%= Product.human_attribute_name :name %>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @ticket.product_tickets.each do |pt| %>
+                <tr>
+                  <td>
+                    <%= pt.quantity %>
+                  </td>
+                  <td>
+                    <%= pt.product.name%>
+                  </td>
+                </tr>
+              <% end%>
+            </tbody>
+          </table>
+        <%end%>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='flex-row'>
+  <div class='col'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= TicketAction.model_name.human(count: 2)%>
+      </div>
+      <div class='card-body'>
+        <table class='table sm-table'>
+          <thead>
+            <tr>
+              <th>
+                <%= TicketAction.human_attribute_name :date_taken%>
+              </th>
+              <th>
+                <%= TicketAction.human_attribute_name :action%>
+              </th>
+              <th>
+                <%= TicketActionStatus.human_attribute_name :status %>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @ticket.ticket_actions.each do |ta|%>
+              <tr>
+                <td>
+                  <%= ta.date_taken.strftime("%Y-%m-%d %Z")%>&nbsp;
+                  (0x<%= ta.date_taken.to_i.to_s(16) %>)
+                </td>
+                <td>
+                  <%= ta.action %>
+                </td>
+                <td>
+                  <%= ta.ticket_action_status.status %>
+                </td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='flex-row'>
+  <div class='col'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= TicketPicture.model_name.human count: 2%>
+      </div>
+      <div class='card-body'>
+        <div class='row'>
+          <% @ticket.ticket_pictures.each do |pic| %>
+            <div class='col-md-4'>
+              <div class='card'>
+                <span class='d-flex justify-content-center'>
+                  <%= image_tag(pic.image.variant(:medium), class: 'img-fluid')%>
+                </span>
+                <div class='card-body border-top'>
+                  <div class='card-title'>
+                    <%= pic.description %>
+                  </div>
+                  <%= pic.note %>
+                </div>
+              </div>
+            </div>
+          <%end%>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class='flex-row'>
+  <div class='col'>
+    <div class='card'>
+      <div class='card-header'>
+        <%= TicketNote.model_name.human count: 2%>
+      </div>
+      <div class='card-body'>
+        <ul class='list-group'>
+          <% @ticket.ticket_notes.each do |tn| %>
+            <li class='list-group-item'>
+              <h4><%= tn.subject %></h4>
+              <p><%= tn.body%></p>
+            </li>
+          <%end%>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<%= render partial: 'shared/show_page_title', locals: {
+title: t(:title_show_for, title: TicketPicture.model_name.human, for: "#{Ticket.model_name.human} #{@ticket.id}"),
+edit_path: edit_ticket_ticket_picture_path(@ticket, @ticket_picture ),
+return_path: ticket_path(@ticket)} %>
+<div class='flex-row'>
+  <div class='col d-flex'>
+    <div class='image-card'>
+      <%= link_to(image_tag(@ticket_picture.image.representation(resize_to_limit: [600,600])), @ticket_picture.image.url) %>
+      <div class='card-body'>
+        <%= t(:click_image_for_full_size)%>
+      </div>
+    </div>
+    <div class='image-card'>
+      <div class='card-header'>
+        <%= @ticket_picture.description%>
+      </div>
+      <div class='card-body'>
+        <%= @ticket_picture.note %>
+      </div>
+    </div>
+  </div>
+</div>

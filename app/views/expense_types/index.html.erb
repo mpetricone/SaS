@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @expense_types,
+    show_fields: [:name, :description],
+    delete_msg: "Really delete #{ExpenseType.model_name.human}? ** ",
+    delete_msg_ident: :name } %>

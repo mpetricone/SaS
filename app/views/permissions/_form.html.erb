@@ -1,0 +1,17 @@
+<%= render partial: 'shared/error_form_uc', locals: {result: @permission, object_name: Permission.model_name.human, object_action: form_action } %>
+<%= form_for (@permission) do |f| %>
+    <div class='row'>
+        <%= render_field_group f, Permission.human_attribute_name(:name),
+            [{ label: nil, name: :name, type: :text_field }] %>
+        <%= render_field_group f, Permission.human_attribute_name(:obect_name),
+            [{ label: nil, name: :object_name, type: :text_field}] %>
+        <%= render_field_group f, Permission.model_name.human(count: 2),
+            [{ label: :read_record, name: :read_record, type: :check_box},
+             { label: :write_record, name: :write_record, type: :check_box},
+             { label: :create_record, name: :create_record, type: :check_box},
+             { label: :delete_record, name: :delete_record, type: :check_box}] %>
+         <%= render_field_group f, Permission.human_attribute_name(:admin),
+             [{ label: nil, name: :admin, type: :check_box }] %>
+     </div>
+     <%= render_actions f, permissions_path %>
+ <% end %>

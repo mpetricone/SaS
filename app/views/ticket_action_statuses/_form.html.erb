@@ -1,0 +1,10 @@
+<%= render partial: 'shared/error_form_uc', 
+    locals: { result: @ticket_action_status, object_name: TicketActionStatus.model_name.human, object_action: form_action } %>
+<%= form_for @ticket_action_status do |f| %>
+    <div class='row'>
+        <%= render_field_group f, TicketActionStatus.human_attribute_name(:status),
+            [{label: :status, name: :status, type: :text_field}] %>
+    </div>
+    <%= render_actions f, ticket_action_statuses_path %>
+</div>
+<% end %>

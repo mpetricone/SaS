@@ -1,0 +1,20 @@
+<%
+    # navbar dropdown item
+  # locals
+  # items: [{ type: link, div, text, view: string, link:string }]
+%>
+<ul class='dropdown-menu'>
+  <% items.each do |i| %>
+      <%= case  i[:type]
+      when :link
+        render partial: 'shared/nav/dropdown_link', locals: { view: i[:view], link: i[:link] }
+        when :div
+          render partial: 'shared/nav/dropdown_div'
+        when :text
+          render partial: 'shared/navdropdown_text', locals: {view: i[:view] }
+        else
+          render partial: 'sahred/nav/dropdown_text', locals: { view: "ERROR: Uknown dropdown type." }
+        end
+      %>
+  <%end%>
+</ul>

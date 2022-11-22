@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @expense_payment.amount %>
+</p>
+
+<p>
+  <strong>Identifier:</strong>
+  <%= @expense_payment.identifier %>
+</p>
+
+<p>
+  <strong>Ou payment type:</strong>
+  <%= @expense_payment.ou_payment_type %>
+</p>
+
+<p>
+  <strong>Expense:</strong>
+  <%= @expense_payment.expense %>
+</p>
+
+<%= link_to 'Edit', edit_expense_payment_path(@expense_payment) %> |
+<%= link_to 'Back', expense_payments_path %>

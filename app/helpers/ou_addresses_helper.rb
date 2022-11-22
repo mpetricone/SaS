@@ -1,0 +1,2 @@
+module OuAddressesHelper
+end

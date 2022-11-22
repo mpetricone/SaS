@@ -1,0 +1,2 @@
+en:
+  sa_ticket_status_active_missing: "The required TicketStatus::ACTIVE is missing from the database. It may have been renamed or deleted by accident, or you are running in the wrong envoirnment."

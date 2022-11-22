@@ -1,0 +1,124 @@
+<div class="row">
+  <%= render partial: 'shared/error_form_uc', locals: {result: @ticket, object_name: Ticket.model_name.human, object_action: form_action } %>
+</div>
+  <%= form_for @ticket do |f| %>
+    <div class='form-body'>
+      <%= render_field_group f, t(:label_in_house_info),[{
+        label: :ou_id, name: :ou_id, type: :collection_select,
+        ext_params: {collection: Ou.all, value_method: :id, text_method: :name},
+        options: {selection: @ticket.ou ? @ticket.ou : current_employee.ou}},
+      {label: :employee_id, name: :employee_id, type: :collection_select,
+       ext_params: {collection: Employee.all, value_method: :id, text_method: :name}},
+      { label: :ticket_status_id, name: :ticket_status_id, type: :collection_select,
+        ext_params: { collection: TicketStatus.all, value_method: :id, text_method: :name}},
+      { label: :short_description, name: :short_description, type: :text_field}] %>
+    <%= render_field_group f, t(:label_location), [{
+      label: :field_location, name: :field_location, type: :text_field } ]
+    %>
+
+  <div class='form-col'>
+    <div class="card">
+      <div class='card-header'>
+        <%= content_tag :h5, t(:sub_title_client_info) %>
+      </div>
+      <div class='card-body'>
+        <div class="row">
+          <div class="col-auto mx-auto">
+            <%= f.label :client_id %>:
+            <%= f.collection_select :client_id, Client.all, :id, :name,{ selection: @client? @client.id : 0 } , { disabled: @client? true : false} %>
+          </div>
+          <% if @client %>
+            <%= f.hidden_field :client_id, value: @client.id %>
+          <% end %>
+          <% if @ticket.client %>
+            <% params[:client_id] = @ticket.client.id %>
+          <% end %>
+          <% if (params.has_key? :client_id) %>
+            <div class="col-auto mx-auto">
+              <%= f.label :contact_id %>:
+              <%= f.collection_select :contact_id, Client.find(params[:client_id]).contacts, :id, :full_name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+    <div class='row'>
+      <div class='form-col'>
+        <div class="card">
+          <div class='card-header'>
+            <%= content_tag :h5, t(:sub_title_addresses) %>
+          </div>
+          <div class='card-body'>
+            <% if @ticket.employee %>
+              <div class='col-auto mx-auto'>
+                <%= f.label :ou_address_id %>:
+                <%= f.collection_select(:ou_address_id, @ticket.employee.ou.addresses, :id, :name_short, {selection: @ticket.ou_address_id, include_blank: 'None'}) %>
+              </div>
+            <% end %>
+            <% if @ticket.client %>
+              <div class='col-auto mx-auto'>
+                <% invoice_addr = Address.joins(:address_clients).where(address_clients: { client_id: @ticket.client, invoice:true}) %>
+                <% delivery_addr = Address.joins(:address_clients).where(address_clients: { client_id: @ticket.client, delivery:true}) %>
+                <%= f.label :default_invoice_id %>:
+                <%= f.collection_select( :default_invoice_id, invoice_addr, :id, :name_short, { include_blank: t(:label_none), selected: @ticket.client.default_invoice_id }) %>
+              </div>
+              <div class=field-group'>
+                <%= f.label :default_delivery_id %>:
+                <%= f.collection_select( :default_delivery_id, delivery_addr, :id, :name_short, {include_blank: t(:label_none), selected: @ticket.client.default_delivery_id }) %>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <%= render_field_group f, Ticket.human_attribute_name(:invoice_date),[{
+        label: nil, name: :invoice_date, type: :date_field}] %>
+      <%= render_field_group f, t(:label_billing_hourly),
+        [{label: :billing_hourly, name: :billing_hourly, type: :check_box},
+         {label: :rate, name: :rate_id,type: :collection_select,
+          ext_params: { collection: Client.find(params[:client_id]).rates, value_method: :id, text_method: :rate}}] %>
+    </div>
+    <div class='row'>
+      <%= render_field_group f, t(:label_billing_fixed),
+        [{label: :billing_fixed, name: :billing_fixed, type: :check_box},
+         {label: :billing_fixed_value, name: :billing_fixed_value, type: :text_field}] %>
+       <%= render_field_group f, t(:label_payment_info),
+         [{ label: :payment_requested, name: :payment_requested, type: :check_box},
+          { label: :payment_received,name: :payment_received, type: :check_box }] %>
+        <div class='form-col'>
+          <div class='card'>
+            <div class='card-header'>
+              Taxes
+            </div>
+            <div class='card-body'>
+              <div class='field-group'>
+                <%= f.label :taxable %>:
+                <%= f.check_box :taxable %>
+              </div>
+              <div class='form-group'>
+                <%= f.label :tax_rate %>
+                <% default_tax = 0 %>
+                <% if @ticket.ou %>
+                  <% default_tax = @ticket.ou.tax_id %>
+                <% else %>
+                  <% default_tax = current_employee.ou.tax_id %>
+                <% end %>
+                <%= @ticket.tax_id %>
+                <%= collection_select :tax, :selected_tax, Tax.all, :id, :description, {selected: @ticket.tax_id } %>
+              </div>
+              <div class='form-group'>
+                <%= f.label :tax_exemption %>
+                <%= f.text_field :tax_exemption %>
+              </div>
+              <div>
+                <%= f.label :taxable_labor %>:
+                <%= f.check_box :taxable_labor %>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <%= render_actions f, tickets_path %>
+  <% end %>
+</div>

@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @products,
+    show_fields: [:name, :base_cost, :category, :sku, :item_number],
+    delete_msg: "Really delete #{Product.model_name.human} **?",
+    delete_msg_ident: :name } %>

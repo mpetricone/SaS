@@ -1,0 +1,11 @@
+en:
+  ou_root_explanation: "Root OU, leave empty if this is a root"
+  ticket_no_status: 'No Ticket Status'
+  text_checks_payable_to: Please Make Checks Payable to %{payee}
+  text_larg_image: "Large Image"
+  text_click_image_for_full_size: "Click image for full size"
+  prepared_for: "Prepared for %{for}"
+  no_products_sold: "No products sold."
+  item_attached: "%{item} attached."
+  jump_to_item: "Jump to %{item}."
+  built_for: "Built for"

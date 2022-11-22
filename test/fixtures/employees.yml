@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+admin:
+  ou: one
+  date_hired: 2015-01-20
+  position: 'Test Admin'
+  contact: one
+  password_digest: <%= BCrypt::Password.create("testtest", cost: 4)  %>
+  user_name: 'Admin'
+
+<% 100.times do |i| %>
+employee_<%=i%>:
+    date_hired: <%= Date.today %>
+    position: <%= "Position #{i}" %>
+    contact: <%= "contact_#{i}" %>
+    password_digest: <%= BCrypt::Password.create("testtest#{i}", cost: 4) %>
+    user_name: <%="employee_#{i}" %>
+    ou: one
+<%end%>

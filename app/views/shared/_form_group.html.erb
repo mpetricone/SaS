@@ -1,0 +1,15 @@
+<%# main_title: title, assuming more fields later %>
+<%# form: form_for %>
+<%# fields: [{:label, :name, :type}] %>
+<%= content_tag :div, class: 'form-col' do %>
+  <div class="card">
+    <div class="card-header">
+      <%= content_tag :h5, main_title %>
+    </div>
+    <div class="card-body">
+      <div class='row'>
+      <%= render_field_array(form, fields) %>
+      </div>
+    </div>
+  </div>
+<%end%>

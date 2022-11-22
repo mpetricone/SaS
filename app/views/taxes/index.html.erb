@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @taxes,
+    show_fields: [:name, :rate, :region, :date_enabled, :date_retired],
+    delete_msg: "Really delete #{Tax.model_name.human} **? This could cause irreperable damage.",
+    delete_msg_ident: :name } %>

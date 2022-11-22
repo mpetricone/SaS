@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+<% 100.times do |i| %>
+<% 5.times do |j| %>
+ticket_time_<%="#{i}_#{j}"%>:
+    ticket: <%="ticket_#{i}" %>
+    time_start: <%=Time.new%>
+    time_end: <%=Time.new+(i*3600)%>
+<%end%>
+<%end%>
