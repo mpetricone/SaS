@@ -15,7 +15,7 @@ class TicketWorkTypesController < ApplicationController
         f.html { redirect_to @ticket, notice: "#{TicketWorkType.model_name.human} added." }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
         f.json { json_failure @ticket_work_type.errors }
       end
     end
@@ -32,7 +32,7 @@ class TicketWorkTypesController < ApplicationController
         f.html { redirect_to @ticket, notice: "#{TicketWorkType.model_name.human} altered." }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
         f.json { json_failure @ticket_work_type.errors }
       end
     end

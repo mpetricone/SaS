@@ -101,7 +101,7 @@ Rails.application.routes.draw do
   resources :standings
 
   get 'employees/search_by_name' => 'employees#search_by_name'
-  resources :employees do
+  resources :employees, only: [:index, :new, :edit, :show, :update, :create] do
     resources :employee_permissions
   end
 
@@ -111,11 +111,22 @@ Rails.application.routes.draw do
   resources :addresses
 
   get 'ous/search_by_name' => 'ous#search_by_name'
-  resources :ous do
+  #patch 'ou/:id/set_disabled' => 'ous#set_disabled', as: "set_disabled"
+  #patch 'ou/:id/clear_disabled' => 'ous#clear_disabled', as: "clear_disabled"
+  resources :ous, except: [:destroy] do
+    member do
+      patch :clear_disabled
+      patch :set_disabled
+    end
     resources :ou_addresses
     resources :ou_phones
     resources :ou_emails
   end
+
+  patch 'log/:id/ack' => 'logs#ack', as: "ack_log"
+  resources :logs, only: [:index, :show]
+  #get 'logs' => 'logs#index'
+  #get 'logs/:id' => 'logs#show'
 
   #about page
   get 'about/index' => 'about#index'

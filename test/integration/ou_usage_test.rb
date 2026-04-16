@@ -50,9 +50,10 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     page.assert_current_path /\/ous\/[0-9]*$/
     click_link 'Return'
-    first('a', text: 'Delete').click
-    accept_alert /^Really delete OU .*\?, This is usually not done.$/
-    assert page.has_content? "Record Destroyed"
+    # can no longer delete ous.
+    #first('a', text: 'Delete').click
+    #accept_alert /^Really delete OU .*\?, This is usually not done.$/
+    #assert page.has_content? "Record Destroyed"
   end
 
   test "can use ou phone" do

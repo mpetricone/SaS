@@ -19,7 +19,7 @@ class EmployeePermissionsController < ApplicationController
 					notice: "#{EmployeePermission.model_name.human} #{@employee_permission.permission.name} granted to #{@employee.contact.full_name}." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @employee_permission.errors }
 			end
 
@@ -38,7 +38,7 @@ class EmployeePermissionsController < ApplicationController
 					notice: "#{EmployeePermission.model_name.human} #{@employee_permission.permission.name} for #{@employee.contact.full_name} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @employee_permission.errors }
 			end
 

@@ -11,6 +11,14 @@ class ContactPhonesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @contact_phone, update_params, [:show, :index],
+      {
+        id: @contact_phone,
+        contact_id: @contact
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { contact_id: @contact_phone.contact.id }
 		assert_response :success

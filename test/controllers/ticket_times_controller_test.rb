@@ -11,6 +11,14 @@ class TicketTimesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @ticket_time, update_params, [:index, :edit, :show],
+      { 
+        id: @ticket_time,
+        ticket_id: @ticket
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { ticket_id: @ticket_time.ticket.id }
 		assert_response :success

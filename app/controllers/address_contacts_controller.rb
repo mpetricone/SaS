@@ -18,7 +18,7 @@ class AddressContactsController < ApplicationController
 				format.html { redirect_to @contact, notice:  "Added #{AddressContact.model_name.human} #{@address_contact.address.name_short}." }
 				format.json { json_success }
 			else
-				format.html { render :new, status: :unprocessable_entity }
+				format.html { render :new, status: :unprocessable_content }
 				format.json { json_failure @address_contact.errors }
 			end
 
@@ -35,7 +35,7 @@ class AddressContactsController < ApplicationController
 				format.html { redirect_to @contact, notice: "Updated #{AddressContact.model_name.human} #{@address_contact.address.name_short}." }
 				format.json { json_success }
 			else
-				format.html { render :edit, status: :unprocessable_entity }
+				format.html { render :edit, status: :unprocessable_content }
 				format.json { json_failure }
 			end
 

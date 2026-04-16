@@ -15,7 +15,7 @@ class ClientPhonesController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "Updated #{@client.name}." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @client.errors}
 			end
 
@@ -35,7 +35,7 @@ class ClientPhonesController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "Updated #{@client.name}." }
 				f.json { json_success }
 			else
-				f.html {render :edit, status: :unprocessable_entity  }
+				f.html {render :edit, status: :unprocessable_content  }
 				f.json { json_failure @client.errors }
 			end
 

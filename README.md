@@ -5,12 +5,15 @@ Sas resource usage is relatively low and can run on a variety of hardware or in 
 Sas has not been subject to extensive vulnerability testing, and I would not recommend running SaS on a public network.
 
 ## Ruby version
-7 (Originally 4 or 5)
+3.4
+
+## Rails version
+8.1 (Originally 4 or 5)
 
 ## System dependencies
 - node.js
 - libvips
-- ruby 3+
+- ruby 3.4+
 - MariaDB/MySQL
 - Apache httpd
 - Maybe more
@@ -25,9 +28,10 @@ Sas has not been subject to extensive vulnerability testing, and I would not rec
     - This image is used for branding
 - Change every instance of the case sensitive text "REMOVED" to appropriate values. They are mostly redactions of private test data and app secrets.
 - install libvips, mariadb/mysql, and maybe a few others.
--  Install Ruby 3+ and Rails 7ish
+-  Install Ruby 3.4+ and Rails 8.1
 - bundle install
     - MySQL/Maria/VIPS may cause errors, here, install libraries.
+    - Version 3.3 switched to trilogy, MySQl/Maria dev libraries should be needed any more.
 - Fix db/seeds.rb
     - You may wish to enter some more basic values, 99% of them can be added any time.
 - Configure active storage and ensure data sources exist
@@ -42,7 +46,9 @@ Sas has not been subject to extensive vulnerability testing, and I would not rec
 - rails test
     - Some Selenium tests may fail due to an unresolved timing issue. Who's fault? Probably mine.
 - There's a helper script for dev bin/serve
-- if all is well, feel free to deploy production
+    - uses gem foreman
+    - only for dev env
+- if all is well, feel free to deploy to production
     - you'll want to precompile assets
     - Internally we deploy with phusionpassenger and Apache2
     - work may be needed to adopt to cloud.
@@ -63,5 +69,5 @@ rails assets:precompile
 
 ### Version info is in app/lib/version/version.rb 
 
-#### Copyright 2015-2022 Matthew Petricone
+#### Copyright 2015-2026 Matthew Petricone
 

@@ -23,7 +23,7 @@ class OuEmailsController < ApplicationController
 				}
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure }
 			end
 
@@ -44,7 +44,7 @@ class OuEmailsController < ApplicationController
 				f.html { redirect_to @ou }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @ouEmail.errors }
 			end
 

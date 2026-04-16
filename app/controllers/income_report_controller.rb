@@ -1,5 +1,6 @@
 class IncomeReportController < ApplicationController
-	before_action(only: [:index]) { process_permission has_read_permission(:income_report) }
+	before_action(only: [:index,:report, :report_v2, :report_v3]) { 
+    process_permission has_read_permission(:income_report) }
 
 
 	def index

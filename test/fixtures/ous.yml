@@ -3,10 +3,12 @@
 one:
   name: Main
   description: Main
+  tax: one 
 
 <% 100.times do |i| %>
 ou_<%= i%>:
     name: <%= "ou #{i}" %>
     description: <%= "description for #{i}" %>
     root: one
+    tax: one 
 <%end%>

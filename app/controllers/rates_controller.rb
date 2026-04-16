@@ -59,7 +59,7 @@ class RatesController < ApplicationController
 				format.html { redirect_to @rate, notice: 'Rate was successfully created.' }
 				format.json { json_success }
 			else
-				format.html { render :new, status: :unprocessable_entity }
+				format.html { render :new, status: :unprocessable_content }
 				format.json { json_failure @rate.errors }
 			end
 
@@ -75,7 +75,7 @@ class RatesController < ApplicationController
 				format.html { redirect_to @rate, notice: 'Rate was successfully updated.' }
 				format.json { json_success }
 			else
-				format.html { render :edit, status: :unprocessable_entity }
+				format.html { render :edit, status: :unprocessable_content }
 				format.json { json_failure @rate.errors }
 			end
 

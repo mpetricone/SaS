@@ -43,7 +43,7 @@ class ContactEmailsController < ApplicationController
 				format.html { redirect_to @contact_email.contact, notice: 'Contact email was successfully created.' }
 				format.json { json_success}
 			else
-				format.html { render :new, status: :unprocessable_entity }
+				format.html { render :new, status: :unprocessable_content }
 				format.json { json_failure }
 			end
 
@@ -61,7 +61,7 @@ class ContactEmailsController < ApplicationController
 				format.html { redirect_to @contact, notice: 'Contact email was successfully updated.' }
 				format.json { json_success }
 			else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
 				format.json { json_failure }
 			end
 

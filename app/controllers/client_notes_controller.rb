@@ -23,7 +23,7 @@ class ClientNotesController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "#{ClientNote.model_name.human} #{@client_note.title} added." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @client_note.errors }
 			end
 
@@ -43,7 +43,7 @@ class ClientNotesController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "#{ClientNote.model_name.human} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @client_note.errors }
 			end
 

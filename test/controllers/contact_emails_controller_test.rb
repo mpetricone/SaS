@@ -11,6 +11,14 @@ class ContactEmailsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @contact_email, update_params, [:show, :index], 
+      { 
+        id: @contact_email,
+        contact_id: @contact
+      }
+  end
+
 	test 'should get index' do
 		get :index, params: { contact_id: @contact.id }
 		assert_response :success

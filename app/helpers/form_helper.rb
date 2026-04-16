@@ -23,7 +23,7 @@ module FormHelper
 	end
 
 	def render_extra_fields(form, extra_field_array)
-		ret = ""
+    ret = "".dup
 		extra_field_array.each do |f|
 			ret << render_field(form, f[:label],f[:name], f[:type] )
 		end
@@ -36,7 +36,7 @@ module FormHelper
 	end
 
 	def render_field_array(form, field_array)
-		ret = ""
+    ret = "".dup
 		field_array.each do |f|
 			if not f.has_key?(:options)
 				f[:options]={ }

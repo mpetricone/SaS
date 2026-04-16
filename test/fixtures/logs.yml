@@ -1,0 +1,22 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  command: MyText
+  category: MyText
+  module_name: MyString
+  in_method: MyString
+  details: MyText
+  employee: employee_1
+  issued_at: 2023-08-03 22:24:36
+  event_at: 2023-08-03 22:24:36
+
+two:
+  command: MyText
+  category: MyText
+  module_name: MyString
+  in_method: MyString
+  details: MyText
+  employee: employee_2
+  issued_at: 2023-08-03 22:24:36
+  event_at: 2023-08-03 22:24:36
+  ack_at: 2023-08-03 22:24:36

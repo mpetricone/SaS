@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.3'
+gem 'rails', '~> 8.1.0'
 
 # 7.0 migrating to hotwire from turbolinks
 gem 'hotwire-rails'
@@ -25,10 +25,10 @@ gem 'bcrypt', '~> 3.1'
 # gem 'debugger', group: [:development, :test]
 
 # CSS in Emails
-gem 'roadie-rails'#, '1.1.1'
-
+gem 'roadie-rails'
 # mysql
 gem 'mysql2'#, '~> 0.5'
+gem 'trilogy'
 
 # pagination (kaminari)
 gem 'kaminari'
@@ -41,23 +41,32 @@ gem "byebug"
 #haml are we using haml?
 #gem "haml-rails"
 
-gem 'rake', '12.3.1'
+gem 'rake'#, '12.3.1'
 
 #force newer json
 gem 'json', '~> 2.6'
 
 # jsbundling replacing webpacker
-gem 'jsbundling-rails'
+gem 'jsbundling-rails', '~> 1.0'
 
 #Image processing for active storage
 gem "image_processing"
 gem "ruby-vips"
 
+gem 'htmlbeautifier', group: :development
+
+# For Ruby 3.4
+gem 'drb'
+
 #Testing
 #minitest error
-gem 'minitest', group: :test
+gem 'minitest-rails', "~>8.1.0", group: :test
+#gem 'minitest', group: :test
+gem 'mutex_m', group: :test # for Ruby 3.4 & minitest
 gem 'capybara', group: :test
 gem 'apparition', group: :test
 # rails 4 testing style
 gem 'rails-controller-testing', group: :test
 gem 'selenium-webdriver', group: :test
+
+gem "concurrent-ruby", "= 1.3.4"

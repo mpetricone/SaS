@@ -1,0 +1,46 @@
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='col-12'>
+      <h2>
+        <%= "#{Log.model_name.human} for #{@log.category}" %><br>
+        <small> by <%= link_to(@log.employee.name, @log.employee) %></small>
+      </h2>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col-4'>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-title'>
+            <%= t(:title_timestamps) %>
+          </h5>
+          <p class='card-text'>
+          <%= "#{Log.human_attribute_name :event_at}: #{@log.event_at}" %><br/>
+          <%= "#{Log.human_attribute_name :ack_at}: #{@log.ack_at}" %>
+          <% if @log.ack_at == nil %>
+            <%= link_to "ack", ack_log_path(@log), method: :patch %>
+          <% end%>
+          <br/>
+          <%= "#{Log.human_attribute_name :issued_at}: #{@log.issued_at}" %><br/>
+          <%= "#{Log.human_attribute_name :created_at}: #{@log.created_at}" %><br/>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class=col-4>
+      <div class='card'>
+        <div class='card-body'>
+          <h5 class='card-body'>
+            <%= t(:title_details) %>
+          </h5>
+          <p class='card-text'>
+            <%= "#{Log.human_attribute_name :module_name}: #{@log.model_name}" %><br/>
+            <%= "#{Log.human_attribute_name :in_method}: #{@log.in_method}" %><br/>
+            <%= "#{Log.human_attribute_name :details}: #{@log.details}" %><br/>
+            <%= "#{Log.human_attribute_name :command}: #{@log.command}" %><br/>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

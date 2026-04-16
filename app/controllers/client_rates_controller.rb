@@ -18,7 +18,7 @@ class ClientRatesController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "Added #{ClientRate.model_name.human}." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @client_rate.errors }
 			end
 
@@ -38,7 +38,7 @@ class ClientRatesController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "Updated #{ClientRate.model_name.human}." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_fauilure @client_rate.errors }
 			end
 

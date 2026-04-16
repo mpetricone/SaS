@@ -15,7 +15,7 @@ class ProductTicketsController < ApplicationController
 				f.html { redirect_to @ticket, notice: "#{@product_ticket.product.name} added to #{Ticket.model_name.human}" }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @product_ticket.errors }
 			end
 
@@ -30,7 +30,7 @@ class ProductTicketsController < ApplicationController
 				f.html { redirect_to @ticket, notice: "#{@product_ticket.product.name} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @product_ticket.errors }
 			end
 

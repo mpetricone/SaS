@@ -11,6 +11,14 @@ class TicketNotesControllerTest < ActionController::TestCase
     logout_admin
   end
 
+  test 'should not access page' do
+    should_not_access_data @ticket_note, update_params, [:index, :show],
+      {
+        id: @ticket_note,
+        ticket_id: @ticket
+      }
+  end
+
   test "should get new" do
     get :new, params: { ticket_id: @ticket.id }
     assert_response :success
@@ -30,7 +38,12 @@ class TicketNotesControllerTest < ActionController::TestCase
   end
 
   test "should update ticket note" do
-    patch :update, params: {
+    patch :update, params: update_params
+    assert_redirected_to ticket_path(assigns(:ticket))
+  end
+
+  def update_params 
+    {
       ticket_id: @ticket.id,
       id: @ticket_note.id,
       ticket_note: {
@@ -39,7 +52,7 @@ class TicketNotesControllerTest < ActionController::TestCase
         body: 'wtf',
       }
     }
-    assert_redirected_to ticket_path(assigns(:ticket))
+
   end
 
   test "should destroy ticket note" do

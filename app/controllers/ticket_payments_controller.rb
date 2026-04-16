@@ -1,7 +1,7 @@
 class TicketPaymentsController < ApplicationController
 	before_action(only: [:index, :show]) { process_permission has_read_permission(:ticket_payment) }
 	before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_payment) }
-	before_action(only: [:new, :crete]) { process_permission has_create_permission(:ticket_payment) }
+	before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_payment) }
 	before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_payment) }
 
 	def new

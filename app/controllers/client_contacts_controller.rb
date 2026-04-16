@@ -16,7 +16,7 @@ class ClientContactsController < ApplicationController
 			if @client_contact.update(update_params)
 				format.html { redirect_to clients_show2_path(@client), notice: "#{@client.name} updated." }
 			else
-				format.html { render :edit, status: :unprocessable_entity }
+				format.html { render :edit, status: :unprocessable_content }
 			end
 
 		end
@@ -38,7 +38,7 @@ class ClientContactsController < ApplicationController
 				f.html { redirect_to clients_show2_path(@client), notice: "#{@client.name} updated."  }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @client_contact.errors }
 			end
 

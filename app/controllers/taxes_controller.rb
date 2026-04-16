@@ -48,7 +48,7 @@ class TaxesController < ApplicationController
 				format.html { redirect_to taxes_path, notice: "#{Tax.model_name.human} #{Tax.human_attribute_name :rate} #{@tax.rate} added." }
 				format.json { json_success }
 			else
-				format.html { render :new, status: :unprocessable_entity }
+				format.html { render :new, status: :unprocessable_content }
 				format.json { json_failure @tax.errors }
 			end
 
@@ -67,7 +67,7 @@ class TaxesController < ApplicationController
 				format.html { redirect_to @tax, notice: "#{Tax.model_name.human} #{@tax.name} updated." }
 				format.json { json_success }
 			else
-				format.html { render :edit, status: :unprocessable_entity }
+				format.html { render :edit, status: :unprocessable_content }
 				format.json { json_failure @tax.errors }
 			end
 

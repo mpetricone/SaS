@@ -11,6 +11,14 @@ class DistributerEmailsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data  @distributer_email, update_params, [:show, :index],
+      {
+        id: @distributer_email,
+        distributer_id: @distributer
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { distributer_id: @distributer.id }
 		assert_response :success

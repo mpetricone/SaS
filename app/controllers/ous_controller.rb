@@ -2,7 +2,8 @@ class OusController < ApplicationController
   before_action(only: [:index, :show, :search_by_name]) { process_permission has_read_permission(:ou) }
   before_action(only: [:edit, :update]) {process_permission has_write_permission(:ou) }
   before_action(only: [:new, :create]) { process_permission has_create_permission(:ou) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ou) }
+  #before_action(only: [:destroy]) { process_permission has_delete_permission(:ou) }
+  before_action(only: [:set_disabled, :clear_disabled]) { process_permission has_write_permission(:ou) }
 
   def index
     respond_to do |f|
@@ -17,17 +18,45 @@ class OusController < ApplicationController
     end
   end
 
-	def search_by_name
-		@ous = Ou.where('name like ?', "%#{params[:search_name]}%")
+  def set_disabled 
+    @ou = Ou.find params[:id]
+    @ou.disabled_on = Time.now
 
-		respond_to do |f|
-			f.html {
-				@ous = @ous.page params[:page]
-				render :index
-			}
-			f.json { render json: @ous }
-		end
-	end
+    respond_to do |f|
+      if @ou.save
+        f.html { redirect_to ous_path, flash: { notice: t("notice_disabled", obj: @ou.model_name.human) } }
+      else
+        f.html { render :show, flash: { error: t("error_disable_fail", obj: @ou.model_name.human) } }
+      end
+
+    end
+  end
+
+  def clear_disabled
+    @ou = Ou.find params[:id]
+    @ou.disabled_on = nil
+
+    respond_to do |f|
+      if @ou.save
+        f.html { redirect_to ous_path, flash: { notice: t("notice_enabled", obj: @ou.model_name.human) } }
+      else
+        f.html { render :show, flash: { error: t("error_enable_fail", obj: @ou.model_name.human) } }
+      end
+    end
+  end
+
+
+  def search_by_name
+    @ous = Ou.where('name like ?', "%#{params[:search_name]}%")
+
+    respond_to do |f|
+      f.html {
+        @ous = @ous.page params[:page]
+        render :index
+      }
+      f.json { render json: @ous }
+    end
+  end
 
   def new
     @ou = Ou.new
@@ -48,7 +77,7 @@ class OusController < ApplicationController
         f.html { redirect_to @ou, flash: { notice: "Record created"} }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity}
+        f.html { render :new, status: :unprocessable_content}
         f.json { json_failure @ou.errors }
       end
     end
@@ -82,12 +111,13 @@ class OusController < ApplicationController
         f.html { redirect_to @ou }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity}
+        f.html { render :edit, status: :unprocessable_content}
         f.json { json_failure @ou.errors }
       end
     end
   end
 
+=begin
   def destroy
     @ou = Ou.find(params[:id])
     @ou.destroy
@@ -97,8 +127,13 @@ class OusController < ApplicationController
       format.json { json_success }
     end
   end
+=end
 
   private
+
+  def disabled_params
+    params.require(:ou).permit(:id, :disabled_on)
+  end
 
   def ou_params
     params.require(:ou).permit( :id, :name, :description, :root_id, :tax_id,

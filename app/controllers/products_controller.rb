@@ -54,7 +54,7 @@ class ProductsController < ApplicationController
 				f.html { redirect_to @product, notice: "#{Product.model_name.human} #{@product.name} added." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @product.errors }
 			end
 
@@ -74,7 +74,7 @@ class ProductsController < ApplicationController
 				f.html { redirect_to @product, notice: "#{Product.model_name.human} #{@product.name} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity}
+				f.html { render :edit, status: :unprocessable_content}
 				f.json { json_failure @product.errors }
 			end
 

@@ -21,7 +21,7 @@ class AddressClientsController < ApplicationController
         f.html { redirect_to clients_show2_path(@client), notice: "#{@client.name} updated" }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
         f.json { json_failure @address_client.errors }
       end
 
@@ -41,7 +41,7 @@ class AddressClientsController < ApplicationController
         f.html { redirect_to clients_show2_path(@client), notice: "#{@client.name} updated." }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
         f.json { json_failure @address_client.errors }
       end
 

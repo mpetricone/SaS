@@ -12,6 +12,12 @@ class AddressContactsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+
+  test 'should not access page' do
+    should_not_access_data @address_contact, update_params,[:index, :show], {contact_id: @address_contact.contact.id}
+
+  end
+
 	test 'should get new' do
 		get :new, params: { contact_id: @address_contact.contact.id }
 		assert_response :success

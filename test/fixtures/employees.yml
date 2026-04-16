@@ -8,6 +8,14 @@ admin:
   password_digest: <%= BCrypt::Password.create("testtest", cost: 4)  %>
   user_name: 'Admin'
 
+useless:
+  ou: one
+  date_hired: 2015-01-20
+  position: 'Test no privs'
+  contact: two
+  password_digest: <%= BCrypt::Password.create("testtest", cost: 4) %>
+  user_name: 'Useless'
+
 <% 100.times do |i| %>
 employee_<%=i%>:
     date_hired: <%= Date.today %>

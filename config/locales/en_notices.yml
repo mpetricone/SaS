@@ -7,3 +7,5 @@ en:
   notice_image_attached: 'Image Attached.'
   notice_image_updated: 'Image Updated.'
   notice_image_deleted: 'Image Deleted.'
+  notice_disabled: '%{obj} Disabled.'
+  notice_enabled: '%{obj} Enabled.'

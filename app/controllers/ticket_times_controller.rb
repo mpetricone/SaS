@@ -24,7 +24,7 @@ class TicketTimesController < ApplicationController
 				f.html { redirect_to @ticket, notice: @@alter_notice }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @ticket_time.errors }
 			end
 
@@ -46,7 +46,7 @@ class TicketTimesController < ApplicationController
 				f.html { redirect_to @ticket, notice: @@alter_notice }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity  }
+				f.html { render :edit, status: :unprocessable_content  }
 				f.json { json_failure @ticket_time.errors }
 			end
 

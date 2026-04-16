@@ -16,7 +16,7 @@ class ContactDistributersController < ApplicationController
 				f.html { redirect_to @distributer, notice: "#{@contact_distributer.contact.full_name} added." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @contact_distributer.errors }
 			end
 
@@ -36,7 +36,7 @@ class ContactDistributersController < ApplicationController
 				f.html { redirect_to @distributer, notice: "#{ContactDistributer.model_name.human} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @contact_distributer.errors }
 			end
 

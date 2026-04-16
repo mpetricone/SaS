@@ -58,7 +58,7 @@ class StandingsController < ApplicationController
 				f.html { redirect_to standings_path, notice: 'Standing was successfully created.' }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @standing.errors }
 			end
 
@@ -74,7 +74,7 @@ class StandingsController < ApplicationController
 				f.html { redirect_to standings_path, notice: 'Standing was successfully updated.' }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @standing.errors }
 			end
 

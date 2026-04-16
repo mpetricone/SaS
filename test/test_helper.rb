@@ -19,6 +19,41 @@ class ActiveSupport::TestCase
     log_in Employee.find_by(user_name: "Admin")
   end
 
+  def login_useless_user
+    log_in Employee.find_by(user_name: 'Useless')
+  end
+
+  #test the usual routes for no access
+  def should_not_access_data model,params,exclude = [], parent_params={}
+    log_out
+    login_useless_user
+
+    if !exclude.any?(:index)
+      get :index
+      assert_redirected_to home_index_path
+    end
+    if !exclude.any?(:new)
+      get :new, params: parent_params
+      assert_redirected_to home_index_path
+    end
+    if !exclude.any?(:create)
+      post :create, params: params
+      assert_redirected_to home_index_path
+    end
+    if !exclude.any?(:show)
+      get :show, params: params
+      assert_redirected_to home_index_path
+    end
+    if !exclude.any?(:edit)
+      get :edit, params: params
+      assert_redirected_to home_index_path
+    end
+    if !exclude.any?(:update)
+      patch :update, params: params
+      assert_redirected_to home_index_path
+    end
+  end
+
   def logout_admin
     log_out
   end
@@ -52,7 +87,7 @@ class ActionDispatch::IntegrationTest
     Capybara.server = :webrick
     # Capybara.register_driver :selenium_chrome
     Capybara.default_driver = :selenium_chrome
-    page.driver.browser.manage.window.resize_to(1024, 1080)
+    page.driver.browser.manage.window.resize_to(1680, 1080)
     Capybara.default_max_wait_time = 5
   end
 
@@ -70,7 +105,7 @@ class ActionDispatch::IntegrationTest
     assert page.has_content? "User name"
     assert page.has_content? "Password"
     page.fill_in "session[user_name]", with: "Admin"
-    page.fill_in "session[password]", with: REMOVED
+    page.fill_in "session[password]", with: "testtest"
     page.click_button "Login"
     page.assert_current_path "/"
   end

@@ -59,7 +59,7 @@ class EmployeesController < ApplicationController
         f.html { redirect_to @employee, notice: "Record updated." }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
         f.json { json_failure @employee.errors }
       end
 
@@ -81,7 +81,7 @@ class EmployeesController < ApplicationController
         f.html { redirect_to @employee, notice: "Employee created." }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
         f.json { json_failure @employee.errors }
       end
     end
@@ -91,15 +91,14 @@ class EmployeesController < ApplicationController
     @employee = Employee.find(params[:id])
   end
 
-  def destroy
-    @employee = Employee.find(params[:id])
-    @employee.destroy
-    respond_to do |f|
-      f.html { redirect_to employees_url, notice: "Deletion successfull" }
-      f.json { json_success }
-    end
-
-  end
+  ##def destroy
+  ##  @employee = Employee.find(params[:id])
+  ##  @employee.destroy
+  ##  respond_to do |f|
+  ##    f.html { redirect_to employees_url, notice: "Deletion successfull" }
+  ##    f.json { json_success }
+  ##  end
+  ##end
 
   private
   def new_params

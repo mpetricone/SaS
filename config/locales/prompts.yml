@@ -1,2 +1,4 @@
 en:
   prompt_remove: Remove %{item}?
+  prompt_confirm_disable: "Really delete %{item}? This may impact the business."
+  prompt_confirm_enable: "Are you sure, enable %{item}?"

@@ -9,3 +9,6 @@ en:
   item_attached: "%{item} attached."
   jump_to_item: "Jump to %{item}."
   built_for: "Built for"
+  no_user: "No User"
+  is_disabled: "Disabled: %{state}"
+  click_image_for_full_size: "Click image for full size"

@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Auditor
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
 	# # modified for API
@@ -7,6 +8,7 @@ class ApplicationController < ActionController::Base
 
 	# this is used on almost every page for the navbar and the home/index as well
 	before_action :get_current_employee
+  before_action :auto_log
 
 	def get_current_employee
 		@current_employee= current_employee
@@ -20,4 +22,5 @@ class ApplicationController < ActionController::Base
   def json_failure reason = false
     render json: { response: 'failure', error: reason }
   end
+
 end

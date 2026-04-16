@@ -11,6 +11,14 @@ class OuEmailsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+       should_not_access_data @ou_email, update_params, [:show, :index],
+         {
+           id: @ou_email,
+           ou_id: @ou
+         }
+  end
+
 	test 'should get new' do
 		get :new, params: { ou_id: @ou_email.ou.id }
 		assert_response :success

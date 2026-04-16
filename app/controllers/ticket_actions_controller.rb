@@ -17,7 +17,7 @@ class TicketActionsController < ApplicationController
         f.html { redirect_to @ticket, notice: "Added #{TicketAction.model_name.human}." }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
         f.json { json_failure @ticket_action.errors }
       end
     end
@@ -34,7 +34,7 @@ class TicketActionsController < ApplicationController
         f.html { redirect_to @ticket, notice: "Altered #{TicketAction.model_name.human}." }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
         f.json { json_failure @ticket_action.errors }
       end
     end

@@ -35,9 +35,6 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
     assert_current_path /\/employees\/[0-9]*$/
     assert has_content? "Record updated."
     click_link "Return"
-    first("a", text: "Delete").click
-    accept_alert /Remove Employee .*\?$/
-    assert has_content? "Deletion successfull"
   end
 
   test "can use employee permission" do

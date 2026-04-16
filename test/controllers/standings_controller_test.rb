@@ -1,102 +1,108 @@
 require 'test_helper'
 
 class StandingsControllerTest < ActionController::TestCase
-	def setup
-		@standing = standings(:one)
-		logon_admin
-	end
+  def setup
+    @standing = standings(:one)
+    logon_admin
+  end
 
-	def teardown
-		logout_admin
-	end
+  def teardown
+    logout_admin
+  end
 
-	test 'should get index' do
-		get :index
-		assert_response :success
-		assert_not_nil assigns(:standings)
-	end
+  test 'should not access page' do
+    should_not_access_data @standing, update_params
+    get :search_by_name, params: { search_name: 'standing'  }
+    assert_redirected_to home_index_path
+  end
 
-	test 'should get index returning json' do
-		get :index, format: :json
-		assert_response :success
-	end
+  test 'should get index' do
+    get :index
+    assert_response :success
+    assert_not_nil assigns(:standings)
+  end
 
-	test 'should search by name' do
-		get :search_by_name, params: { search_name: 'standing' }
-		assert_response :success
-		assert_not_nil assigns(:standings)
-	end
+  test 'should get index returning json' do
+    get :index, format: :json
+    assert_response :success
+  end
 
-	test 'should search by name returning json' do
-		get :search_by_name, params: { search_name: 'standing' }, format: :json
-		assert_response :success
-		assert_not_nil assigns(:standings)
-	end
+  test 'should search by name' do
+    get :search_by_name, params: { search_name: 'standing' }
+    assert_response :success
+    assert_not_nil assigns(:standings)
+  end
 
-	test 'should get new' do
-		get :new
-		assert_response :success
-	end
+  test 'should search by name returning json' do
+    get :search_by_name, params: { search_name: 'standing' }, format: :json
+    assert_response :success
+    assert_not_nil assigns(:standings)
+  end
 
-	def create_params
-		{ standing: { name: @standing.name } }
+  test 'should get new' do
+    get :new
+    assert_response :success
+  end
 
-	end
+  def create_params
+    { standing: { name: @standing.name } }
 
-	test 'should create standing' do
-		assert_difference('Standing.count') do
-			post :create, params: create_params
-		end
+  end
 
-		assert_redirected_to standings_path
-	end
+  test 'should create standing' do
+    assert_difference('Standing.count') do
+      post :create, params: create_params
+    end
 
-	test 'should create standing returning json' do
-		assert_difference('Standing.count') do
-			post :create, params: create_params, format: :json
-		end
+    assert_redirected_to standings_path
+  end
 
-		assert_json_success
-	end
+  test 'should create standing returning json' do
+    assert_difference('Standing.count') do
+      post :create, params: create_params, format: :json
+    end
 
-	test 'should show standing' do
-		get :show, params: { id: @standing }
-		assert_response :success
-	end
+    assert_json_success
+  end
 
-	test 'should get edit' do
-		get :edit, params: { id: @standing }
-		assert_response :success
-	end
+  test 'should show standing' do
+    get :show, params: { id: @standing }
+    assert_response :success
+  end
 
-	def update_params
-		{ id: @standing, standing: { name: @standing.name } }
+  test 'should get edit' do
+    get :edit, params: { id: @standing }
+    assert_response :success
+  end
 
-	end
+  def update_params
+    { id: @standing, standing: { name: @standing.name } }
 
-	test 'should update standing' do
-		patch :update, params: update_params
-		assert_redirected_to standings_path
-	end
+  end
 
-	test 'should update standing returning json' do
-		patch :update, params: update_params, format: :json
-		assert_json_success
-	end
+  test 'should update standing' do
+    patch :update, params: update_params
+    assert_redirected_to standings_path
+  end
 
-	test 'should destroy standing' do
-		assert_difference('Standing.count', -1) do
-			delete :destroy, params: { id: @standing }
-		end
+  test 'should update standing returning json' do
+    patch :update, params: update_params, format: :json
+    assert_json_success
+  end
 
-		assert_redirected_to standings_path
-	end
+  test 'should destroy standing' do
+    assert_difference('Standing.count', -1) do
+      delete :destroy, params: { id: @standing }
+    end
 
-	test 'should destroy standing retuning json' do
-		assert_difference('Standing.count', -1) do
-			delete :destroy, params: { id: @standing }, format: :json
-		end
+    assert_redirected_to standings_path
+  end
 
-		assert_json_success
-	end
+  test 'should destroy standing retuning json' do
+    assert_difference('Standing.count', -1) do
+      delete :destroy, params: { id: @standing }, format: :json
+    end
+
+    assert_json_success
+  end
 end

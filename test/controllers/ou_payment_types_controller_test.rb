@@ -10,6 +10,12 @@ class OuPaymentTypesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not acccess page' do
+    should_not_access_data @ou_payment_type, update_params
+    get :search_by_name, params: { search_name: 'test' }
+    assert_redirected_to home_index_path
+  end
+
 	test 'should get index' do
 		get :index
 		assert_response :success

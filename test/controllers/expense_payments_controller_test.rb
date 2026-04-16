@@ -11,6 +11,14 @@ class ExpensePaymentsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @expense_payment, update_params, [:index, :show],
+      {
+        id: @expense_payment,
+        expense_id: @expense
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { expense_id: @expense.id }
 		assert_response :success

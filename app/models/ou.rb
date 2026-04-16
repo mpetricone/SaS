@@ -10,4 +10,8 @@ class Ou < ActiveRecord::Base
     belongs_to :tax
     accepts_nested_attributes_for :ou_emails, :ou_phones, :ou_addresses, :roots
     validates :name , :presence => true
+
+    def disabled?
+      self.disabled_on ? true : false
+    end
 end

@@ -77,7 +77,7 @@ class ContactsController < ApplicationController
 				format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
 				format.json { json_success }
 			else
-				format.html { render :new, status: :unprocessable_entity }
+				format.html { render :new, status: :unprocessable_content }
 				format.json { json_failure @contact.errors }
 			end
 
@@ -93,7 +93,7 @@ class ContactsController < ApplicationController
 				format.html { redirect_to @contact, notice: 'Contact was successfully updated.' }
 				format.json { json_success }
 			else
-				format.html { render :edit, status: :unprocessable_entity }
+				format.html { render :edit, status: :unprocessable_content }
 				format.json { json_failure @contact.errors }
 			end
 

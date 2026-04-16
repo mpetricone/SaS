@@ -2,3 +2,5 @@ en:
   error_search_generic: There was a problem searching.
   error_search_date_invalid: The dates entered were not valid, or missing.
   error_np_no_date: No Date
+  error_disable_fail: "Failed to disable %{obj}"
+  error_enable_fail: "Failed to enable %{obj}"

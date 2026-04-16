@@ -1,6 +1,6 @@
 class TicketNotesController < ApplicationController
   before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-  before_action(only: [:update]) { process_permission has_write_permission(:ticket_attribute) }
+  before_action(only: [:update, :edit]) { process_permission has_write_permission(:ticket_attribute) }
   before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
   before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
 
@@ -23,7 +23,7 @@ class TicketNotesController < ApplicationController
       if @ticket_note.save
         f.html { redirect_to @ticket, notice: t(:notice_added, item: TicketNote.model_name.human) }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
       end
     end
   end
@@ -35,7 +35,7 @@ class TicketNotesController < ApplicationController
       if @ticket_note.update new_params
         f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketNote.model_name.human) }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
       end
     end
   end

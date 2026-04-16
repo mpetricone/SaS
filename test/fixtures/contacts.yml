@@ -7,6 +7,13 @@ one:
   description: 'Test Admin'
   standing: one
 
+two:
+  fname: Useless
+  lname: User
+  mname: luser
+  description: 'No rights'
+  standing: one
+
 <% 100.times do |i| %>
 contact_<%=i%>:
     fname: <%= "Name #{i}" %>

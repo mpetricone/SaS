@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
   def create
     employee = Employee.find_by( user_name: params[:session][:user_name].downcase)
     respond_to do |f|
-      if (employee && employee.authenticate(params[:session][:password]))
+      if (employee && employee.authenticate(params[:session][:password]) && !employee.ou.disabled?)
         log_in( employee )
         f.html { redirect_to root_url, notice: "#{employee.contact.full_name} logged in."}
         ret_employee = employee.clone();
@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
       else
         f.html {
           flash.now[:alert] =  "Wrong username or password"
-          render :new, status: :unprocessable_entity 
+          render :new, status: :unprocessable_content 
         }
         f.json { render json: { response: "fail" } }
       end

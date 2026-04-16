@@ -10,17 +10,23 @@ class TicketActionStatusesControllerTest < ActionController::TestCase
     logout_admin
   end
 
+  test 'should not access page' do
+    should_not_access_data @ticket_action_status, update_params
+    get :search_by_name,  params: { search_text: 'ticket_action' }
+    assert_redirected_to home_index_path
+  end
+
   test 'should get index' do
     get :index
     assert_response :success
     assert_not_nil assigns(:ticket_action_statuses)
   end
 
-	test 'should search_by_name' do
-		get :search_by_name, params: { search_name: 'test' }
-		assert_response :success
-		assert_not_nil assigns(:ticket_action_statuses)
-	end
+  test 'should search_by_name' do
+    get :search_by_name, params: { search_name: 'test' }
+    assert_response :success
+    assert_not_nil assigns(:ticket_action_statuses)
+  end
 
   test 'should get new' do
     get :new
@@ -61,4 +67,12 @@ class TicketActionStatusesControllerTest < ActionController::TestCase
 
     assert_redirected_to ticket_action_statuses_path
   end
+
+  def update_params 
+    {
+      id: @ticket_action_status,
+      ticket_action_status: { status: @ticket_action_status.status }
+    }
+  end
+
 end

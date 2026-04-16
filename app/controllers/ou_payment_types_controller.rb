@@ -1,6 +1,6 @@
 class OuPaymentTypesController < ApplicationController
 	before_action :set_ou_payment_type, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:expense_attribute) }
+	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:expense_attribute) }
 	before_action(only: [:edit, :update]) { process_permission has_write_permission(:expense_attribute) }
 	before_action(only: [:new, :create]) { process_permission has_create_permission(:expense_attribute) }
 	before_action(only: [:delete]) {process_permission has_delete_permission(:expense_attribute) }
@@ -56,7 +56,7 @@ class OuPaymentTypesController < ApplicationController
 				f.html { redirect_to @ou_payment_type, notice: 'Ou payment type was successfully created.' }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @ou_payment_type.errors }
 			end
 
@@ -72,7 +72,7 @@ class OuPaymentTypesController < ApplicationController
 				f.html { redirect_to @ou_payment_type, notice: 'Ou payment type was successfully updated.' }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @ou_payment_types.errors }
 			end
 

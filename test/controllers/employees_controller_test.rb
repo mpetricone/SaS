@@ -10,6 +10,12 @@ class EmployeesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @employee, update_params
+    get :search_by_name, params: { search_name: 'employee' }
+    assert_redirected_to home_index_path
+  end
+
 	test 'should get index' do
 		get :index
 		assert_response :success
@@ -97,19 +103,4 @@ class EmployeesControllerTest < ActionController::TestCase
 		assert_json_success
 	end
 
-	test 'should destroy employee' do
-		assert_difference('Employee.count', -1) do
-			delete :destroy, params: { id: @employee }
-		end
-
-		assert_redirected_to employees_path
-	end
-
-	test 'should destroy employee returning json' do
-		assert_difference("Employee.count", -1) do
-			delete :destroy, params: { id: @employee}, format: :json
-		end
-
-		assert_json_success
-	end
 end

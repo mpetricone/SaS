@@ -15,6 +15,10 @@ class TicketsControllerTest < ActionController::TestCase
     logout_admin
   end
 
+  test 'should not access page' do
+    should_not_access_data @ticket, update_params
+  end
+
   test "should get index" do
     get :index
     assert_response :success

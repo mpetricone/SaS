@@ -15,7 +15,7 @@ class ClientEmailsController < ApplicationController
         f.html { redirect_to clients_show2_path(@client), notice: "#{ClientEmail.model_name.human} #{@client_email.email} added." }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
         f.json { json_failue @client_email.errors }
       end
     end
@@ -33,7 +33,7 @@ class ClientEmailsController < ApplicationController
         f.html { redirect_to clients_show2_path(@client), notice: "#{ClientEmail.model_name.human} updated." }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
         f.json { json_failure @client_email.erros }
       end
     end

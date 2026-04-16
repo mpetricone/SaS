@@ -12,6 +12,14 @@ class DistributerProductsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @distributer_product, update_params, [:index, :show],
+      { 
+        id: @distributer_products,
+        product_id: @product
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { product_id: @distributer_product.product.id }
 		assert_response :success

@@ -22,6 +22,9 @@
 en:
   activerecord:
     models:
+      log:
+        one: 'Audit Log'
+        other: 'Audit Logs'
       expense:
         one: 'Expense'
         other: 'Expenses'

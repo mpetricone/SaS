@@ -24,7 +24,7 @@ class TicketPicturesController < ApplicationController
       if @ticket_picture.save
         f.html { redirect_to @ticket, notice: t(:notice_image_attached) }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
       end
     end
   end
@@ -36,7 +36,7 @@ class TicketPicturesController < ApplicationController
       if @ticket_picture.update new_params
         f.html { redirect_to @ticket, notice: t(:notice_image_updated) }
       else
-        f.html { render :edit, status: :unprocessable_entity }
+        f.html { render :edit, status: :unprocessable_content }
       end
     end
   end

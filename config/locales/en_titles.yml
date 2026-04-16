@@ -1,4 +1,6 @@
 en:
+  title_details: "Details"
+  title_timestamps: "Timestamps"
   title_new: "New %{title}"
   title_edit: "Editing %{title}"
   title_new_for: "New %{title} for %{for}"

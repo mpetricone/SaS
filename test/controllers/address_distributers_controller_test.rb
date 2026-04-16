@@ -11,6 +11,10 @@ class AddressDistributersControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @address_distributer, edit_params, [:show, :index], edit_params
+  end
+
 	test 'should get new' do
 		get :new, params: { distributer_id: @distributer.id }
 		assert_response :success
@@ -27,6 +31,13 @@ class AddressDistributersControllerTest < ActionController::TestCase
 			}
 		}
 	end
+
+  def edit_params
+    { 
+      id: @address_distributer,
+      distributer_id: @distributer.id
+    }
+  end
 
 	test 'should create address_distributer' do
 		assert_difference('AddressDistributer.count') do

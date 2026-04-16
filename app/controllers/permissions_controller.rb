@@ -47,7 +47,7 @@ class PermissionsController < ApplicationController
 				f.html { redirect_to permissions_path, notice: "#{@permission.name} added." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @permission.errors }
 			end
 
@@ -67,7 +67,7 @@ class PermissionsController < ApplicationController
 				f.html { redirect_to permissions_path, notice: "#{@permission.name} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @permission.errors }
 			end
 

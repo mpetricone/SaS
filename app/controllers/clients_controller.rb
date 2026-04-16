@@ -78,7 +78,7 @@ class ClientsController < ApplicationController
         f.html { redirect_to @client, notice: "Updated record." }
         f.json { json_success }
       else
-        f.html { render :edit, status: :unprocessable_entity}
+        f.html { render :edit, status: :unprocessable_content}
         f.html { json_failure @client.errors }
       end
     end
@@ -107,7 +107,7 @@ class ClientsController < ApplicationController
         f.html { redirect_to clients_path, notice: "Created record" }
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity }
+        f.html { render :new, status: :unprocessable_content }
         f.json { json_failure @client.errors }
       end
     end

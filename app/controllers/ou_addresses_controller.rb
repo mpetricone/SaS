@@ -20,7 +20,7 @@ class OuAddressesController < ApplicationController
         f.html { redirect_to @ou, notice: "#{OuAddress.model_name.human} added."}
         f.json { json_success }
       else
-        f.html { render :new, status: :unprocessable_entity}
+        f.html { render :new, status: :unprocessable_content}
         f.json { json_failure @ouAddress.errors }
       end
     end
@@ -54,7 +54,7 @@ class OuAddressesController < ApplicationController
         f.html { redirect_to @ou, {notice: "#{OuAddress.model_name.human} updated."} }
         f.json { json_success }
       else
-        f.html {render :edit, status: :unprocessable_entity }
+        f.html {render :edit, status: :unprocessable_content }
         f.json { json_failure @ouAddress.errors }
       end
     end

@@ -12,6 +12,10 @@ class AddressClientsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @address_client, edit_params, [:index, :show], {client_id: @address_client.client.id }
+  end
+
 	test 'should get new' do
 		get :new, params: { client_id: @address_client.client.id }
 		assert_response :success
@@ -28,6 +32,14 @@ class AddressClientsControllerTest < ActionController::TestCase
 			}
 		}
 	end
+
+  def edit_params
+    {
+			client_id: @client.id,
+      id: @address_client.id
+			
+		}
+  end
 
 	test 'should create address_client' do
 		assert_difference('AddressClient.count') do

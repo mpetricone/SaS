@@ -15,7 +15,7 @@ class DistributerEmailsController < ApplicationController
 				f.html { redirect_to @distributer, notice: "#{DistributerEmail.model_name.human} #{@distributer_email.email} added." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @distributer_email }
 			end
 
@@ -35,7 +35,7 @@ class DistributerEmailsController < ApplicationController
 				f.html { redirect_to @distributer, notice: "#{DistributerEmail.model_name.human} #{@distributer_email.email} updated." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @distributer_email }
 			end
 

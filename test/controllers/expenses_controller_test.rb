@@ -10,6 +10,12 @@ class ExpensesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @expense, update_params
+    get :search_by_name, params: { search_name: 'test' }
+    assert_redirected_to home_index_path
+  end
+
 	test 'should get index' do
 		get :index
 		assert_response :success

@@ -47,7 +47,7 @@ class TicketActionStatusesController < ApplicationController
 						 notice: "#{TicketActionStatus.model_name.human} #{@ticket_action_status.status} added." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @ticket_action_status.errors }
 			end
 
@@ -66,7 +66,7 @@ class TicketActionStatusesController < ApplicationController
 				f.html { redirect_to ticket_action_statuses_path, notice: "#{@ticket_action_status.status} modified" }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @ticket_action_status.errors }
 			end
 

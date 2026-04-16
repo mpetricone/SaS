@@ -58,7 +58,7 @@ class ExpenseTypesController < ApplicationController
 				f.html { redirect_to expense_types_path, notice: 'Expense type was successfully created.' }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @expense_type.errors }
 			end
 
@@ -74,7 +74,7 @@ class ExpenseTypesController < ApplicationController
 				f.html { redirect_to @expense_type, notice: 'Expense type was successfully updated.' }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @expense_type.errors }
 			end
 

@@ -11,6 +11,14 @@ class ClientNotesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @client_note, update_params, [:show, :index], 
+      {
+        id: @client_note,
+        client_id: @client.id
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { client_id: @client_note.client.id }
 		assert_response :success

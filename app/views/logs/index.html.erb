@@ -1,0 +1,37 @@
+<div class='container-fluid'>
+  <div class='row'>
+    <div class='card p-0 col-12'>
+      <div class="card-header d-flex justify-content-betwween">
+        <h4><%= Log.model_name.human(count: 2) %></h4>
+      </div>
+    </div>
+  <div class='card-body'>
+  <table class='table table-striped table-sm'>
+    <thead>
+      <tr>
+        <td><%= Log.human_attribute_name :issued_at %></td>
+        <td><%= Log.human_attribute_name :category %></td>
+        <td><%= Log.human_attribute_name :module_name %></td>
+        <td><%= Log.human_attribute_name :in_method %></td>
+        <td><%= Log.human_attribute_name :details %></td>
+        <td><%= Employee.model_name.human %></td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @logs.each do |l| %>
+        <tr>
+          <%= tag.td link_to(l.event_at, l) %>
+          <%= tag.td l.category %>
+          <%= tag.td l.module_name %>
+          <%= tag.td l.in_method %>
+          <%= tag.td l.details %>
+          <% #get_employee_data splat the tuple for link %>
+          <%= tag.td link_to(*get_employee_data(l)) %>
+        </tr>
+      <%end%>
+    </tbody>
+  </table>
+  </div>
+  </div>
+  <%= render partial: 'shared/pagination/pagination_bubble', locals: {remote: false, main_model: @logs, param_name: :page } %>
+</div>

@@ -4,6 +4,7 @@
 <%# related_fields: hash of array of fields for related models %>
 <%# delete_msg: message to display on delete click the first instance of '**' will be replaced by delete_msg_ident, if it is present %>
 <%# delete_msg_ident: symbol for delete msg identifier %>
+<%# disable_delete: if set, disables delete group %>
 <% path = main_model.name.underscore.to_s+"_path" %>
 <% new_path = 'new_'+path %>
 <% begin %>
@@ -78,12 +79,17 @@
                 <div class='btn-group' role='group'>
                   <%= link_to "Edit", send(edit_path, record), class: 'btn btn-secondary' %>
                   <%= link_to "Show", record, class: 'btn btn-primary' %>
-                  <% if defined? delete_msg_ident %>
-                    <% dmsg = delete_msg.sub '**', record.send( delete_msg_ident) %>
-                  <% else %>
-                    <% dmsg = delete_msg %>
-                  <% end %>
-                  <%= link_to "Delete", send(path, record),method: :delete,  data: {confirm: dmsg }, class: 'btn btn-danger' %></td>
+                  <% if defined? disable_delete %>
+                    <button  type='button' class='btn btn-danger' disabled>Delete</button>
+                  <%else%>
+                    <% if defined? delete_msg_ident %>
+                      <% dmsg = delete_msg.sub '**', record.send( delete_msg_ident) %>
+                    <% else %>
+                      <% dmsg = delete_msg %>
+                    <% end %>
+                      <%= link_to "Delete", send(path, record),method: :delete,  data: {confirm: dmsg }, class: 'btn btn-danger' %>
+                  <%end%>
+                  </td>
                 </div>
             </tr>
           <% end %>

@@ -1,8 +1,10 @@
 class DistributersController < ApplicationController
+  include Auditor
 	before_action(only: [:index, :show, :search_by_name]) { process_permission has_read_permission(:distributer) }
 	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer) }
 	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer) }
 	before_action(only: [:delete]) { process_permission has_delete_permission(:distributer) }
+
 	def index
 		respond_to do |f|
 			f.html {
@@ -17,7 +19,10 @@ class DistributersController < ApplicationController
 	def show
 		@distributer = Distributer.find params[:id]
 		respond_to do |f|
-			f.html { render :show }
+        log_success( request, params)
+			f.html { 
+        render :show 
+      }
 			f.json { render json: {
 				distributer: @distributer,
 				address_distributers: @distributer.address_distributers,
@@ -60,7 +65,7 @@ class DistributersController < ApplicationController
 				f.html { redirect_to distributers_path, notice:  "Created #{Distributer.model_name.human} #{@distributer.name}." }
 				f.json { json_success }
 			else
-				f.html { render :new, status: :unprocessable_entity }
+				f.html { render :new, status: :unprocessable_content }
 				f.json { json_failure @distributer.errors }
 			end
 
@@ -80,7 +85,7 @@ class DistributersController < ApplicationController
 				f.html { redirect_to @distributer, notice: "Changes to #{@distributer.name} saved." }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_entity }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @distributer.errors }
 			end
 

@@ -1,27 +1,43 @@
 <%= render_show_title "#{Ou.model_name.human} #{@ou.name}", edit_ou_path(@ou), ous_path %>
 <div class='row'>
-	<%= render partial: 'shared/show_item', locals: {model: @ou, attribs: [ :description] } %>
-	<% if  @ou.root_id %>
-		<div class='show_field'>
-			<%= content_tag :strong, "#{Ou.human_attribute_name :root_id}:", class: 'view_label' %>
-			<%= link_to @ou.root.name, @ou.root %>
-		</div>
-	<% end %>
-	<%= render partial: 'shared/show_sub_list',
-		locals: {
-		main_model: @ou,
-		sub_model: @ou.ou_phones,
-		show_fields: [:number, :description] } %>
-	<%= render partial: 'shared/show_sub_list',
-		locals: {
-		main_model: @ou,
-		sub_model: @ou.ou_emails,
-		show_fields: [:address,:description] } %>
-	<%= render partial: 'shared/show_sub_list',
-		locals: {
-		main_model: @ou,
-		sub_model: @ou.ou_addresses,
-		join_table: :address,
-		show_fields: [:street1, :street2, :city, :state],
-		extra_fields: [:delivery, :invoice ] } %>
+  <%= render partial: 'shared/show_item', locals: {model: @ou, attribs: [ :description] } %>
+  <% if  @ou.root_id %>
+    <div class='show_field'>
+      <%= content_tag :strong, "#{Ou.human_attribute_name :root_id}:", class: 'view_label' %>
+      <%= link_to @ou.root.name, @ou.root %>
+    </div>
+  <% end %>
+  <%= render partial: 'shared/show_sub_list',
+    locals: {
+      main_model: @ou,
+      sub_model: @ou.ou_phones,
+      show_fields: [:number, :description] } %>
+    <%= render partial: 'shared/show_sub_list',
+      locals: {
+        main_model: @ou,
+        sub_model: @ou.ou_emails,
+        show_fields: [:address,:description] } %>
+      <%= render partial: 'shared/show_sub_list',
+    locals: {
+      main_model: @ou,
+      sub_model: @ou.ou_addresses,
+      join_table: :address,
+      show_fields: [:street1, :street2, :city, :state],
+      extra_fields: [:delivery, :invoice ] } %>
+    <div class="col-12 col-1g-6">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <h2 class="d-inline-block">
+            <%= t(:label_status) %>
+            </h4>
+        </div>
+        <div class="card-body">
+          <%= t(:is_disabled, state: @ou.disabled?.to_s) %><br/>
+          <div class="btn-group" role="group" aria-label="disable group">
+            <%= link_to t(:label_disable), set_disabled_ou_path(@ou), method: :patch, class: "btn btn-danger", data: {confirm: t(:prompt_confirm_disable, item: @ou.name)} %>
+            <%= link_to t(:label_enable), clear_disabled_ou_path(@ou), method: :patch, class: "btn btn-danger", data: {confirm: t(:prompt_confirm_enable, item: @ou.name)} %>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>

@@ -1,14 +1,14 @@
 module Version
   class Version
     @@major = 3
-    @@minor = 1
+    @@minor = 3
     @@patch = 0
     @@text = "#{@@major}.#{@@minor}.#{@@patch}"
-    @@copyright = "&copy; 2015-2022 Matthew Petricone"
+    @@copyright = "&copy; 2015-2025 Matthew Petricone"
     @@version_text = " | Version "
     @@contact_email = "matt@solidstate.solutions"
     @@contact_name = "Matthew Petricone"
-    @@build_note = "Ceti Alpha 5"
+    @@build_note = "Snarky Trumpet"
 
     def self.version
       return @@text.html_safe

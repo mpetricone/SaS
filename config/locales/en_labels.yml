@@ -1,4 +1,7 @@
 en:
+  label_status: "Status"
+  label_enable: "Enable"
+  label_disable: "Disable"
   label_primary_info: "Primary Info"
   label_employee_name: "Employee Name"
   label_employer_info: "Employer Info"

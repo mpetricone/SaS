@@ -11,6 +11,14 @@ class EmployeePermissionsControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not access page' do
+    should_not_access_data @employee_permission, update_params, [:index, :show],
+      {
+        id: @employee_permission,
+        employee_id: @employee
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { employee_id: @employee.id }
 		assert_response :success

@@ -11,6 +11,14 @@ class OuAddressesControllerTest < ActionController::TestCase
 	def teardown
 		logout_admin
 	end
+  
+  test 'should not access page' do
+    should_not_access_data @ou_address, update_params, [:show, :index],
+      { 
+        id: @ou_address,
+        ou_id: @ou
+      }
+  end
 
 	test 'should get new' do
 		get :new, params: { ou_id: @ou_address.ou.id }

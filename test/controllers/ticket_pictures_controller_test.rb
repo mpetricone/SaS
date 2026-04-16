@@ -11,6 +11,14 @@ class TicketPicturesControllerTest < ActionController::TestCase
     logout_admin
   end
 
+  test 'should not access page' do
+    should_not_access_data @ticket_picture, create_params, [:index, :show],
+      {
+        id: @ticket_picture,
+        ticket_id: @ticket
+      }
+  end
+
   def create_params
     {
       ticket_id: @ticket.id,

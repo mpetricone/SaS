@@ -11,6 +11,14 @@ class TicketWorkTypesControllerTest < ActionController::TestCase
 		logout_admin
 	end
 
+  test 'should not acccess page' do
+    should_not_access_data @ticket_work_type, update_params, [:index, :show],
+      { 
+        id: @ticket_work_type,
+        ticket_id: @ticket
+      }
+  end
+
 	test 'should get new' do
 		get :new, params: { ticket_id: @ticket_work_type.ticket.id }
 		assert_response :success
