@@ -31,7 +31,7 @@ Sas has not been subject to extensive vulnerability testing, and I would not rec
 -  Install Ruby 3.4+ and Rails 8.1
 - bundle install
     - MySQL/Maria/VIPS may cause errors, here, install libraries.
-    - Version 3.3 switched to trilogy, MySQl/Maria dev libraries should be needed any more.
+    - Version 3.3 switched to trilogy for mysql/mariadb.
 - Fix db/seeds.rb
     - You may wish to enter some more basic values, 99% of them can be added any time.
 - Configure active storage and ensure data sources exist
