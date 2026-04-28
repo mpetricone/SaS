@@ -44,7 +44,7 @@ rails db:create db:migrate db:seed
 RAILS_ENV=test rails db:create db:migrate
 ```
 
-`db:seed` populates required lookup data (ticket statuses, work types, standings, etc.). It is safe to re-run.
+`db:seed` populates required lookup data (ticket statuses, work types, standings, etc.). It is safe to re-run. Ai Added this, Pretty sure it's a lie, don't keep running it. -Matt.
 
 ### Branding
 
