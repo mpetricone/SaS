@@ -30,17 +30,19 @@ class ExpenseUsageTest < ActionDispatch::IntegrationTest
   test "can use and edit expenses" do
     visit_expenses_page
 
-    first("a", text: "Show").click
+    click_link "Show", match: :first
     assert page.has_content? "Expense Payment"
     click_link "Return"
     page.assert_current_path expenses_path
-    first("a", text: "Edit").click
+
+    click_link "Edit", match: :first
     assert page.has_content? "Editing Expense"
     click_button "Save"
     assert page.has_content? "Expense was successfully updated."
     click_link "Return"
     page.assert_current_path expenses_path
-    first("a", text: "Delete").click
+
+    click_link "Delete", match: :first
     accept_alert "Delete Expense"
     assert page.has_content? "Expense was successfully destroyed."
   end
@@ -55,11 +57,11 @@ class ExpenseUsageTest < ActionDispatch::IntegrationTest
     select "MyString", from: "Ou payment type"
     click_button "Save"
     assert page.has_content? "Expense payment was successfully created."
-    find(".card", text: "Expense Payment").first("a", text: "Edit").click
+    within(".card", text: "Expense Payment") { click_link "Edit", match: :first }
     assert page.has_content? "Edit Expense Payment for "
     click_button "Save"
     assert page.has_content? "Expense payment was successfully updated."
-    find(".card", text: "Expense Payment").first("a", text: "Remove").click
+    within(".card", text: "Expense Payment") { click_link "Remove", match: :first }
     accept_alert "Really delete Expense Payment?"
     assert page.has_content? "Expense payment was successfully removed."
   end

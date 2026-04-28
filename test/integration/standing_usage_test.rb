@@ -16,16 +16,16 @@ class StandingUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     page.assert_current_path standings_path
     assert has_content? 'Standing was successfully created.'
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     assert_current_path /\/standings\/[0-9]*\/edit$/
     click_button 'Save'
     page.assert_current_path standings_path
     assert has_content? 'Standing was successfully updated.'
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     assert_current_path /\/standings\/[0-9]*$/
     click_link 'Return'
     assert_current_path standings_path
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /Really delete Standing .*\?/
     assert has_content? 'Standing was successfully destroyed.'
   end

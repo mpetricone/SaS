@@ -44,16 +44,12 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     dismiss_notice
     click_link 'Return'
     page.assert_current_path ous_path
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     page.assert_current_path /\/ous\/[0-9]*\/edit$/
     assert page.has_content? /Editing .*$/
     click_button 'Save'
     page.assert_current_path /\/ous\/[0-9]*$/
     click_link 'Return'
-    # can no longer delete ous.
-    #first('a', text: 'Delete').click
-    #accept_alert /^Really delete OU .*\?, This is usually not done.$/
-    #assert page.has_content? "Record Destroyed"
   end
 
   test "can use ou phone" do
@@ -64,16 +60,16 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Number', with: '999 222-9922'
     click_button 'Save'
     page.assert_current_path /\/ous\/[0-9]*$/
-    find('.card', text: 'OU Phones')
-      .first('a',text: 'Edit')
-      .click
+    within('.card', text: 'OU Phones') do
+      click_link 'Edit', match: :first
+    end
     page.assert_current_path /\/ous\/[0-9]*\/ou_phones\/[0-9]*\/edit$/
     assert page.has_content? /^Edit OU Phone for .*$/
     click_button 'Save'
     page.assert_current_path /\/ous\/[0-9]*$/
-    find('.card', text: 'OU Phones')
-      .first('a', text: 'Remove')
-      .click
+    within('.card', text: 'OU Phones') do
+      click_link 'Remove', match: :first
+    end
     accept_alert "Really delete OU Phone?"
     # There's nothing to check
   end
@@ -89,15 +85,15 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     page.assert_current_path wp
     assert page.has_content? "E-mail record created"
-    find('.card', text: 'OU E-Mail')
-      .first('a', text: 'Edit')
-      .click
+    within('.card', text: 'OU E-Mail') do
+      click_link 'Edit', match: :first
+    end
     page.assert_current_path /\/ous\/[0-9]*\/ou_emails\/[0-9]*\/edit$/
     assert page.has_content? "Edit OU E-Mail for "
     click_button 'Save'
-    find('.card', text: 'OU E-Mail')
-      .first('a',text: 'Remove')
-      .click
+    within('.card', text: 'OU E-Mail') do
+      click_link 'Remove', match: :first
+    end
     accept_alert "Really delete OU E-Mail?"
     assert page.has_content? "#{OuEmail.model_name.human} removed."
   end
@@ -122,17 +118,17 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     page.assert_current_path wp
     assert page.has_content? "#{OuAddress.model_name.human} added."
-    find('.card', text: 'OU Address')
-      .first('a', text: 'Edit')
-      .click
+    within('.card', text: 'OU Address') do
+      click_link 'Edit', match: :first
+    end
     page.assert_current_path /\/ous\/[0-9]*\/ou_addresses\/[0-9]*\/edit$/
     assert page.has_content? 'Edit OU Address for '
     click_button 'Save'
     page.assert_current_path wp
-    find('.card', text: 'OU Address')
-      .first('a', text: 'Remove')
-      .click
+    within('.card', text: 'OU Address') do
+      click_link 'Remove', match: :first
+    end
     accept_alert 'Really delete OU Address?'
-    assert page.has_content? "#{OuAddress.model_name.human} removed." 
+    assert page.has_content? "#{OuAddress.model_name.human} removed."
   end
 end

@@ -70,17 +70,17 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     page.assert_current_path /\/products\/[0-9]*$/
     assert page.has_content? /.* added to .*\.$/
 
-    find(".card", text: 'Distributer product')
-      .first('a', text: 'Edit')
-      .click
+    within(".card", text: 'Distributer product') do
+      click_link 'Edit', match: :first
+    end
     page.assert_current_path /\/products\/[0-9]*\/distributer_products\/[0-9]*\/edit$/
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
     assert page.has_content? /.* altered succesfully.$/
 
-    find(".card", text: 'Distributer product')
-      .first('a', text: 'Remove')
-      .click
+    within(".card", text: 'Distributer product') do
+      click_link 'Remove', match: :first
+    end
     accept_alert 'Really delete Distributer product?'
     assert page.has_content? "#{DistributerProduct.model_name.human} deleted."
   end
@@ -97,17 +97,17 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     page.assert_current_path /\/products\/[0-9]*$/
     assert page.has_content? /^#{ProductNote.model_name.human} .* added.$/
 
-    find('.card', text: 'Product note')
-      .first('a', text: 'Edit')
-      .click
+    within('.card', text: 'Product note') do
+      click_link 'Edit', match: :first
+    end
     page.assert_current_path /\/products\/[0-9]*\/product_notes\/[0-9]*\/edit$/
     assert page.has_content? /Edit Product note for .*$/
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
     assert page.has_content? /^#{ProductNote.model_name.human} .* updated.$/
-    find('.card', text: 'Product note')
-      .first('a', text: 'Remove')
-      .click
+    within('.card', text: 'Product note') do
+      click_link 'Remove', match: :first
+    end
     accept_alert "Really delete Product note?"
     assert page.has_content? "#{ProductNote.model_name.human} removed."
   end

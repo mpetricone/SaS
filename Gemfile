@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 8.1.0'
 
-# 7.0 migrating to hotwire from turbolinks
-gem 'hotwire-rails'
+gem 'turbo-rails'
+gem 'stimulus-rails'
 # is sass-rials used or is this in yarn?
 gem 'sassc-rails'
 # Use Uglifier as compressor for JavaScript assets
@@ -54,9 +54,14 @@ gem "image_processing"
 gem "ruby-vips"
 
 gem 'htmlbeautifier', group: :development
+gem 'foreman', group: :development
 
 # For Ruby 3.4
 gem 'drb'
+
+
+#replace webrick
+gem 'puma'
 
 #Testing
 #minitest error

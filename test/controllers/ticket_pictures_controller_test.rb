@@ -12,11 +12,10 @@ class TicketPicturesControllerTest < ActionController::TestCase
   end
 
   test 'should not access page' do
-    should_not_access_data @ticket_picture, create_params, [:index, :show],
-      {
-        id: @ticket_picture,
-        ticket_id: @ticket
-      }
+    should_not_access_data @ticket_picture,
+      { ticket_id: @ticket.id, id: @ticket_picture.id },
+      [:index, :show],
+      { id: @ticket_picture, ticket_id: @ticket }
   end
 
   def create_params

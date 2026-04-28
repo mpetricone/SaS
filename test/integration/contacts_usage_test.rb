@@ -19,7 +19,9 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
   test "can delete contact" do
     visit contacts_path
 
-    first('.table .btn-group').click_link 'Delete'
+    sel = '.table .btn-group'
+    has_selector?(sel)
+    first(sel).click_link 'Delete'
     accept_alert('Really delete Contact?')
     assert page.has_content? 'Contact was successfully destroyed.'
   end
@@ -27,6 +29,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
   test "can edit contact" do
     visit contacts_path
 
+    has_selector?('.table .btn-group')
     first('.table .btn-group').click_link 'Edit'
 
     click_button 'Save'

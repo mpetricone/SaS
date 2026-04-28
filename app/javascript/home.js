@@ -1,4 +1,5 @@
 $(document).on("turbo:load", () => {
+  if (!$("#tickets").length) return;
   $.ajax("/tickets/index_latest.js?limit=5");
   $("#collapse-ou").on("show.bs.collapse", () => {
     $("#ou-collapse-toggle").html('<i class="fa fa-window-minimize"></i>');

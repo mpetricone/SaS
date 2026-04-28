@@ -10,7 +10,7 @@ class RatesUsageTest < ActionDispatch::IntegrationTest
   end
 
   def find_rate_details
-    first('a', "Show").click
+    click_link 'Show', match: :first
   end
 
   wp = /\/rates\/[0-9]*/
@@ -29,7 +29,7 @@ class RatesUsageTest < ActionDispatch::IntegrationTest
     page.assert_current_path wp
     assert page.has_content? 'Rate was successfully created.'
     dismiss_notice
-    first('a',text: 'Edit').click
+    click_link 'Edit', match: :first
     page.assert_current_path /\/rates\/[0-9]*\/edit$/
     assert page.has_content? 'Editing Rate'
     click_button 'Save'
@@ -37,10 +37,10 @@ class RatesUsageTest < ActionDispatch::IntegrationTest
     assert page.has_content? 'Rate was successfully updated.'
     click_link 'Return'
     page.assert_current_path rates_path
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /Really delete Rate .*\?$/
     assert page.has_content? 'Rate was successfully destroyed.'
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     page.assert_current_path /\/rates\/[0-9]*$/
   end
 

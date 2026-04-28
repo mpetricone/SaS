@@ -45,7 +45,7 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
   test "can edit and use distributer" do
     visit_distributers
 
-    first("a", text: "Edit").click
+    click_link "Edit", match: :first
     page.assert_current_path /\/distributers\/[0-9]*\/edit$/
     assert page.has_content? "Editing "
     click_button "Save"
@@ -54,10 +54,10 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     dismiss_notice
     click_link "Return"
     page.assert_current_path /distributers$/
-    first("a", text: "Delete").click
+    click_link "Delete", match: :first
     accept_alert /Really delete Distributer.*It's usually best to set the disabled date./
     assert page.has_content? "Removed #{Distributer.model_name.human}"
-    first("a", text: "Show").click
+    click_link "Show", match: :first
     page.assert_current_path /\/distributers\/[0-9]*$/
   end
 
@@ -71,16 +71,16 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*/
     assert page.has_content? " added."
-    find(".card", text: "Distributer Contacts")
-      .first("a", text: "Edit")
-      .click
+    within(".card", text: "Distributer Contacts") do
+      click_link "Edit", match: :first
+    end
     assert page.has_content? "Edit Distributer Contact for "
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*$/
     assert page.has_content? "#{ContactDistributer.model_name.human} updated."
-    find(".card", text: "Distributer Contacts")
-      .first("a", text: "Remove")
-      .click
+    within(".card", text: "Distributer Contacts") do
+      click_link "Remove", match: :first
+    end
     accept_alert "Really delete Distributer Contact?"
     assert page.has_content? "#{ContactDistributer.model_name.human} deleted."
   end
@@ -103,16 +103,16 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     page.assert_current_path /\/distributers\/[0-9]*$/
     assert page.has_content? "#{AddressDistributer.model_name.human} added."
     # capy/selenium can't find .card, I see it, not sure what's up
-    find("table", text: "Street").
-      first("a", text: "Edit")
-      .click
+    within("table", text: "Street") do
+      click_link "Edit", match: :first
+    end
     assert page.has_content? "Edit Distributer Address for "
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*$/
     assert page.has_content? "Updated #{AddressDistributer.model_name.human}."
-    find("table", text: "Street").
-      first("a", text: "Remove")
-      .click
+    within("table", text: "Street") do
+      click_link "Remove", match: :first
+    end
     accept_alert "Really delete Distributer Address?"
     assert page.has_content? "Removed #{AddressDistributer.model_name.human}."
   end
@@ -127,16 +127,16 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
     assert page.has_content? /#{DistributerPhone.model_name.human} .* added./
 
-    find(".card", text: "Distributer Phone")
-      .first("a", text: "Edit")
-      .click
+    within(".card", text: "Distributer Phone") do
+      click_link "Edit", match: :first
+    end
     assert page.has_content? "Edit Distributer Phone for "
     click_button "Save"
     assert page.has_content? "#{DistributerPhone.model_name.human} updated."
 
-    find(".card", text: "Distributer Phone")
-      .first("a", text: "Remove")
-      .click
+    within(".card", text: "Distributer Phone") do
+      click_link "Remove", match: :first
+    end
     accept_alert "Really delete Distributer Phone?"
     assert page.has_content? "#{DistributerPhone.model_name.human} removed."
   end

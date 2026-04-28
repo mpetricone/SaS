@@ -13,7 +13,9 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
   test "can edit ticket from index" do
     search_for_ticket
 
-    first("tbody tr .btn-group").click_link "Edit"
+    edit_sel = "tbody tr .btn-group .btn-secondary".dup
+    assert page.has_css?(edit_sel)
+    find(edit_sel, match: :first).click
 
     assert page.has_content? t(:title_edit, title: Ticket.model_name.human)
 
@@ -25,7 +27,7 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
   test "can edit ticket from view" do
     get_ticket_view
 
-    click_link "Edit"
+    click_link "Edit", match: :first
     click_button "Save"
 
     page.assert_current_path(%r{tickets/[0-9]*})
@@ -35,7 +37,7 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
   test "ticket can email client" do
     get_ticket_view
 
-    first("a", text: "@").click
+    click_link "@", match: :first
 
     accept_alert "Send bill to"
 
@@ -56,7 +58,8 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
       assert page.has_content? "#{TicketWorkType.model_name.human} added."
     end
 
-    first(".label-badge a").click
+    assert page.has_css?(".label-badge a")
+    find(".label-badge a", match: :first).click
     assert page.has_content? "#{TicketWorkType.model_name.human} removed."
   end
 
@@ -112,7 +115,7 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
 
     assert page.has_content? "added to #{Ticket.model_name.human}"
 
-    first("a", text: "Void").click
+    click_link "Void", match: :first
 
     accept_alert "Void sale of"
 

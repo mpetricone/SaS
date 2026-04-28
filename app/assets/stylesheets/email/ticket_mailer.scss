@@ -1,5 +1,27 @@
-@import 'bootstrap';
+// Email stylesheet — import only the Bootstrap partials the mailer templates
+// actually use. Skipping `forms` avoids Roadie warnings about vendor
+// pseudo-class selectors (`:-moz-focusring`, `:-webkit-autofill`) that its
+// CSS parser can't inline.
+
+// Configuration (required for the partials below to compile)
+@import 'bootstrap/scss/functions';
 @import '../base/core_values.scss';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/utilities';
+
+// Layout & typography used by the invoice template
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/tables';
+
+// Generates utility classes (.text-center, .text-nowrap, etc.)
+@import 'bootstrap/scss/utilities/api';
+
 .email-body {
 }
 .email-table {

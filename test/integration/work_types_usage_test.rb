@@ -15,15 +15,15 @@ class WorkTypesUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     assert_current_path work_types_path
     assert has_content? /#{WorkType.model_name.human} .* added\.$/
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     assert_current_path /\/work_types\/[0-9]*$/
     click_link 'Return'
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     assert_current_path /\/work_types\/[0-9]*\/edit$/
     click_button 'Save'
     assert_current_path work_types_path
     assert has_content? /#{WorkType.model_name.human} .* altered\.$/
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /Really delete Work Type .*\?$/
     assert has_content? "#{WorkType.model_name.human} removed."
   end

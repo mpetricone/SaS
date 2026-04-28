@@ -27,19 +27,18 @@ class CanUseAddressTest < ActionDispatch::IntegrationTest
     assert page.has_content? /Address .*$/
     click_link 'Return'
     page.assert_current_path addresses_path
-    assert has_link? 'Edit'
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     page.assert_current_path /\/addresses\/[0-9]*\/edit$/
     fill_in 'Postal code', with: '12345'
     click_button 'Save'
     page.assert_current_path /\/addresses\/[0-9]*$/
     assert page.has_content? /Address .*$/
     click_link 'Return'
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     page.assert_current_path /\/addresses\/[0-9]*$/
     assert page.has_content? /Address .*$/
     click_link 'Return'
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /^Really delete Address .*\?  This could cause deliveries and bills to go missing!$/
     assert page.has_content? "Record destroyed."
   end

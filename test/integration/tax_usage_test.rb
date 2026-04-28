@@ -19,7 +19,7 @@ class TaxUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     page.assert_current_path taxes_path
     assert page.has_content? /#{Tax.model_name.human} #{Tax.human_attribute_name :rate} .* added.$/
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     page.assert_current_path /\/taxes\/[0-9]*\/edit$/
     assert page.has_content? 'Editing Tax'
     fill_in 'Date retired', with: Time.now.strftime(@@date_format)
@@ -29,10 +29,10 @@ class TaxUsageTest < ActionDispatch::IntegrationTest
     dismiss_notice
     click_link 'Return'
     page.assert_current_path taxes_path
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     page.assert_current_path /\/taxes\/[0-9]*$/
     click_link 'Return'
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /Really delete Tax .*\? This could cause irreperable damage./
     assert page.has_content? /#{Tax.model_name.human} .* remove.$/
   end

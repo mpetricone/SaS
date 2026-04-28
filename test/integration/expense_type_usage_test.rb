@@ -12,12 +12,13 @@ class ExpenseTypeUsageTest < ActionDispatch::IntegrationTest
     click_link 'New Expense Type'
     assert_current_path /\/expense_types\/new$/
     assert has_content? 'New Expense Type'
-    fill_in 'Name', with: 'expensive!'
+    has_content?('Name')
+    fill_in 'Name', with: 'expensive'
     fill_in 'Description', with: 'exceptionally'
     click_button 'Save'
     assert_current_path expense_types_path
     assert has_content? 'Expense type was successfully created.'
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     assert_current_path /\/expense_types\/[0-9]*\/edit$/
     assert has_content? 'Editing Expense Type'
     click_button 'Save'
@@ -25,13 +26,13 @@ class ExpenseTypeUsageTest < ActionDispatch::IntegrationTest
     assert has_content?  'Expense type was successfully updated.'
     dismiss_notice
     click_link 'Return'
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     assert_current_path /\/expense_types\/[0-9]*$/
     click_link 'Return'
     assert_current_path expense_types_path
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /Really delete Expense Type\? .*/
-    assert page.has_content? 'Expense Types cannot be destroyed.' 
+    assert page.has_content? 'Expense Types cannot be destroyed.'
   end
 
   test "cannot create black expense type" do

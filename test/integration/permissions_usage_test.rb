@@ -22,17 +22,17 @@ class PermissionsUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
     page.assert_current_path permissions_path
     assert page.has_content? /\ added.$/
-    first("a", text: "Edit").click
+    click_link "Edit", match: :first
     page.assert_current_path /\/permissions\/[0-9]*\/edit$/
     assert page.has_content? "Editing Permission"
     click_button "Save"
     page.assert_current_path permissions_path
     assert page.has_content? /\ updated.$/
-    first("a", text: "Show").click
+    click_link "Show", match: :first
     page.assert_current_path /\/permissions\/[0-9]*$/
     click_link "Return"
     assert_current_path permissions_path
-    first("a", text: "Delete").click
+    click_link "Delete", match: :first
     accept_alert "Really delete Permission? This could criple the system"
     assert has_content? /#{Permission.model_name.human} .* deleted.$/
   end

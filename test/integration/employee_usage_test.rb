@@ -27,7 +27,8 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
     assert has_content? "Employee created."
     dismiss_notice
     click_link "Return"
-    first("a", text: "Edit").click
+    assert_current_path employees_path
+    click_link "Edit", match: :first
     assert_current_path /\/employees\/[0-9]*\/edit$/
     assert has_content? "Editing Employee"
     fill_in "Confirm Password", with: "notpassword"
@@ -39,7 +40,7 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
 
   test "can use employee permission" do
     visit employees_path
-    first("a", text: "Show").click
+    click_link "Show", match: :first
     assert_current_path /\/employees\/[0-9]*$/
 
     click_link "New Employee permission"
@@ -49,17 +50,17 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
     assert_current_path /\/employees\/[0-9]*$/
     assert has_content? " granted to "
-    find(".card", text: "Employee permission")
-      .first("a", text: "Edit")
-      .click
+    within(".card", text: "Employee permission") do
+      click_link "Edit", match: :first
+    end
     assert_current_path /\/employees\/[0-9]*\/employee_permissions\/[0-9]*\/edit$/
     assert has_content? "Edit Employee permission for "
     click_button "Save"
     assert_current_path /\/employees\/[0-9]*$/
     assert has_css? ".notice-alert", text: "for"
-    find(".card", text: "Employee permission")
-      .first("a", text: "Remove")
-      .click
+    within(".card", text: "Employee permission") do
+      click_link "Remove", match: :first
+    end
     accept_alert "Really delete Employee permission?"
     assert has_content? /.* for .* revoked\.$/
   end

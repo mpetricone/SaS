@@ -1,10 +1,10 @@
 module Version
   class Version
     @@major = 3
-    @@minor = 3
-    @@patch = 0
+    @@minor = 2
+    @@patch = 1
     @@text = "#{@@major}.#{@@minor}.#{@@patch}"
-    @@copyright = "&copy; 2015-2025 Matthew Petricone"
+    @@copyright = "&copy; 2015-2026 Matthew Petricone"
     @@version_text = " | Version "
     @@contact_email = "matt@solidstate.solutions"
     @@contact_name = "Matthew Petricone"

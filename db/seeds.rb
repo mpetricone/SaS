@@ -67,7 +67,7 @@ permission_seeds = [
     ['Employee Admin'           , 'employee',               true,   true,   true,   true,   false],
     ['Employee User'            , 'employee',               true,   true,   true,   false,  false],
     ['Employee Permission Admin', 'permission_attribute',   true,   true,   true,   true,   false],
-    ['Employee Permission User' , 'permission_attribute',   true,   true,   false,  false,  false],# I don't like the idea of a user with perm create ability
+    ['Employee Permission User' , 'permission_attribute',   true,   true,   false,  false,  false],# I don't like the idea of a user with perm create ability    
     ['Distributer Admin'        , 'distributer',            true,   true,   true,   true,   false],
     ['Distributer User'         , 'distributer',            true,   true,   true,   false,  false],
     ['Distributer Attrib Admin' , 'distributer_attribute',  true,   true,   true,   true,   false],
@@ -94,9 +94,9 @@ end
 # Put the first contact here, to be used for the Initial admin account
 
 # Addresses for employee and Ou
-seed_ou_address = Address.create!(street1: "REMOVED", street2: "REMOVED", city: "REMOVED", postal_code: "REMOVED", country: "REMOVED", status: 1)
+seed_ou_address = Address.create!(street1: REMOVED , street2: REMOVED, city: REMOVED, postal_code: REMOVED, country: "US", status: 1)
 seed_employee_address = seed_ou_address
-employee_contact = Contact.create!( fname: "REMOVED", lname: "REMOVED", mname: 'REMOVED', description: "The Man or Woman", standing_id: Standing.find_by(name: "GOOD").id)
+employee_contact = Contact.create!( fname: REMOVED, lname: REMVOED, mname: REMOVED, description: "The Man", standing_id: Standing.find_by(name: "GOOD").id)
 AddressContact.create!( contact_id: employee_contact.id, address_id: seed_employee_address.id, delivery: true, invoice: true)
 # This should be the initial, primary OU
 ## Tax entry
@@ -106,8 +106,8 @@ seed_ou = Ou.create!(name: "Main", description: "Primary OU", tax:  tax)
 OuAddress.create!(ou_id: seed_ou.id, address_id: seed_ou_address.id, delivery: true, invoice: true)
 
 # The initial admin, and it's admin permission
-Employee.create!(contact_id: Contact.find_by(lname: "REMOVED").id, ou_id: Ou.find_by(name: "Main").id, date_hired: "01-01-0001", position: "Owner", user_name: "REMOVED", password: "REMOVED", password_confirmation: "REMOVED")
-EmployeePermission.create!(employee_id: Employee.find_by(user_name: "REMOVED").id, permission_id: Permission.find_by( name: 'Admin').id)
+Employee.create!(contact_id: Contact.find_by(lname: REMOVED).id, ou_id: Ou.find_by(name: "Main").id, date_hired: "01-01-0001", position: "Owner", user_name: REMOVED, password: REMOVED, password_confirmation: REMOVED)
+EmployeePermission.create!(employee_id: Employee.find_by(user_name: REMOVED).id, permission_id: Permission.find_by( name: 'Admin').id)
 
 #***********************************************#
 # Following are records intended for development#
@@ -115,16 +115,16 @@ EmployeePermission.create!(employee_id: Employee.find_by(user_name: "REMOVED").i
 
 #=begin
 # Comment from here to file end for production
-Address.create!(street1: "REMOVED", street2: "REMOVED", city: "REMOVED", state: "REMOVED", postal_code: "REMOVED", country: "USA")
-Address.create!(street1: "1 Gateway Center",city: "Newark", state: "New Jersey", postal_code: "07111", country: "USA")
+Address.create!(street1: REMOVED, street2: REMOVED, city: REMOVED, state: REMOVED, postal_code: REMOVED, country: "USA")
+Address.create!(street1: REMOVED ,city: REMOVED, state: REMOVED, postal_code: REMOVED, country: "USA")
 Address.create!(street1: "77 Imaginary Ln.", city: 'Emerald City',state: 'Not Kansas', postal_code: '29143', country: 'OZ')
 
 Ou.create!(name: "Secondary", description: "Secondary OU", root_id: Ou.find_by(name: "Main").id, tax: tax)
 
 OuAddress.create!(ou_id: Ou.find_by(name: "Main").id, address_id: Address.find_by(city: "Newark").id)
-OuAddress.create!(ou_id: Ou.find_by(name: "Secondary").id, address_id: Address.find_by(city: "REMOVED").id)
-Ou.all.each_with_index do  |insert, i|
-    OuPhone.create!(number: i, description: "Phone # #{i}", ou_id: insert.id)
+OuAddress.create!(ou_id: Ou.find_by(name: "Secondary").id, address_id: Address.find_by(city: "Kearny").id)
+Ou.all.each_with_index do  |insert, i| 
+    OuPhone.create!(number: i, description: "Phone # #{i}", ou_id: insert.id) 
     OuEmail.create!(address: "Email#{i}@co.com", description: "N.#{i}", ou_id: insert.id)
 end
 
@@ -135,8 +135,8 @@ Contact.all.each_with_index do |insert, i|
     ContactPhone.create!(number: "n#{i}", phone_type: "Main", contact_id: insert.id)
 end
 10.times { |i| Rate.create!(rate: (i*10).to_s, current: true) }
-5.times do  |i|
-    Client.new(name: "Client #{i}",standing_id: Standing.find_by(name: 'GOOD').id,
+5.times do  |i| 
+    Client.new(name: "Client #{i}",standing_id: Standing.find_by(name: 'GOOD').id, 
     refuse: false, default_invoice_id: Address.find_by(city: 'Newark').id, default_delivery_id: Address.find_by(city: 'Newark').id).save(validate: false)
 end
 Client.new( name: 'Client Refused 1',standing_id: Standing.find_by(name: 'REJECT').id, refuse: true,

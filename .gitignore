@@ -18,6 +18,7 @@
 # Ignore all logfiles and tempfiles.
 /log/*.log
 /tmp
+log/test.log*
 
 /o-doc
 

@@ -67,31 +67,51 @@ end
 # Capybara
 require "capybara/rails"
 require "capybara/minitest"
-require "capybara/apparition"
+
+Capybara.register_driver :selenium_remote_chrome do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--window-size=1200,900")
+  options.add_argument("--ignore-certificate-errors")
+  options.add_argument("--allow-insecure-localhost")
+  options.add_argument("--disable-features=EnableHSTS")
+  options.add_argument("--disable-features=UpgradedInsecureRequests")
+  options.add_argument("--unsafely-treat-insecure-origin-as-secure=http://app:3001")
+  options.add_argument("--ingore-ssl-errors")
+
+  options.accept_insecure_certs = true
+
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :remote,
+    url:     ENV.fetch("SELENIUM_REMOTE_URL", "http://selenium:4444"),
+    options: options
+  )
+end
+require "socket"
+app_ip =Socket.ip_address_list
+           .find { |addr| addr.ipv4? && !addr.ipv4_loopback? }
+           .ip_address
+
+Capybara.server_host        = ENV.fetch("CAPYBARA_SERVER_HOST", "0.0.0.0")
+Capybara.server_port        = 4567
+Capybara.app_host           = "http://#{app_ip}:#{Capybara.server_port}"
+Capybara.server = :puma, { Host: "0.0.0.0" }
 
 class ActionDispatch::IntegrationTest
-  # I18n.t l helper
-  # finally figured this out, why isn't it just automatic?
   include ActionView::Helpers::TranslationHelper
-
-  # Make the Capybara DSL available in all integration tests
   include Capybara::DSL
-  # Make `assert_*` methods behave like Minitest assertions
   include Capybara::Minitest::Assertions
 
-  # Wait timer
-  # date format string for Time::strftime
   @@date_format = "%m%d%Y"
 
   setup do
-    Capybara.server = :webrick
-    # Capybara.register_driver :selenium_chrome
-    Capybara.default_driver = :selenium_chrome
-    page.driver.browser.manage.window.resize_to(1680, 1080)
-    Capybara.default_max_wait_time = 5
+    Capybara.default_driver     = :selenium_remote_chrome
+    Capybara.default_max_wait_time = 8
   end
 
-  # Reset sessions and driver between tests
   teardown do
     Capybara.reset_sessions!
     Capybara.use_default_driver

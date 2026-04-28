@@ -16,17 +16,17 @@ class TicketStatusUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
     assert_current_path ticket_statuses_path
     assert has_content? /#{TicketStatus.model_name.human} .* created.$/
-    first('a', text: 'Edit').click
+    click_link 'Edit', match: :first
     assert_current_path /\/ticket_statuses\/[0-9]*\/edit$/
     assert has_content? 'Editing Ticket status'
     click_button 'Save'
     assert_current_path ticket_statuses_path
     assert has_content? /#{TicketStatus.model_name.human} .* updated.$/
-    first('a', text: 'Show').click
+    click_link 'Show', match: :first
     assert_current_path /\/ticket_statuses\/[0-9]*$/
     click_link 'Return'
     assert_current_path ticket_statuses_path
-    first('a', text: 'Delete').click
+    click_link 'Delete', match: :first
     accept_alert /Really delete TicketStatus .*\?$/
     assert has_content? "#{TicketStatus.model_name.human} removed."
   end

@@ -20,16 +20,19 @@ class OuPaymentUsageTest < ActionDispatch::IntegrationTest
     assert has_content? 'Ou payment type was successfully created.'
     dismiss_notice
     click_link 'Return'
-    first('a', text: 'Edit').click
+    assert_current_path ou_payment_types_path
+    click_link 'Edit', match: :first
     assert_current_path /\/ou_payment_types\/[0-9]*\/edit$/
     click_button 'Save'
     assert_current_path /\/ou_payment_types\/[0-9]*$/
     assert has_content? 'Ou payment type was successfully updated.'
     click_link 'Return'
-    first('a', text: 'Show').click
+    assert_current_path ou_payment_types_path
+    click_link 'Show', match: :first
     assert_current_path /\/ou_payment_types\/[0-9]*$/
     click_link 'Return'
-    first('a', text: 'Delete').click
+    assert_current_path ou_payment_types_path
+    click_link 'Delete', match: :first
     accept_alert 'Remove Ou Payment Type'
     assert page.has_content? 'Ou payment type was successfully destroyed.'
   end

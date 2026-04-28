@@ -1,0 +1,81 @@
+# Production compose: SaS app + MariaDB 11, separate containers on one host.
+# Usage:
+#   cp .env.production.example .env.production
+#   # edit .env.production — fill in real values
+#   docker compose --env-file .env.production -f compose.prod.yml up -d --build
+#
+# Works with podman-compose as well.
+
+services:
+  db:
+    image: docker.io/library/mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MARIADB_DATABASE: sas_production
+      MARIADB_USER: ${MYSQL_USER}
+      MARIADB_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - sasnet
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        GIT_REPO_URL: ${GIT_REPO_URL}
+        GIT_BRANCH: ${GIT_BRANCH:-master}
+      secrets:
+        - git_ssh_key
+    restart: unless-stopped
+    environment:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      MYSQL_HOST: db
+      MYSQL_PORT: "3306"
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      RAILS_SERVE_STATIC_FILES: "true"
+      RAILS_MAX_THREADS: "5"
+      APP_HOST: ${APP_HOST}
+      APP_PROTOCOL: ${APP_PROTOCOL}
+      SMTP_ADDRESS: ${SMTP_ADDRESS}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_DOMAIN: ${SMTP_DOMAIN}
+      SMTP_USER_NAME: ${SMTP_USER_NAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_AUTHENTICATION: ${SMTP_AUTHENTICATION}
+      SMTP_ENABLE_STARTTLS_AUTO: ${SMTP_ENABLE_STARTTLS_AUTO}
+    ports:
+      - "80:3000"
+    volumes:
+      # SAS_STORAGE_PATH should point at your SMB mount on the host.
+      - ${SAS_STORAGE_PATH}:/rails/storage
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sasnet
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+
+volumes:
+  mysql_data:
+
+networks:
+  sasnet:
+
+secrets:
+  git_ssh_key:
+    file: ${GIT_SSH_KEY_PATH}

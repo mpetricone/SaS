@@ -13,10 +13,11 @@ class LogUsageTest < ActionDispatch::IntegrationTest
     visit_logs_page
 
     assert_current_path logs_path
-    
+
     assert has_content? "Audit Logs"
     assert has_content? "Module name"
 
+    has_selector?('tbody tr td a')
     first("tbody tr td a").click
     assert has_content? "Audit Log for"
 

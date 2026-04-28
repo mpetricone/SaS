@@ -6,6 +6,7 @@ class TicketBillingMailer < ActionMailer::Base
         @ticket = ticket
         @ticket_totals = ticket.calculate_totals
         @ou_delivery = @ticket.ou.ou_addresses.where(invoice: true)[0].address;
+        attachments.inline['corp_logo.png'] = Rails.root.join('app/assets/images/logos/corp_logo.png').read
         mail(to: email, subject: "#{@ticket.ou.name}, Invoice for #{@ticket.client.name} on #{@ticket.created_at}")
     end
 end
