@@ -27,7 +27,7 @@ gem 'bcrypt', '~> 3.1'
 # CSS in Emails
 gem 'roadie-rails'
 # mysql
-gem 'mysql2'#, '~> 0.5'
+#gem 'mysql2'#, '~> 0.5'
 gem 'trilogy'
 
 # pagination (kaminari)
