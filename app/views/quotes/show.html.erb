@@ -1,0 +1,239 @@
+<div class='container-fluid mt-4'>
+  <div class='d-flex justify-content-between align-items-center mb-3'>
+    <div>
+      <h2>
+        <%= @quote.code %>
+        <% if @quote.addendum? %>
+          <span class='badge bg-info'>
+            <%= t(:label_parent_quote) %>: <%= link_to @quote.parent_quote.code, @quote.parent_quote, class: 'text-white' %>
+          </span>
+        <% end %>
+        <span class='badge bg-secondary'><%= @quote.status.humanize %></span>
+        <% unless @quote.editable? %>
+          <span class='badge bg-warning text-dark'><%= t(:label_locked) %></span>
+        <% end %>
+      </h2>
+      <div class='text-muted'>
+        <%= @quote.client.name %><% if @quote.title.present? %> — <%= @quote.title %><% end %>
+      </div>
+      <% if @quote.expires_at.present? %>
+        <div class='text-muted small mt-1'>
+          <%= t(:label_expires_at) %>:
+          <% if @quote.expired? %>
+            <span class='text-danger'><%= l(@quote.expires_at.to_date) %></span>
+          <% else %>
+            <%= l(@quote.expires_at.to_date) %>
+          <% end %>
+        </div>
+      <% end %>
+      <div class='mt-2 d-flex align-items-center gap-2' data-controller='option-filter'>
+        <span class='text-muted small'><%= Contact.model_name.human %>:</span>
+        <% if @quote.editable? %>
+          <input type='text' data-option-filter-target='input' data-action='input->option-filter#filter'
+                 class='form-control form-control-sm' placeholder='<%= t(:button_search) %>' style='max-width: 150px;'>
+          <%= form_with model: @quote, local: true, html: { class: 'd-inline-flex align-items-center gap-2 mb-0' } do |f| %>
+            <%= f.collection_select :contact_id, @quote.client.contacts.order(:lname),
+                  :id, :full_name, { include_blank: t(:label_none) },
+                  class: 'form-select form-select-sm', 'data-option-filter-target': 'select' %>
+            <%= f.submit t(:button_update, default: 'Update'), class: 'btn btn-sm btn-outline-secondary' %>
+          <% end %>
+        <% else %>
+          <span><%= @quote.contact&.full_name || t(:label_none) %></span>
+        <% end %>
+      </div>
+    </div>
+    <div>
+      <div class='btn-group' role='group' aria-label='quote-action-buttons'>
+        <% if @quote.editable? %>
+          <%= link_to ficon('edit', t(:button_edit)), edit_quote_path(@quote), class: 'btn btn-primary' %>
+        <% end %>
+        <%= link_to ficon('arrow-left', t(:button_return)), quotes_path, class: 'btn btn-warning' %>
+      </div>
+    </div>
+  </div>
+
+  <% if @quote.description.present? %>
+    <div class='card mb-3'>
+      <div class='card-header'><strong><%= Quote.human_attribute_name(:description) %></strong></div>
+      <div class='card-body'><%= simple_format(@quote.description) %></div>
+    </div>
+  <% end %>
+
+  <% if @quote.resolved_payment_terms.present? %>
+    <div class='card mb-3'>
+      <div class='card-header'><strong><%= t(:label_payment_terms) %></strong></div>
+      <div class='card-body'><%= simple_format(@quote.resolved_payment_terms) %></div>
+    </div>
+  <% end %>
+
+  <%# Action buttons: delivery + status transitions %>
+  <div class='mb-3 d-flex flex-wrap gap-2'>
+    <%= link_to ficon('envelope', t(:button_email_quote)), mail_to_client_quote_path(@quote), class: 'btn btn-primary' %>
+    <%= link_to ficon('print', t(:button_print_quote)), print_view_quote_path(@quote, hide_user: true), target: '_blank', class: 'btn btn-secondary' %>
+    <% if @quote.draft? %>
+      <%= button_to ficon('paper-plane', t(:button_send_to_client)), send_to_client_quote_path(@quote), method: :patch, class: 'btn btn-success', form: { class: 'd-inline' } %>
+    <% end %>
+    <% if @quote.sent? %>
+      <%= button_to t(:button_accept_quote),  accept_quote_path(@quote),  method: :patch, class: 'btn btn-success', form: { class: 'd-inline' } %>
+      <%= button_to t(:button_decline_quote), decline_quote_path(@quote), method: :patch, class: 'btn btn-danger',  form: { class: 'd-inline' } %>
+    <% end %>
+    <% if @quote.accepted? && @quote.converted_ticket_id.blank? %>
+      <%= button_to t(:button_convert_to_ticket), convert_to_ticket_quote_path(@quote), method: :post,
+            data: { confirm: t(:prompt_convert_to_ticket) }, class: 'btn btn-primary', form: { class: 'd-inline' } %>
+    <% end %>
+    <% if @quote.accepted? || @quote.completed? %>
+      <%= button_to t(:button_add_addendum), add_addendum_quote_path(@quote), method: :post,
+            data: { confirm: t(:prompt_add_addendum) }, class: 'btn btn-info', form: { class: 'd-inline' } %>
+    <% end %>
+  </div>
+
+  <%# Products %>
+  <div class='card mb-3'>
+    <div class='card-header d-flex justify-content-between'>
+      <strong><%= t(:label_quote_products) %></strong>
+      <% if @quote.editable? %>
+        <%= link_to ficon('plus', t(:button_add_for, item: Product.model_name.human)), new_quote_quote_product_path(@quote), class: 'btn btn-sm btn-primary' %>
+      <% end %>
+    </div>
+    <div class='card-body p-0'>
+      <% if @quote.quote_products.any? %>
+        <table class='table table-sm mb-0'>
+          <thead>
+            <tr>
+              <th><%= Product.model_name.human %></th>
+              <th class='text-end'><%= t(:label_qty) %></th>
+              <th class='text-end'><%= t(:label_price) %></th>
+              <th class='text-end'><%= t(:label_total) %></th>
+              <% if @quote.editable? %><th></th><% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @quote.quote_products.includes(:product).each do |qp| %>
+              <tr>
+                <td><%= qp.product&.name %></td>
+                <td class='text-end'><%= qp.quantity %></td>
+                <td class='text-end'><%= number_to_currency(qp.price) %></td>
+                <td class='text-end'><%= number_to_currency(qp.total) %></td>
+                <% if @quote.editable? %>
+                  <td class='text-end'>
+                    <%= link_to ficon('remove', t(:button_remove)), quote_quote_product_path(@quote, qp), method: :delete,
+                          data: { confirm: t(:prompt_remove, item: Product.model_name.human) },
+                          class: 'btn-nowrap btn-danger btn-sm' %>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class='card-body text-muted'><%= t(:text_no_products_yet) %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Labor %>
+  <div class='card mb-3'>
+    <div class='card-header d-flex justify-content-between'>
+      <strong><%= t(:label_quote_labor) %></strong>
+      <% if @quote.editable? %>
+        <%= link_to ficon('plus', t(:button_add_for, item: t(:label_labor))), new_quote_quote_labor_path(@quote), class: 'btn btn-sm btn-primary' %>
+      <% end %>
+    </div>
+    <div class='card-body p-0'>
+      <% if @quote.quote_labors.any? %>
+        <table class='table table-sm mb-0'>
+          <thead>
+            <tr>
+              <th><%= QuoteLabor.human_attribute_name(:description) %></th>
+              <th><%= QuoteLabor.human_attribute_name(:billing) %></th>
+              <th class='text-end'><%= t(:label_detail) %></th>
+              <th class='text-end'><%= t(:label_total) %></th>
+              <% if @quote.editable? %><th></th><% end %>
+            </tr>
+          </thead>
+          <tbody>
+            <% @quote.quote_labors.includes(:rate).each do |ql| %>
+              <tr>
+                <td><%= ql.description %></td>
+                <td><%= ql.billing %></td>
+                <td class='text-end'>
+                  <% if ql.fixed? %>
+                    <%= number_to_currency(ql.amount) %>
+                  <% else %>
+                    <%= ql.estimated_hours %> hr @ <%= number_to_currency(ql.rate&.rate) %>
+                  <% end %>
+                </td>
+                <td class='text-end'><%= number_to_currency(ql.line_total) %></td>
+                <% if @quote.editable? %>
+                  <td class='text-end'>
+                    <div class='btn-group text-nowrap' role='group' aria-label='labor-actions'>
+                      <%= link_to ficon('edit', t(:button_edit)), edit_quote_quote_labor_path(@quote, ql),
+                            class: 'btn-nowrap btn-secondary btn-sm' %>
+                      <%= link_to ficon('remove', t(:button_remove)), quote_quote_labor_path(@quote, ql), method: :delete,
+                            data: { confirm: t(:prompt_remove, item: QuoteLabor.model_name.human) },
+                            class: 'btn-nowrap btn-danger btn-sm' %>
+                    </div>
+                  </td>
+                <% end %>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% else %>
+        <div class='card-body text-muted'><%= t(:text_no_labor_yet) %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Totals %>
+  <div class='card mb-3'>
+    <div class='card-header'><strong><%= t(:label_totals) %></strong></div>
+    <div class='card-body'>
+      <dl class='row mb-0'>
+        <dt class='col-sm-3'><%= t(:label_products) %></dt><dd class='col-sm-9'><%= number_to_currency(@totals[:product]) %></dd>
+        <dt class='col-sm-3'><%= t(:label_labor) %></dt>   <dd class='col-sm-9'><%= number_to_currency(@totals[:labor]) %></dd>
+        <dt class='col-sm-3'><%= t(:label_subtotal) %></dt><dd class='col-sm-9'><%= number_to_currency(@totals[:sub]) %></dd>
+        <dt class='col-sm-3'><%= t(:label_tax) %></dt>     <dd class='col-sm-9'><%= number_to_currency(@totals[:tax]) %></dd>
+        <dt class='col-sm-3'><strong><%= t(:label_grand_total) %></strong></dt>
+        <dd class='col-sm-9'><strong><%= number_to_currency(@totals[:grand]) %></strong></dd>
+      </dl>
+    </div>
+  </div>
+
+  <%# Addenda %>
+  <% if @quote.addenda.any? %>
+    <div class='card mb-3'>
+      <div class='card-header'><strong><%= t(:label_addenda) %></strong></div>
+      <ul class='list-group list-group-flush'>
+        <% @quote.addenda.each do |a| %>
+          <li class='list-group-item d-flex justify-content-between'>
+            <%= link_to "#{a.code} — #{a.title}", a %>
+            <span class='badge bg-secondary'><%= a.status.humanize %></span>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# Internal-only: Associated Tickets %>
+  <% unless params[:hide_user] %>
+    <div class='card mb-3'>
+      <div class='card-header'><strong><%= t(:label_associated_tickets_internal) %></strong> <span class='text-muted small'><%= t(:label_internal_only) %></span></div>
+      <ul class='list-group list-group-flush'>
+        <% tickets = @quote.all_associated_tickets %>
+        <% if tickets.any? %>
+          <% tickets.each do |t| %>
+            <li class='list-group-item'>
+              <%= link_to "##{t.id} — #{t.short_description}", t %>
+              <% if t.ticket_status %>
+                <span class='badge bg-secondary'><%= t.ticket_status.name %></span>
+              <% end %>
+            </li>
+          <% end %>
+        <% else %>
+          <li class='list-group-item text-muted'><%= t(:text_no_associated_tickets) %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>

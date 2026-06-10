@@ -38,13 +38,13 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
 
     assert page.has_current_path?(clients_path)
-    assert page.has_content? 'Created record'
+    assert page.has_content? 'Record created.'
 
     visit clients_path
     click_link 'Delete', match: :first
     accept_alert("Really delete Contact? This could criple the system.")
 
-    assert page.has_content? "Record destroyed"
+    assert page.has_content? "Record destroyed."
   end
 
   test "can edit client" do
@@ -93,16 +93,16 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     fill_in "client-contact-search", with: 'Surn'
     click_button 'Save'
     page.assert_current_path(/\/clients\/show2\/[0-9]*/)
-    assert page.has_content? ' updated.'
+    assert page.has_content? 'Updated'
 
     within('.card', text: 'Client Contacts') { click_link 'Edit', match: :first }
     assert page.has_content? 'Edit Client Contact for'
     click_button 'Save'
-    assert page.has_content? ' updated.'
+    assert page.has_content? 'Updated'
 
     within('.card', text: 'Client Contacts') { click_link 'Remove', match: :first }
     accept_alert 'Really delete Client Contact?'
-    assert page.has_content? 'Client Contact deleted.'
+    assert page.has_content? "Removed #{ClientContact.model_name.human}"
   end
 
   test "can use client addresses" do
@@ -120,17 +120,17 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     fill_in 'State', with: 'ST'
     fill_in 'Status', with: '1'
     click_button 'Save'
-    assert page.has_content? " updated"
+    assert page.has_content? "Updated"
 
     within(".card", text: 'Client Address') { click_link 'Edit', match: :first }
     page.assert_current_path /\/clients\/[0-9]*\/address_clients\/[0-9]*\/edit/
     assert page.has_content? "Edit Client Address for "
     click_button 'Save'
-    assert page.has_content? " updated."
+    assert page.has_content? "Updated"
 
     within(".card", text: 'Client Address') { click_link 'Remove', match: :first }
     accept_alert 'Really delete Client Address?'
-    assert page.has_content? 'Client Address record deleted.'
+    assert page.has_content? "Removed #{AddressClient.model_name.human}"
   end
 
   test "can use client phone" do
@@ -141,16 +141,16 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Phone Number', with: '000-999-2938'
     fill_in 'Description', with: 'some info'
     click_button 'Save'
-    assert page.has_content? "Updated "
+    assert page.has_content? "Updated"
 
     within(".card", text: 'Client phone') { click_link 'Edit', match: :first }
     assert page.has_content? "Edit Client phone number for "
     click_button 'Save'
-    assert page.has_content? 'Updated '
+    assert page.has_content? 'Updated'
 
     within('.card', text: 'Client phone') { click_link 'Remove', match: :first }
     accept_alert 'Really delete Client phone number?'
-    assert page.has_content? "#{ClientPhone.model_name.human} deleted."
+    assert page.has_content? "Removed #{ClientPhone.model_name.human}"
   end
 
   test "can use client email" do
@@ -161,16 +161,16 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     fill_in 'E-Mail', with: 'mail@a.place'
     fill_in 'Description', with: 'info'
     click_button 'Save'
-    assert page.has_content? " added."
+    assert page.has_content? "Added #{ClientEmail.model_name.human}"
 
     within('.card', text: 'Client email') { click_link 'Edit', match: :first }
     assert page.has_content? 'Edit Client email for '
     click_button 'Save'
-    assert page.has_content? "#{ClientEmail.model_name.human} updated."
+    assert page.has_content? "Updated #{ClientEmail.model_name.human}"
 
     within('.card', text: 'Client email') { click_link 'Remove', match: :first }
     accept_alert 'Really delete Client email?'
-    assert page.has_content? "#{ClientEmail.model_name.human} deleted."
+    assert page.has_content? "Removed #{ClientEmail.model_name.human}"
   end
 
   test "can_use_client_rate" do
@@ -179,16 +179,16 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     click_link 'New Client rate'
     assert page.has_content? "New Client rate for "
     click_button 'Save'
-    assert page.has_content? "Added #{ClientRate.model_name.human}."
+    assert page.has_content? "Added #{ClientRate.model_name.human}"
 
     within('.card', text: 'Client rate') { click_link 'Edit', match: :first }
     assert page.has_content? 'Edit Client rate for '
     click_button 'Save'
-    assert page.has_content? "Updated #{ClientRate.model_name.human}."
+    assert page.has_content? "Updated #{ClientRate.model_name.human}"
 
     within('.card', text: 'Client rate') { click_link 'Remove', match: :first }
     accept_alert 'Really delete Client rate?'
-    assert page.has_content? "Removed #{ClientRate.model_name.human}."
+    assert page.has_content? "Removed #{ClientRate.model_name.human}"
   end
 
   test "can use client note" do
@@ -199,20 +199,20 @@ class ClientUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Title', with: 'a title'
     fill_in 'Note', with: 'some notes'
     click_button 'Save'
-    assert page.has_content? "Client note a title added."
+    assert page.has_content? "Added #{ClientNote.model_name.human}"
 
     within(".card", text: ClientNote.model_name.human) do
       click_link 'Edit', match: :first
     end
     assert page.has_content? 'Edit Client note for '
     click_button 'Save'
-    assert page.has_content?  "#{ClientNote.model_name.human} updated."
+    assert page.has_content?  "Updated #{ClientNote.model_name.human}"
 
     within('.card', text: ClientNote.model_name.human) do
       click_link 'Remove', match: :first
     end
     accept_alert "Really delete Client note?"
-    assert page.has_content? "#{ClientNote.model_name.human} deleted."
+    assert page.has_content? "Removed #{ClientNote.model_name.human}"
   end
 
 end

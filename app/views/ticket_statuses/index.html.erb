@@ -2,5 +2,5 @@
     locals: {
     main_model: @ticket_statuses,
     show_fields: [:name],
-    delete_msg: "Really delete #{TicketStatus.name} **?",
+    delete_msg: t(:prompt_really_delete, item: "#{TicketStatus.name} **"),
     delete_msg_ident: :name } %>

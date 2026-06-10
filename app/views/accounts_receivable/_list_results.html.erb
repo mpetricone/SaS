@@ -1,14 +1,14 @@
 <div class='col-12'>
   <div class='card'>
     <div class='card-header'>
-      <h4>Accounts Receivable by Client</h4>
+      <h4><%= t(:title_accounts_receivable_by_client) %></h4>
     </div>
     <div class='card-body'>
       <div class='card'>
         <div class='card-body'>
           <h3>
-            <%= @ar.count %> Clients due |
-            Total Receivable: <%= number_to_currency @total %>
+            <%= t(:label_clients_due, count: @ar.count) %> |
+            <%= t(:label_total_receivable) %>: <%= number_to_currency @total %>
           </h3>
         </div>
       </div>

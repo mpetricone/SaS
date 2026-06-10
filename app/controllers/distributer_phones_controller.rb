@@ -1,8 +1,5 @@
 class DistributerPhonesController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:distributer_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:distributer_attribute) }
+  before_action { authorize DistributerPhone }
 
 	def new
 		populate_new
@@ -13,7 +10,7 @@ class DistributerPhonesController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_phone.save
-				f.html { redirect_to @distributer, notice: "#{DistributerPhone.model_name.human} #{@distributer_phone.number} added."  }
+				f.html { redirect_to @distributer, notice: t(:notice_added, item: DistributerPhone.model_name.human)  }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -33,7 +30,7 @@ class DistributerPhonesController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_phone.update new_params
-				f.html { redirect_to @distributer, notice: "#{DistributerPhone.model_name.human} updated." }
+				f.html { redirect_to @distributer, notice: t(:notice_updated, item: DistributerPhone.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -49,10 +46,10 @@ class DistributerPhonesController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_phone.destroy
-				f.html { redirect_to @distributer, notice: "#{DistributerPhone.model_name.human} removed." }
+				f.html { redirect_to @distributer, notice: t(:notice_removed, item: DistributerPhone.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @distributer, alert: "Error removing #{DistributerPhone.model_name.human}." }
+				f.html { redirect_to @distributer, alert: t(:alert_not_removed, item: DistributerPhone.model_name.human) }
 				f.json { json_failure @distributer_phone }
 			end
 

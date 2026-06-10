@@ -1,0 +1,42 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h1><%= t(:title_account) %></h1>
+    <p class="text-muted"><%= t(:label_signed_in_as_html,
+                                name: current_employee.contact.full_name,
+                                user_name: current_employee.user_name).html_safe %></p>
+
+    <div class="card mt-3">
+      <% if current_employee.otp_enabled? %>
+        <h2 class="card-header h5"><%= t(:title_two_factor_enabled) %> <span class="badge bg-success"><%= t(:label_enabled_badge) %></span></h2>
+        <div class="card-body">
+          <p><%= t(:text_2fa_disable_help) %></p>
+          <%= form_with(url: two_factor_path, method: :delete, local: true, class: 'form-horizontal') do |f| %>
+            <div class='form-group mb-3'>
+              <%= label_tag :current_password, t(:label_current_password) %>
+              <%= password_field_tag :current_password, nil, class: 'form-control' %>
+            </div>
+            <%= button_tag t(:button_disable_2fa), type: 'submit', class: 'btn btn-danger', data: { confirm: t(:prompt_disable_2fa) } %>
+          <% end %>
+        </div>
+      <% else %>
+        <h2 class="card-header h5"><%= t(:title_two_factor_disabled) %> <span class="badge bg-secondary"><%= t(:label_disabled_badge) %></span></h2>
+        <div class="card-body">
+          <p><%= t(:text_2fa_qr_instructions) %></p>
+          <div class="text-center my-3">
+            <%= raw @qr_svg %>
+          </div>
+          <p class="small text-muted">
+            <%= t(:text_2fa_secret_help_html, secret: session[:pending_otp_secret]).html_safe %>
+          </p>
+          <%= form_with(url: two_factor_path, method: :post, local: true, class: 'form-horizontal') do |f| %>
+            <div class='form-group mb-3'>
+              <%= label_tag :otp_code, t(:label_verification_code) %>
+              <%= text_field_tag :otp_code, nil, class: 'form-control', autocomplete: 'one-time-code', inputmode: 'numeric', pattern: '[0-9]*' %>
+            </div>
+            <%= button_tag t(:button_verify_and_enable), type: 'submit', class: 'btn btn-primary' %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+en:
+  passwords_mailer:
+    reset:
+      subject: 'Reset your SAS password'
+      greeting: 'Hi %{name},'
+      intro: 'A password reset was requested for your SAS account. To set a new password, follow the link below. It is valid for 15 minutes.'
+      cta: 'Reset your password'
+      outro: "If you didn't request this, you can safely ignore this email."
+  quote_mailer:
+    quote_proposal:
+      subject: 'Quote %{code} — %{label}'
+  ticket_billing_mailer:
+    ticket_invoice:
+      subject: '%{ou}, Invoice for %{client} on %{date}'

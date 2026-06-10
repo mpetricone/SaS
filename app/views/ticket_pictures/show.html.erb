@@ -5,7 +5,9 @@ return_path: ticket_path(@ticket)} %>
 <div class='flex-row'>
   <div class='col d-flex'>
     <div class='image-card'>
+      <% if @ticket_picture.image.attached? %>
       <%= link_to(image_tag(@ticket_picture.image.representation(resize_to_limit: [600,600])), @ticket_picture.image.url) %>
+      <% end %>
       <div class='card-body'>
         <%= t(:click_image_for_full_size)%>
       </div>

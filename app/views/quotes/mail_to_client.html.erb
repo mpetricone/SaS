@@ -1,0 +1,50 @@
+<div class='container mt-4'>
+  <h2><%= t(:button_email_quote) %> — #<%= @quote.id %></h2>
+  <p class='text-muted'><%= @quote.client.name %><% if @quote.title.present? %> — <%= @quote.title %><% end %></p>
+
+  <%= form_with url: mail_to_client_send_quote_path(@quote), method: :post, local: true do %>
+    <% client_emails   = @candidate_emails[:client] %>
+    <% contact_buckets = @candidate_emails[:contacts] %>
+
+    <% if client_emails.empty? && contact_buckets.all? { |_, addrs| addrs.empty? } %>
+      <div class='alert alert-warning'>
+        <%= t(:text_quote_no_recipients_html,
+              client: @quote.client.name,
+              flag: t(:label_authorized_to_receive_quotes)).html_safe %>
+      </div>
+    <% end %>
+
+    <% if client_emails.any? %>
+      <fieldset class='mb-3'>
+        <legend class='h6'><%= t(:label_client_emails) %></legend>
+        <% client_emails.each do |addr| %>
+          <div class='form-check'>
+            <%= check_box_tag 'mail_to[]', addr, true, id: "mail_to_client_#{addr.parameterize}", class: 'form-check-input' %>
+            <%= label_tag "mail_to_client_#{addr.parameterize}", addr, class: 'form-check-label' %>
+          </div>
+        <% end %>
+      </fieldset>
+    <% end %>
+
+    <% contact_buckets.each do |contact, addrs| %>
+      <% next if addrs.empty? %>
+      <fieldset class='mb-3'>
+        <legend class='h6'><%= t(:label_contact_emails) %>: <%= contact.full_name %></legend>
+        <% addrs.each do |addr| %>
+          <div class='form-check'>
+            <%= check_box_tag 'mail_to[]', addr, true, id: "mail_to_contact_#{contact.id}_#{addr.parameterize}", class: 'form-check-input' %>
+            <%= label_tag "mail_to_contact_#{contact.id}_#{addr.parameterize}", addr, class: 'form-check-label' %>
+          </div>
+        <% end %>
+      </fieldset>
+    <% end %>
+
+    <div class='mb-3'>
+      <%= label_tag :extra_email, t(:label_additional_email), class: 'form-label' %>
+      <%= email_field_tag :extra_email, nil, class: 'form-control', placeholder: 'someone@example.com' %>
+    </div>
+
+    <%= submit_tag t(:button_send_email), class: 'btn btn-primary' %>
+    <%= link_to ficon('remove', t(:button_cancel)), quote_path(@quote), class: 'btn btn-danger' %>
+  <% end %>
+</div>

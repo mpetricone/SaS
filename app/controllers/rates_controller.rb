@@ -1,9 +1,6 @@
 class RatesController < ApplicationController
+  before_action { authorize Rate }
 	before_action :set_rate, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:rate) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:rate) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:rate) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:rate) }
 
 	# GET /rates
 	# GET /rates.json
@@ -56,7 +53,7 @@ class RatesController < ApplicationController
 
 		respond_to do |format|
 			if @rate.save
-				format.html { redirect_to @rate, notice: 'Rate was successfully created.' }
+				format.html { redirect_to @rate, notice: t(:notice_added, item: Rate.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -72,7 +69,7 @@ class RatesController < ApplicationController
 	def update
 		respond_to do |format|
 			if @rate.update(rate_params)
-				format.html { redirect_to @rate, notice: 'Rate was successfully updated.' }
+				format.html { redirect_to @rate, notice: t(:notice_updated, item: Rate.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -88,7 +85,7 @@ class RatesController < ApplicationController
 	def destroy
 		@rate.destroy
 		respond_to do |format|
-			format.html { redirect_to rates_url, notice: 'Rate was successfully destroyed.' }
+			format.html { redirect_to rates_url, notice: t(:notice_removed, item: Rate.model_name.human) }
 			format.json { json_success }
 		end
 

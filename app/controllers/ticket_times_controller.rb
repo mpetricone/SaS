@@ -1,9 +1,5 @@
 class TicketTimesController < ApplicationController
-	@@alter_notice = "#{TicketTime.model_name.human} altered."
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-	before_action(only: [ :update]) {process_permission has_write_permission(:ticket_attribute) }
-	before_action(only: [:new, :create]) {process_permission has_create_permission(:ticket_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
+  before_action { authorize TicketTime }
 
 	def new
 		populate_new
@@ -21,7 +17,7 @@ class TicketTimesController < ApplicationController
 		@ticket_time.update_hours
 		respond_to do |f|
 			if @ticket_time.save
-				f.html { redirect_to @ticket, notice: @@alter_notice }
+				f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketTime.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -32,21 +28,19 @@ class TicketTimesController < ApplicationController
 
 	end
 
-=begin
-    def edit
+	def edit
 		populate_edit
 	end
-=end
 
 	def update
 		populate_edit
 		@ticket_time.update_hours
 		respond_to do |f|
 			if (@ticket_time.update new_params)
-				f.html { redirect_to @ticket, notice: @@alter_notice }
+				f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketTime.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { render :edit, status: :unprocessable_content  }
+				f.html { render :edit, status: :unprocessable_content }
 				f.json { json_failure @ticket_time.errors }
 			end
 
@@ -58,15 +52,64 @@ class TicketTimesController < ApplicationController
 		populate_edit
 		respond_to do |f|
 			if (@ticket_time.destroy)
-				f.html { redirect_to @ticket, notice: @@alter_notice }
+				f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketTime.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @ticket, alert: "Error altering #{TickeTime.model_name.human }" }
+				f.html { redirect_to @ticket, alert: t(:alert_not_removed, item: TicketTime.model_name.human) }
 				f.json { json_failure @ticket_time.errors }
 			end
 
 		end
 
+	end
+
+	def start
+		@ticket = Ticket.find(params[:ticket_id])
+		if @ticket.is_closed
+			render json: { response: 'failure', error: t(:alert_labor_timer_closed_ticket) }, status: :unprocessable_entity
+			return
+		end
+		if @ticket.invoice_sent?
+			render json: { response: 'failure', error: t(:alert_labor_timer_invoiced_ticket) }, status: :unprocessable_entity
+			return
+		end
+		if @ticket.ticket_times.exists?(running: true, employee_id: current_employee.id)
+			render json: { response: 'failure', error: t(:alert_labor_timer_already_running) }, status: :conflict
+			return
+		end
+		@ticket_time = @ticket.ticket_times.create!(
+			running: true,
+			timer_started_at: Time.current,
+			employee_id: current_employee.id
+		)
+		render json: { id: @ticket_time.id, timer_started_at: @ticket_time.timer_started_at.iso8601 }
+	end
+
+	def stop
+		populate_edit
+		@ticket_time.stop_timer!
+		respond_to do |f|
+			f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketTime.model_name.human) }
+			f.json { json_success }
+		end
+	end
+
+	def resume
+		populate_edit
+		if @ticket.is_closed
+			render json: { response: 'failure', error: t(:alert_labor_timer_closed_ticket) }, status: :unprocessable_entity
+			return
+		end
+		if @ticket.invoice_sent?
+			render json: { response: 'failure', error: t(:alert_labor_timer_invoiced_ticket) }, status: :unprocessable_entity
+			return
+		end
+		if @ticket.ticket_times.where.not(id: @ticket_time.id).exists?(running: true, employee_id: current_employee.id)
+			render json: { response: 'failure', error: t(:alert_labor_timer_already_running) }, status: :conflict
+			return
+		end
+		@ticket_time.update!(running: true, timer_started_at: Time.current, timer_stopped_at: nil)
+		render json: { id: @ticket_time.id, timer_started_at: @ticket_time.timer_started_at.iso8601 }
 	end
 
 	private

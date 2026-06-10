@@ -1,7 +1,19 @@
 ENV["RAILS_ENV"] ||= "test"
 require File.expand_path("../config/environment", __dir__)
 require "rails/test_help"
-require File.expand_path "app/helpers/sessions_helper"
+
+# Active Storage variant processing can fail silently in tests (missing image
+# processor, fixture file not on disk), leaving processed? false so url returns
+# nil, and redirect_to(nil) raises ActionControllerError. Capybara then defers
+# that server exception to the next test as an E. Return 404 instead so
+# Capybara never sees a server-side exception from background image requests.
+ActiveStorage::Representations::RedirectController.prepend(Module.new do
+  def show
+    super
+  rescue ActionController::ActionControllerError
+    head :not_found
+  end
+end)
 
 Minitest.after_run do
   puts "Cleaning up test storage..."
@@ -10,11 +22,29 @@ Minitest.after_run do
 end
 
 class ActiveSupport::TestCase
-  include SessionsHelper
+  include ActiveJob::TestHelper
+
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
-  # Add more helper methods to be used by all tests here...
+  # Test-side login: create a Session row, set the signed session_id cookie,
+  # and prime Current.session so a controller action behaves as authenticated.
+  # Requires the test to have `cookies` available (controller / integration tests).
+  def log_in(employee)
+    session = employee.sessions.create!(user_agent: "test", ip_address: "127.0.0.1")
+    cookies.signed[:session_id] = session.id
+    Current.session = session
+    session
+  end
+
+  def log_out
+    if cookies.signed[:session_id]
+      Session.find_by(id: cookies.signed[:session_id])&.destroy
+      cookies.delete(:session_id)
+    end
+    Current.session = nil
+  end
+
   def logon_admin
     log_in Employee.find_by(user_name: "Admin")
   end
@@ -99,6 +129,8 @@ Capybara.server_host        = ENV.fetch("CAPYBARA_SERVER_HOST", "0.0.0.0")
 Capybara.server_port        = 4567
 Capybara.app_host           = "http://#{app_ip}:#{Capybara.server_port}"
 Capybara.server = :puma, { Host: "0.0.0.0" }
+
+Rails.application.routes.default_url_options = { host: app_ip, port: Capybara.server_port }
 
 class ActionDispatch::IntegrationTest
   include ActionView::Helpers::TranslationHelper

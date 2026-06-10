@@ -1,12 +1,12 @@
-<h1>Listing expense_payments</h1>
+<h1><%= t(:title_listing, items: ExpensePayment.model_name.human(count: 2)) %></h1>
 
 <table>
   <thead>
     <tr>
-      <th>Amount</th>
-      <th>Identifier</th>
-      <th>Ou payment type</th>
-      <th>Expense</th>
+      <th><%= ExpensePayment.human_attribute_name(:amount) %></th>
+      <th><%= ExpensePayment.human_attribute_name(:identifier) %></th>
+      <th><%= ExpensePayment.human_attribute_name(:ou_payment_type) %></th>
+      <th><%= ExpensePayment.human_attribute_name(:expense) %></th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -18,9 +18,9 @@
         <td><%= expense_payment.identifier %></td>
         <td><%= expense_payment.ou_payment_type %></td>
         <td><%= expense_payment.expense %></td>
-        <td><%= link_to 'Show', expense_payment %></td>
-        <td><%= link_to 'Edit', edit_expense_payment_path(expense_payment) %></td>
-        <td><%= link_to 'Destroy', expense_payment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to t(:button_show), expense_payment %></td>
+        <td><%= link_to t(:button_edit), edit_expense_payment_path(expense_payment) %></td>
+        <td><%= link_to t(:button_destroy), expense_payment, method: :delete, data: { confirm: t(:prompt_confirm) } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +28,4 @@
 
 <br>
 
-<%= link_to 'New Expense payment', new_expense_payment_path %>
+<%= link_to t(:button_new_for, item: ExpensePayment.model_name.human), new_expense_payment_path %>

@@ -1,8 +1,5 @@
 class TicketWorkTypesController < ApplicationController
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
-  before_action(only: [:desroy]) { process_permission has_delete_permisison(:ticket_attribute) }
+  before_action { authorize TicketWorkType }
 
   def new
     populate_new
@@ -12,7 +9,7 @@ class TicketWorkTypesController < ApplicationController
     populate_new new_params
     respond_to do |f|
       if @ticket_work_type.save
-        f.html { redirect_to @ticket, notice: "#{TicketWorkType.model_name.human} added." }
+        f.html { redirect_to @ticket, notice: t(:notice_added, item: TicketWorkType.model_name.human) }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content }
@@ -29,7 +26,7 @@ class TicketWorkTypesController < ApplicationController
     populate_edit
     respond_to do |f|
       if @ticket_work_type.update new_params
-        f.html { redirect_to @ticket, notice: "#{TicketWorkType.model_name.human} altered." }
+        f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketWorkType.model_name.human) }
         f.json { json_success }
       else
         f.html { render :edit, status: :unprocessable_content }
@@ -42,10 +39,10 @@ class TicketWorkTypesController < ApplicationController
     populate_edit
     respond_to do |f|
       if @ticket_work_type.delete
-        f.html { redirect_to @ticket, notice: "#{TicketWorkType.model_name.human} removed." }
+        f.html { redirect_to @ticket, notice: t(:notice_removed, item: TicketWorkType.model_name.human) }
         f.json { json_success }
       else
-        f.html { redirect_to @ticket, alert: "Error removing #{TikcketWorkType.model_name.human}" }
+        f.html { redirect_to @ticket, alert: t(:alert_not_removed, item: TicketWorkType.model_name.human) }
         f.json { json_failure @ticket_work_type.errors }
       end
     end

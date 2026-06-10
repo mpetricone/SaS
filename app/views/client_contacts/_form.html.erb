@@ -5,6 +5,10 @@
 			{search: true, search_id: 'client-contact-search', search_name: Contact.model_name.human(count: 2) },
 			{label: nil, name: :contact_id, type: :collection_select,ext_params: {
 				collection: Contact.all, value_method: :id, text_method: :full_name_alphebetical}}] %>
+		<div class='form-check mt-2'>
+			<%= f.check_box :receives_quotes, class: 'form-check-input' %>
+			<%= f.label :receives_quotes, t(:label_authorized_to_receive_quotes), class: 'form-check-label' %>
+		</div>
 	</div>
 	<%= render_actions f, clients_show2_path(@client) %>
 <% end %>

@@ -1,8 +1,5 @@
 class ClientNotesController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:client_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:client_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:client_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:client_attribute) }
+  before_action { authorize ClientNote }
 	def new
 		populate_new
 	end
@@ -20,7 +17,7 @@ class ClientNotesController < ApplicationController
 
 		respond_to do |f|
 			if @client_note.save
-				f.html { redirect_to clients_show2_path(@client), notice: "#{ClientNote.model_name.human} #{@client_note.title} added." }
+				f.html { redirect_to clients_show2_path(@client), notice: t(:notice_added, item: ClientNote.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -40,7 +37,7 @@ class ClientNotesController < ApplicationController
 
 		respond_to do |f|
 			if @client_note.update new_params
-				f.html { redirect_to clients_show2_path(@client), notice: "#{ClientNote.model_name.human} updated." }
+				f.html { redirect_to clients_show2_path(@client), notice: t(:notice_updated, item: ClientNote.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -57,7 +54,7 @@ class ClientNotesController < ApplicationController
 		@client_note.destroy
 
 		respond_to do |f|
-			f.html { redirect_to clients_show2_path(@client), notice: "#{ClientNote.model_name.human} deleted." }
+			f.html { redirect_to clients_show2_path(@client), notice: t(:notice_removed, item: ClientNote.model_name.human) }
 			f.json { json_success }
 		end
 

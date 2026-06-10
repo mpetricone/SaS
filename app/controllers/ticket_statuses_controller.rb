@@ -1,8 +1,5 @@
 class TicketStatusesController < ApplicationController
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:ticket_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
+  before_action { authorize TicketStatus }
 
 	def show
 		@ticket_status = TicketStatus.find params[:id]
@@ -43,7 +40,7 @@ class TicketStatusesController < ApplicationController
 		@ticket_status = TicketStatus.new new_params
 		respond_to do |f|
 			if (@ticket_status.save)
-				f.html { redirect_to ticket_statuses_path, notice: "#{TicketStatus.model_name.human} #{@ticket_status.name} created." }
+				f.html { redirect_to ticket_statuses_path, notice: t(:notice_added, item: TicketStatus.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -62,7 +59,7 @@ class TicketStatusesController < ApplicationController
 		@ticket_status = TicketStatus.find params[:id]
 		respond_to do |f|
 			if @ticket_status.update(new_params)
-				f.html { redirect_to ticket_statuses_path, notice: "#{TicketStatus.model_name.human} #{@ticket_status.name} updated." }
+				f.html { redirect_to ticket_statuses_path, notice: t(:notice_updated, item: TicketStatus.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -77,10 +74,10 @@ class TicketStatusesController < ApplicationController
 		@ticket_status = TicketStatus.find params[:id]
 		respond_to do |f|
 			if @ticket_status.destroy
-				f.html { redirect_to ticket_statuses_path, notice: "#{TicketStatus.model_name.human} removed."}
+				f.html { redirect_to ticket_statuses_path, notice: t(:notice_removed, item: TicketStatus.model_name.human)}
 				f.json { json_success }
 			else
-				f.html { redirect_to ticket_statuses_path, alert: "Error removing #{TicketStatus.model_name.human}"}
+				f.html { redirect_to ticket_statuses_path, alert: t(:alert_not_removed, item: TicketStatus.model_name.human)}
 				f.json { json_failure }
 			end
 

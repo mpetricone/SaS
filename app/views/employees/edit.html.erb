@@ -1,2 +1,12 @@
 <%= render partial: 'shared/form_page_title', locals: { title: t(:title_edit, title: Employee.model_name.human) } %>
+<% if @employee.locked? %>
+  <div class="alert alert-warning d-flex justify-content-between align-items-center">
+    <div>
+      <%= t(:alert_account_locked_html,
+            at: (l(@employee.locked_at, format: :short) rescue @employee.locked_at),
+            count: @employee.failed_attempts) %>
+    </div>
+    <%= button_to t(:button_unlock_account), unlock_employee_path(@employee), method: :patch, class: 'btn btn-warning' %>
+  </div>
+<% end %>
 <%= render partial: "form_main", locals: { form_action: 'edited'} %>

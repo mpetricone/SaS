@@ -1,8 +1,5 @@
 class TicketNotesController < ApplicationController
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-  before_action(only: [:update, :edit]) { process_permission has_write_permission(:ticket_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
+  before_action { authorize TicketNote }
 
   def new
     populate_new

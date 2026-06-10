@@ -1,9 +1,5 @@
 class OusController < ApplicationController
-  before_action(only: [:index, :show, :search_by_name]) { process_permission has_read_permission(:ou) }
-  before_action(only: [:edit, :update]) {process_permission has_write_permission(:ou) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ou) }
-  #before_action(only: [:destroy]) { process_permission has_delete_permission(:ou) }
-  before_action(only: [:set_disabled, :clear_disabled]) { process_permission has_write_permission(:ou) }
+  before_action { authorize Ou }
 
   def index
     respond_to do |f|
@@ -74,7 +70,7 @@ class OusController < ApplicationController
     end
     respond_to do |f|
       if (@ou.save)
-        f.html { redirect_to @ou, flash: { notice: "Record created"} }
+        f.html { redirect_to @ou, flash: { notice: t(:notice_record_added)} }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content}
@@ -123,7 +119,7 @@ class OusController < ApplicationController
     @ou.destroy
 
     respond_to do |format|
-      format.html { redirect_to ous_path, flash: { notice: "Record Destroyed" } }
+      format.html { redirect_to ous_path, flash: { notice: t(:notice_record_removed) } }
       format.json { json_success }
     end
   end

@@ -1,8 +1,5 @@
 class OuPhonesController < ApplicationController
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:ou_attribute) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:ou_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ou_attribute) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ou_attribute) }
+  before_action { authorize OuPhone }
 
   def index
   end
@@ -41,7 +38,7 @@ class OuPhonesController < ApplicationController
     respond_to do |f|
     if @ouPhone.save
       f.html {
-        flash[:success] = "Phone record created."
+        flash[:notice] = t(:notice_added, item: OuPhone.model_name.human)
         redirect_to @ou }
       f.json { json_success }
     else

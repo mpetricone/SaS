@@ -17,19 +17,30 @@ Rails.application.routes.draw do
   get 'income_report_report' => 'income_report#report'
   get 'income_report_report3' => 'income_report#report_v3'
 
-  get 'login' => 'sessions#new'
-  post 'login' =>  'sessions#create'
-  delete 'logout' => 'sessions#destroy'
+  resource :session, only: [:new, :create, :destroy]
+  resources :passwords, param: :token, only: [:new, :create, :edit, :update]
+  resource :account, only: [:show], controller: 'accounts'
+  resource :two_factor, only: [:create, :destroy], controller: 'two_factor'
+  resource :two_factor_challenge, only: [:new, :create], controller: 'two_factor_challenge'
+  get    'login'  => 'sessions#new',     as: :login
+  delete 'logout' => 'sessions#destroy', as: :logout
 
   post 'billing_ticket_mail/:id' => 'tickets#mail_bill', as: 'billing_ticket_mail'
 
   patch 'ticket/:id/close_ticket' => 'tickets#close_ticket', as: 'close_ticket'
   patch 'ticket/:id/open_ticket' => 'tickets#open_ticket', as: 'open_ticket'
+  patch 'ticket/:id/mark_invoice_sent' => 'tickets#mark_invoice_sent', as: 'mark_invoice_sent'
   get 'tickets/:id/time' => 'tickets#time', as: 'time'
+
+  get  'labor_timers'          => 'labor_timers#index',    as: 'labor_timers'
+  post 'labor_timers/stop_all' => 'labor_timers#stop_all', as: 'stop_all_labor_timers'
   get 'tickets/index_latest' => 'tickets#index_latest'
 
   get 'taxes/search_by_name' => 'taxes#search_by_name'
   resources :taxes
+
+  get 'payment_terms/search_by_name' => 'payment_terms#search_by_name'
+  resources :payment_terms
 
   get 'permissions/search_by_name' => 'permissions#search_by_name'
   resources :permissions
@@ -53,11 +64,30 @@ Rails.application.routes.draw do
     resources :shipment_trackings
     resources :ticket_infos
     resources :ticket_actions
-    resources :ticket_times, except: :edit
+    resources :ticket_times do
+      collection { post :start }
+      member     { patch :stop; patch :resume }
+    end
     resources :ticket_payments
     resources :ticket_expenses
     resources :ticket_pictures
     resources :ticket_notes
+  end
+
+  get 'quotes/search_by_name' => 'quotes#search_by_name'
+  resources :quotes do
+    resources :quote_products, except: :edit
+    resources :quote_labors
+    member do
+      patch :send_to_client
+      patch :accept
+      patch :decline
+      post  :convert_to_ticket
+      post  :add_addendum
+      get   :mail_to_client
+      post  :mail_to_client_send
+      get   :print_view
+    end
   end
 
   get 'products/search_by_name' => 'products#search_by_name'
@@ -103,6 +133,7 @@ Rails.application.routes.draw do
   get 'employees/search_by_name' => 'employees#search_by_name'
   resources :employees, only: [:index, :new, :edit, :show, :update, :create] do
     resources :employee_permissions
+    member { patch :unlock }
   end
 
   get 'home/index'

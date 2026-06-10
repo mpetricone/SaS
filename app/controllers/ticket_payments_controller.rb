@@ -1,8 +1,5 @@
 class TicketPaymentsController < ApplicationController
-	before_action(only: [:index, :show]) { process_permission has_read_permission(:ticket_payment) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_payment) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_payment) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_payment) }
+  before_action { authorize TicketPayment }
 
 	def new
 		populate_new
@@ -13,10 +10,10 @@ class TicketPaymentsController < ApplicationController
 		respond_to do |f|
 			@ticket.update payment_received: true
 			if @ticket_payment.save
-				f.html { redirect_to @ticket, notice: "Payment processed" }
+				f.html { redirect_to @ticket, notice: t(:notice_payment_processed) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @ticket, alert: "Error processing payment" }
+				f.html { redirect_to @ticket, alert: t(:alert_payment_processing_failed) }
 				f.json { json_failure @ticket_payment.errors }
 			end
 
@@ -32,10 +29,10 @@ class TicketPaymentsController < ApplicationController
 		populate_edit
 		respond_to do |f|
 			if @ticket_payment.update new_params
-				f.html { redirect_to @ticket, notice: "Payment processed" }
+				f.html { redirect_to @ticket, notice: t(:notice_payment_processed) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @ticket, alert: "Error processing payment" }
+				f.html { redirect_to @ticket, alert: t(:alert_payment_processing_failed) }
 				f.json { json_failure @ticket_payment.errors }
 			end
 
@@ -47,10 +44,10 @@ class TicketPaymentsController < ApplicationController
 		populate_edit
 		respond_to do |f|
 			if @ticket_payment.destroy
-				f.html { redirect_to @ticket, notice: "Payment record deleted." }
+				f.html { redirect_to @ticket, notice: t(:notice_payment_deleted) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @ticket, alert: "Error deleting payment record." }
+				f.html { redirect_to @ticket, alert: t(:alert_payment_delete_failed) }
 				f.json { json_failure }
 			end
 

@@ -14,7 +14,7 @@ class WorkTypesUsageTest < ActionDispatch::IntegrationTest
     fill_in 'work_type_name', with: 'WE USE CAPS HERE YARG'
     click_button 'Save'
     assert_current_path work_types_path
-    assert has_content? /#{WorkType.model_name.human} .* added\.$/
+    assert has_content? /Added #{WorkType.model_name.human}/
     click_link 'Show', match: :first
     assert_current_path /\/work_types\/[0-9]*$/
     click_link 'Return'
@@ -22,9 +22,9 @@ class WorkTypesUsageTest < ActionDispatch::IntegrationTest
     assert_current_path /\/work_types\/[0-9]*\/edit$/
     click_button 'Save'
     assert_current_path work_types_path
-    assert has_content? /#{WorkType.model_name.human} .* altered\.$/
+    assert has_content? /Updated #{WorkType.model_name.human}/
     click_link 'Delete', match: :first
     accept_alert /Really delete Work Type .*\?$/
-    assert has_content? "#{WorkType.model_name.human} removed."
+    assert has_content? "Removed #{WorkType.model_name.human}"
   end
 end

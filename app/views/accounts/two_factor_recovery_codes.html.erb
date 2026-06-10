@@ -1,0 +1,19 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <h1 class="card-header"><%= t(:title_save_recovery_codes) %></h1>
+      <div class="card-body">
+        <div class="alert alert-warning">
+          <strong><%= t(:text_recovery_codes_warning) %></strong> <%= t(:text_recovery_codes_help) %>
+          <%= t(:text_recovery_codes_one_time_use) %>
+        </div>
+        <ul class="list-unstyled font-monospace fs-5">
+          <% @recovery_codes.each do |code| %>
+            <li><%= code %></li>
+          <% end %>
+        </ul>
+        <%= link_to t(:button_recovery_codes_done), root_path, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>

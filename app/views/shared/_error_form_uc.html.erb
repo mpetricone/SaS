@@ -1,18 +1,16 @@
 <% if result.errors.any? %>
-  <div class="row">
-    <div class='form-error text-bg-danger'>
-      <div class='form-error-header'>
-        <h2><%= pluralize result.errors.count, 'Issue' %>
-        preventing <%= result.class.model_name.human %> from being <%= object_action %>.
-        </h2>
-      </div>
-      <div class='form-error-body'>
-        <ul class='list-group list-group-numbered'>
-          <% result.errors.full_messages.each do  |e|%>
-            <li class='list-group-item list-group-item-danger'><%= e%></li>
-          <%end %>
-        </ul>
+  <% content_for :validation_toast do %>
+    <div class="toast align-items-center toast-alert text-white border-0"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true"
+         data-controller="flash">
+      <div class="d-flex">
+        <div class="toast-body">
+          <%= t(:text_form_errors_pluralize, count: result.errors.count) %><%= t(:text_form_errors_check_highlighted) %>
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-action="click->flash#close" aria-label="Close"></button>
       </div>
     </div>
-  </div>
-<%end%>
+  <% end %>
+<% end %>

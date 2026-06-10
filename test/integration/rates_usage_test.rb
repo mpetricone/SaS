@@ -27,19 +27,19 @@ class RatesUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Date retired', with: Time.now.to_date.next_year.strftime(@@date_format)
     click_button 'Save'
     page.assert_current_path wp
-    assert page.has_content? 'Rate was successfully created.'
+    assert page.has_content? 'Added Rate'
     dismiss_notice
     click_link 'Edit', match: :first
     page.assert_current_path /\/rates\/[0-9]*\/edit$/
     assert page.has_content? 'Editing Rate'
     click_button 'Save'
     page.assert_current_path wp
-    assert page.has_content? 'Rate was successfully updated.'
+    assert page.has_content? 'Updated Rate'
     click_link 'Return'
     page.assert_current_path rates_path
     click_link 'Delete', match: :first
     accept_alert /Really delete Rate .*\?$/
-    assert page.has_content? 'Rate was successfully destroyed.'
+    assert page.has_content? 'Removed Rate'
     click_link 'Show', match: :first
     page.assert_current_path /\/rates\/[0-9]*$/
   end
@@ -51,7 +51,7 @@ class RatesUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
 
     assert_current_path /\/rates\/new$/
-    assert has_content? "1 Issue preventing Rate from being created."
+    assert has_css? ".toast-alert"
     assert has_content? "Rate can't be blank"
   end
 

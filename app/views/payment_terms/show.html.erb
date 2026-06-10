@@ -1,0 +1,4 @@
+<%= render_show_title "#{PaymentTerm.model_name.human}: #{@payment_term.name}", edit_payment_term_path(@payment_term), payment_terms_path %>
+<div class='row'>
+  <%= render partial: 'shared/show_item', locals: { model: @payment_term, attribs: [:name, :description, :active] } %>
+</div>

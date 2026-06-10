@@ -7,22 +7,22 @@
       </div>
       <div class='card-body'>
         <div class='field'>
-          <strong>Rate:</strong>
+          <strong><%= Rate.human_attribute_name(:rate) %>:</strong>
           <%= @rate.rate %>
         </div>
 
         <div class='field'>
-          <strong>Current:</strong>
+          <strong><%= t(:label_current) %>:</strong>
           <%= @rate.current %>
         </div>
 
         <div class='field'>
-          <strong>Date implemented:</strong>
+          <strong><%= t(:label_date_implemented) %>:</strong>
           <%= @rate.date_implemented %>
         </div>
 
         <div class='field'>
-          <strong>Date retired:</strong>
+          <strong><%= t(:label_date_retired) %>:</strong>
           <%= @rate.date_retired %>
         </div>
       </div>

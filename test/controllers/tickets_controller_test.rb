@@ -181,4 +181,51 @@ class TicketsControllerTest < ActionController::TestCase
 
     assert_json_success
   end
+
+  test "should mark invoice sent" do
+    @ticket.update!(payment_requested: false)
+    patch :mark_invoice_sent, params: { id: @ticket }
+    @ticket.reload
+    assert @ticket.payment_requested
+    assert_not_nil @ticket.invoice_date
+    assert_redirected_to ticket_path(@ticket)
+  end
+
+  test "mark invoice sent blocked when already invoiced" do
+    @ticket.update!(payment_requested: true)
+    patch :mark_invoice_sent, params: { id: @ticket }
+    assert_redirected_to ticket_path(@ticket)
+    assert flash[:alert].present?
+  end
+
+  test "mark invoice sent blocked when running timers exist" do
+    @ticket.update!(payment_requested: false)
+    @ticket.ticket_times.create!(running: true, timer_started_at: 1.hour.ago, employee: employees(:admin))
+    patch :mark_invoice_sent, params: { id: @ticket }
+    assert_redirected_to ticket_path(@ticket)
+    assert flash[:alert].present?
+    @ticket.reload
+    assert_not @ticket.payment_requested
+  end
+
+  test "mark invoice sent denied for non-admin" do
+    log_out
+    login_useless_user
+    @ticket.update!(payment_requested: false)
+    patch :mark_invoice_sent, params: { id: @ticket }
+    assert_redirected_to home_index_path
+  end
+
+  test "close ticket blocked when running timers exist" do
+    @ticket.ticket_times.create!(running: true, timer_started_at: 1.hour.ago, employee: employees(:admin))
+    patch :close_ticket, params: { id: @ticket }
+    assert_redirected_to ticket_path(@ticket)
+    assert flash[:alert].present?
+  end
+
+  test "close ticket stops running timers before closing" do
+    @ticket.ticket_times.where(running: true).destroy_all
+    patch :close_ticket, params: { id: @ticket }
+    assert_redirected_to tickets_path
+  end
 end

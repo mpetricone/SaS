@@ -1,8 +1,5 @@
 class ProductsController < ApplicationController
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:product) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:product) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:product) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:product) }
+  before_action { authorize Product }
 
 	def index
 		respond_to do |f|
@@ -51,7 +48,7 @@ class ProductsController < ApplicationController
 
 		respond_to do |f|
 			if @product.save
-				f.html { redirect_to @product, notice: "#{Product.model_name.human} #{@product.name} added." }
+				f.html { redirect_to @product, notice: t(:notice_added, item: Product.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -71,7 +68,7 @@ class ProductsController < ApplicationController
 
 		respond_to do |f|
 			if (@product.update new_params)
-				f.html { redirect_to @product, notice: "#{Product.model_name.human} #{@product.name} updated." }
+				f.html { redirect_to @product, notice: t(:notice_updated, item: Product.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content}
@@ -87,10 +84,10 @@ class ProductsController < ApplicationController
 
 		respond_to do |f|
 			if (@product.destroy)
-				f.html { redirect_to products_path, notice: "#{Product.model_name.human} removed." }
+				f.html { redirect_to products_path, notice: t(:notice_removed, item: Product.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to products_path, alert: "Error removing #{Product.model_name.human} #{@product.name}." }
+				f.html { redirect_to products_path, alert: t(:alert_not_removed, item: Product.model_name.human) }
 				f.json { json_failure @product.errors }
 			end
 

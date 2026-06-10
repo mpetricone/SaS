@@ -1,9 +1,6 @@
 class ExpensePaymentsController < ApplicationController
+  before_action { authorize ExpensePayment }
 	before_action :set_expense_payment, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:expense) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:expense) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:expense) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:expense) }
 
 
 	# GET /expense_payments
@@ -33,7 +30,7 @@ class ExpensePaymentsController < ApplicationController
 		set_expense
 		respond_to do |format|
 			if @expense_payment.save
-				format.html { redirect_to @expense, notice: 'Expense payment was successfully created.' }
+				format.html { redirect_to @expense, notice: t(:notice_added, item: ExpensePayment.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -50,7 +47,7 @@ class ExpensePaymentsController < ApplicationController
 		set_expense
 		respond_to do |format|
 			if @expense_payment.update(expense_payment_params)
-				format.html { redirect_to @expense, notice: 'Expense payment was successfully updated.' }
+				format.html { redirect_to @expense, notice: t(:notice_updated, item: ExpensePayment.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -66,7 +63,7 @@ class ExpensePaymentsController < ApplicationController
 	def destroy
 		@expense_payment.destroy
 		respond_to do |format|
-			format.html { redirect_to @expense, notice: 'Expense payment was successfully removed.' }
+			format.html { redirect_to @expense, notice: t(:notice_removed, item: ExpensePayment.model_name.human) }
 			format.json { json_success }
 		end
 

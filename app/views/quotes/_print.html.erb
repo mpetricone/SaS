@@ -1,0 +1,106 @@
+<%
+  totals    ||= quote.calculate_totals
+  logo_src  ||= asset_path('logos/corp_logo.png') if respond_to?(:asset_path)
+%>
+<div class='container my-4'>
+  <div class='d-flex justify-content-between align-items-start mb-4'>
+    <div>
+      <% if logo_src %>
+        <%= image_tag logo_src, height: 60, alt: t(:label_logo) %>
+      <% end %>
+    </div>
+    <div class='text-end'>
+      <h2><%= Quote.model_name.human %></h2>
+      <div><strong><%= t(:label_id) %>:</strong> <%= quote.code %></div>
+      <div class='text-muted'><%= quote.created_at.strftime('%B %d, %Y') %></div>
+    </div>
+  </div>
+
+  <div class='row mb-4'>
+    <div class='col'>
+      <strong><%= t(:label_for) %>:</strong><br>
+      <%= quote.client.name %><br>
+      <% if quote.contact %>
+        <%= quote.contact.full_name %><br>
+      <% end %>
+    </div>
+    <div class='col text-end'>
+      <% if quote.employee %>
+        <div class='text-muted small'><strong><%= t(:label_prepared_by) %>:</strong> <%= quote.employee.name %></div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if quote.description.present? %>
+    <div class='mb-3'>
+      <h5><%= Quote.human_attribute_name(:description) %></h5>
+      <%= simple_format(quote.description) %>
+    </div>
+  <% end %>
+
+  <% if quote.quote_products.any? %>
+    <h5><%= t(:label_hardware) %></h5>
+    <table class='table table-sm mb-4'>
+      <thead><tr><th><%= Product.model_name.human %></th><th class='text-end'><%= t(:label_qty) %></th><th class='text-end'><%= t(:label_price) %></th><th class='text-end'><%= t(:label_total) %></th></tr></thead>
+      <tbody>
+        <% quote.quote_products.includes(:product).each do |qp| %>
+          <tr>
+            <td><%= qp.product&.name %></td>
+            <td class='text-end'><%= qp.quantity %></td>
+            <td class='text-end'><%= number_to_currency(qp.price) %></td>
+            <td class='text-end'><%= number_to_currency(qp.total) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <% if quote.quote_labors.any? %>
+    <h5><%= t(:label_labor) %></h5>
+    <table class='table table-sm mb-4'>
+      <thead><tr><th><%= t(:label_description) %></th><th><%= t(:label_type) %></th><th class='text-end'><%= t(:label_detail) %></th><th class='text-end'><%= t(:label_total) %></th></tr></thead>
+      <tbody>
+        <% quote.quote_labors.includes(:rate).each do |ql| %>
+          <tr>
+            <td><%= ql.description %></td>
+            <td><%= ql.billing %></td>
+            <td class='text-end'>
+              <% if ql.fixed? %>
+                <%= number_to_currency(ql.amount) %>
+              <% else %>
+                <%= ql.estimated_hours %> hr @ <%= number_to_currency(ql.rate&.rate) %>
+              <% end %>
+            </td>
+            <td class='text-end'><%= number_to_currency(ql.line_total) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+
+  <div class='row justify-content-end'>
+    <div class='col-md-5'>
+      <dl class='row'>
+        <dt class='col-7'><%= t(:label_products) %></dt><dd class='col-5 text-end'><%= number_to_currency(totals[:product]) %></dd>
+        <dt class='col-7'><%= t(:label_labor) %></dt>   <dd class='col-5 text-end'><%= number_to_currency(totals[:labor]) %></dd>
+        <dt class='col-7'><%= t(:label_subtotal) %></dt><dd class='col-5 text-end'><%= number_to_currency(totals[:sub]) %></dd>
+        <dt class='col-7'><%= t(:label_tax) %></dt>     <dd class='col-5 text-end'><%= number_to_currency(totals[:tax]) %></dd>
+        <dt class='col-7'><strong><%= t(:label_total) %></strong></dt>
+        <dd class='col-5 text-end'><strong><%= number_to_currency(totals[:grand]) %></strong></dd>
+      </dl>
+    </div>
+  </div>
+
+  <% if quote.resolved_payment_terms.present? %>
+    <div class='mt-4'>
+      <h5><%= t(:label_payment_terms) %></h5>
+      <%= simple_format(quote.resolved_payment_terms) %>
+    </div>
+  <% end %>
+
+  <% if quote.draft? || quote.sent? %>
+    <div class='mt-5 pt-4 border-top'>
+      <p><%= t(:text_acceptance_signature_line_html).html_safe %></p>
+    </div>
+  <% end %>
+</div>

@@ -1,5 +1,5 @@
 class AccountsReceivableController < ApplicationController
-	before_action(only: [:show, :index, :search]) { process_permission has_read_permission(:accounting_restricted) }
+  before_action { authorize :accounts_receivable }
 
 	def index
 		params[:start_date] = params[:end_date] = Time.now

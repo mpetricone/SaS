@@ -1,8 +1,5 @@
 class ContactPhonesController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:distributer_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:distributer_attribute) }
+  before_action { authorize ContactPhone }
 
 	before_action :set_contact_phone, only: [ :edit, :update, :destroy]
 
@@ -27,7 +24,7 @@ class ContactPhonesController < ApplicationController
 
 		respond_to do |format|
 			if @contact_phone.save
-				format.html { redirect_to @contact, notice: 'Contact phone was successfully created.' }
+				format.html { redirect_to @contact, notice: t(:notice_added, item: ContactPhone.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -45,7 +42,7 @@ class ContactPhonesController < ApplicationController
 		@contact_phone.contact = @contact
 		respond_to do |format|
 			if @contact_phone.update(contact_phone_params)
-				format.html { redirect_to @contact, notice: 'Contact phone was successfully updated.' }
+				format.html { redirect_to @contact, notice: t(:notice_updated, item: ContactPhone.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -62,7 +59,7 @@ class ContactPhonesController < ApplicationController
 		@contact = Contact.find params[:contact_id]
 		@contact_phone.destroy
 		respond_to do |format|
-			format.html { redirect_to @contact, notice: 'Contact phone was successfully removed.' }
+			format.html { redirect_to @contact, notice: t(:notice_removed, item: ContactPhone.model_name.human) }
 			format.json { json_success }
 		end
 

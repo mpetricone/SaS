@@ -4,3 +4,14 @@ en:
   error_np_no_date: No Date
   error_disable_fail: "Failed to disable %{obj}"
   error_enable_fail: "Failed to enable %{obj}"
+  activerecord:
+    errors:
+      models:
+        quote_labor:
+          attributes:
+            base:
+              quote_locked: 'Parent quote is locked.'
+        quote_product:
+          attributes:
+            base:
+              quote_locked: 'Parent quote is locked.'

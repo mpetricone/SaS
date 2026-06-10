@@ -1,8 +1,5 @@
 class AddressContactsController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:client_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:client_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:client_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:client_attribute) }
+  before_action { authorize AddressContact }
 
 	before_action :populate_edit, only: [ :edit, :update, :destroy]
 
@@ -32,7 +29,7 @@ class AddressContactsController < ApplicationController
 	def update
 		respond_to do |format|
 			if @address_contact.update new_params
-				format.html { redirect_to @contact, notice: "Updated #{AddressContact.model_name.human} #{@address_contact.address.name_short}." }
+				format.html { redirect_to @contact, notice: t(:notice_updated, item: AddressContact.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -46,10 +43,10 @@ class AddressContactsController < ApplicationController
 	def destroy
 		respond_to do |format|
 			if (@address_contact.delete)
-				format.html { redirect_to @contact, notice: "Removed #{AddressContact.model_name.human}." }
+				format.html { redirect_to @contact, notice: t(:notice_removed, item: AddressContact.model_name.human) }
 				format.json { json_success }
 			else
-				format.html { redirect_to @contact, alert: "Error removing #{AddressContact.model_name.human}." }
+				format.html { redirect_to @contact, alert: t(:alert_not_removed, item: AddressContact.model_name.human) }
 				formt.json { json_failure }
 			end
 

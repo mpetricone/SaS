@@ -1,8 +1,5 @@
 class ContactEmailsController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:distributer_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:distributer_attribute) }
+  before_action { authorize ContactEmail }
 
 	before_action :set_contact_email, only: [:show, :edit, :update, :destroy]
 
@@ -40,7 +37,7 @@ class ContactEmailsController < ApplicationController
 
 		respond_to do |format|
 			if @contact_email.save
-				format.html { redirect_to @contact_email.contact, notice: 'Contact email was successfully created.' }
+				format.html { redirect_to @contact_email.contact, notice: t(:notice_added, item: ContactEmail.model_name.human) }
 				format.json { json_success}
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -58,7 +55,7 @@ class ContactEmailsController < ApplicationController
 		@contact_email.contact = @contact
 		respond_to do |format|
 			if @contact_email.update(contact_email_params)
-				format.html { redirect_to @contact, notice: 'Contact email was successfully updated.' }
+				format.html { redirect_to @contact, notice: t(:notice_updated, item: ContactEmail.model_name.human) }
 				format.json { json_success }
 			else
         format.html { render :edit, status: :unprocessable_content }
@@ -75,7 +72,7 @@ class ContactEmailsController < ApplicationController
 		@contact = Contact.find params[:contact_id]
 		@contact_email.destroy
 		respond_to do |format|
-			format.html { redirect_to @contact, notice: 'Contact email was successfully removed.' }
+			format.html { redirect_to @contact, notice: t(:notice_removed, item: ContactEmail.model_name.human) }
 			format.json { json_success }
 		end
 

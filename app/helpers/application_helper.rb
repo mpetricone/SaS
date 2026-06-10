@@ -88,6 +88,20 @@ module ApplicationHelper
 
 =end
 
+  FLASH_TOAST_CLASSES = {
+    "notice"   => "toast-notice text-white",
+    "success"  => "toast-notice text-white",
+    "alert"    => "toast-alert text-white",
+    "error"    => "toast-alert text-white",
+    "warning"  => "toast-warning",
+    "info"     => "toast-info text-white",
+    "security" => "toast-alert text-white"
+  }.freeze
+
+  def flash_toast_class(key)
+    FLASH_TOAST_CLASSES.fetch(key.to_s, "bg-secondary text-white")
+  end
+
 	def page_title_for action, title, f
 		render partial: 'shared/form_page_title', locals: { title: t(action, title: title, for: f) }
 	end

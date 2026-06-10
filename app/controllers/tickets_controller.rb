@@ -1,15 +1,17 @@
 class TicketsController < ApplicationController
+  before_action { authorize Ticket }
   include ActiveStorage::SetCurrent
-  before_action(only: [:show, :index, :index_show_list, :index_latest]) { process_permission has_read_permission(:ticket) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket) }
 
   def index
   end
 
   def mail_bill
     populate_edit
+    if @ticket.has_running_timers?
+      redirect_to @ticket, alert: t(:alert_labor_timer_running_invoice)
+      return
+    end
+    @ticket.stop_running_timers!
     if @ticket.invoice_date == nil
       @ticket.invoice_date = Date.today
       @ticket.save
@@ -17,11 +19,31 @@ class TicketsController < ApplicationController
 
     if not params[:mail_to]
       flash[:info] = params[:mail_to]
-      redirect_to @ticket, alert: "Error sending Invoice E-mail."
+      redirect_to @ticket, alert: t(:alert_invoice_send_failed)
       return
     end
 
     mail_bill_to(params[:mail_to])
+  end
+
+  def mark_invoice_sent
+    populate_edit
+    unless current_employee.employee_permissions.any? { |ep| ep.permission.admin }
+      flash[:security] = t(:alert_permission_denied)
+      redirect_to home_index_path
+      return
+    end
+    if @ticket.has_running_timers?
+      redirect_to @ticket, alert: t(:alert_labor_timer_running_mark_sent)
+      return
+    end
+    if @ticket.invoice_sent?
+      redirect_to @ticket, alert: t(:alert_invoice_already_sent)
+      return
+    end
+    @ticket.stop_running_timers!
+    @ticket.update!(payment_requested: true, invoice_date: Time.current)
+    redirect_to @ticket, notice: t(:notice_invoice_marked_sent)
   end
 
 =begin
@@ -61,23 +83,27 @@ class TicketsController < ApplicationController
 
   def close_ticket
     populate_edit
+    if @ticket.has_running_timers?
+      redirect_to @ticket, alert: t(:alert_labor_timer_running_close)
+      return
+    end
+    @ticket.stop_running_timers!
     ticket_status_solved = TicketStatus.find_by(name: TicketStatus::SOLVED)
-    ticket_status_closed = TicketStatus.find_by(name: TicketStatus::CLOSED)
     respond_to do |f|
-      if (@ticket.ticket_status != ticket_status_closed || @ticket.ticket_status != ticket_status_solved)
-        @ticket.ticket_status = ticket_status_closed
+      if !@ticket.is_closed
+        @ticket.ticket_status = ticket_status_solved
         @ticket.date_resolved = DateTime.now
         if @ticket.save
-          flash[:notice] = "#{@ticket.client.name}.#{@ticket.short_description}.#{@ticket.id} closed."
+          flash[:notice] = t(:notice_ticket_closed, label: "#{@ticket.client.name}.#{@ticket.short_description}.#{@ticket.id}")
           f.html { redirect_to tickets_path }
           f.json { json_success }
         else
-          flash[:alert] = "#{@ticket.id} could not be closed, please try again later."
+          flash[:alert] = t(:alert_ticket_not_closed, ref: @ticket.id, errors: @ticket.errors.full_messages.join(', '))
           f.html { redirect_to @ticket }
           f.json { json_failure @ticket.errors }
         end
       else
-        flash[:notice] = "#{@ticket.client.name}.#{@ticket.short_description}.#{@ticket.id} was previously closed, no changes made."
+        flash[:notice] = t(:notice_ticket_already_closed, label: "#{@ticket.client.name}.#{@ticket.short_description}.#{@ticket.id}")
         f.html { redirect_to @ticket }
         f.json { json_success }
       end
@@ -134,8 +160,8 @@ class TicketsController < ApplicationController
 
   def show
     populate_edit
-    # this should eventually be used by view
     @ticket_totals = @ticket.calculate_totals
+    @running_timer = @ticket.ticket_times.find_by(running: true, employee_id: current_employee&.id)
     respond_to do |f|
       f.html { render :show }
       f.json {
@@ -203,7 +229,7 @@ class TicketsController < ApplicationController
     setTaxInfo
     respond_to do |f|
       if (@ticket.save)
-        f.html { redirect_to @ticket, notice: "#{Ticket.model_name.human}  #{@ticket.id} created." }
+        f.html { redirect_to @ticket, notice: t(:notice_added, item: Ticket.model_name.human) }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content }
@@ -222,7 +248,7 @@ class TicketsController < ApplicationController
     setTaxInfo
     respond_to do |f|
       if (@ticket.update new_params)
-        f.html { redirect_to @ticket, notice: "#{Ticket.model_name.human} #{@ticket.id} updated." }
+        f.html { redirect_to @ticket, notice: t(:notice_updated, item: Ticket.model_name.human) }
         f.json { json_success }
       else
         f.html { render :edit, status: :unprocessable_content }
@@ -237,10 +263,10 @@ class TicketsController < ApplicationController
     @ticket.ticket_pictures.each { |t| t.image.purge }
     respond_to do |f|
       if (@ticket.destroy)
-        f.html { redirect_to tickets_path, notice: "#{Ticket.model_name.human} removed." }
+        f.html { redirect_to tickets_path, notice: t(:notice_removed, item: Ticket.model_name.human) }
         f.json { json_success }
       else
-        f.html { redirect_to tickets_path, alert: "Error removing #{Ticket.model_name.human}" }
+        f.html { redirect_to tickets_path, alert: t(:alert_not_removed, item: Ticket.model_name.human) }
         f.json { json_failure @ticket.errors }
       end
     end
@@ -281,15 +307,15 @@ class TicketsController < ApplicationController
   def mail_bill_to(email)
     TicketBillingMailer.ticket_invoice(@ticket, email).deliver
     if !@ticket.update payment_requested: true
-      flash[:alert] = "Problem updating payment status"
+      flash[:alert] = t(:alert_payment_status_failed)
     end
 
     if not @ticket.ticket_delivery_address and @ticket.ticket_invoice_address
-      redirect_to edit_ticket_path(@ticket), alert: "Please set a invoice and delivery address."
+      redirect_to edit_ticket_path(@ticket), alert: t(:alert_ticket_address_required)
       return
     end
 
-    flash[:notice] = "Invoice sent to #{email}"
+    flash[:notice] = t(:notice_invoice_sent, email: email)
     redirect_to @ticket
   end
 

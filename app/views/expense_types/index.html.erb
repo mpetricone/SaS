@@ -2,5 +2,5 @@
     locals: {
     main_model: @expense_types,
     show_fields: [:name, :description],
-    delete_msg: "Really delete #{ExpenseType.model_name.human}? ** ",
+    delete_msg: "#{t(:prompt_really_delete, item: ExpenseType.model_name.human)} ** ",
     delete_msg_ident: :name } %>

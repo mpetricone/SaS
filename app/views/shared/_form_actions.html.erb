@@ -4,12 +4,12 @@
       <div class='card-body'>
         <div class='btn-group' role='group'>
           <%= button_tag type: 'submit', class: 'btn btn-primary' do %>
-            <% ficon 'save', 'Save'%>
+            <% ficon 'save', t(:button_save) %>
           <% end%>
           <%= button_tag type: 'reset', class: 'btn btn-warning' do%>
-            <% ficon 'undo', 'Reset' %>
+            <% ficon 'undo', t(:button_reset) %>
           <%end%>
-          <%= link_to ficon('remove', "Cancel"), cancel, class: 'btn btn-danger' %>
+          <%= link_to ficon('remove', t(:button_cancel)), cancel, class: 'btn btn-danger' %>
         </div>
       </div>
     </div>

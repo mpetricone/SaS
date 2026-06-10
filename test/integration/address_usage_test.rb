@@ -39,7 +39,7 @@ class CanUseAddressTest < ActionDispatch::IntegrationTest
     assert page.has_content? /Address .*$/
     click_link 'Return'
     click_link 'Delete', match: :first
-    accept_alert /^Really delete Address .*\?  This could cause deliveries and bills to go missing!$/
+    accept_alert /^Really delete Address .*\? This could cause deliveries and bills to go missing!$/
     assert page.has_content? "Record destroyed."
   end
 
@@ -49,7 +49,7 @@ class CanUseAddressTest < ActionDispatch::IntegrationTest
     click_button 'Save'
 
     assert_current_path /\/addresses\/new$/
-    assert has_content? "4 Issues preventing Address from being created."
+    assert has_css? ".toast-alert"
     assert has_content? "Street (line 1) can't be blank"
     assert has_content? "City can't be blank"
     assert has_content? "Postal code can't be blank"

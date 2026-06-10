@@ -18,7 +18,7 @@
       <% suppress_new=false %>
     <% end %>
     <% if not suppress_new==true %>
-      <%= link_to "New #{main_model.model_name.human}", send(new_path), class: 'btn btn-primary pull-right' %>
+      <%= link_to t(:button_new_for, item: main_model.model_name.human), send(new_path), class: 'btn btn-primary pull-right' %>
     <% end %>
   </div>
   <div class="card-body">
@@ -40,7 +40,7 @@
               <% end %>
             <% end %>
           <% end %>
-          <th>Options</th>
+          <th class='text-center'><%= t(:label_options) %></th>
         </thead>
         <tbody>
           <% edit_path = "edit_"+path %>
@@ -77,17 +77,17 @@
 
               <td class='col-xs-2 text-center'>
                 <div class='btn-group' role='group'>
-                  <%= link_to "Edit", send(edit_path, record), class: 'btn btn-secondary' %>
-                  <%= link_to "Show", record, class: 'btn btn-primary' %>
+                  <%= link_to t(:button_edit), send(edit_path, record), class: 'btn btn-secondary' %>
+                  <%= link_to t(:button_show), record, class: 'btn btn-primary' %>
                   <% if defined? disable_delete %>
-                    <button  type='button' class='btn btn-danger' disabled>Delete</button>
+                    <button  type='button' class='btn btn-danger' disabled><%= t(:button_delete) %></button>
                   <%else%>
                     <% if defined? delete_msg_ident %>
                       <% dmsg = delete_msg.sub '**', record.send( delete_msg_ident) %>
                     <% else %>
                       <% dmsg = delete_msg %>
                     <% end %>
-                      <%= link_to "Delete", send(path, record),method: :delete,  data: {confirm: dmsg }, class: 'btn btn-danger' %>
+                      <%= link_to t(:button_delete), send(path, record),method: :delete,  data: {confirm: dmsg }, class: 'btn btn-danger' %>
                   <%end%>
                   </td>
                 </div>

@@ -33,7 +33,7 @@
         <%= sub_model.model_name.human count: sub_model.count %>
       </h4>
       <div class='d-inline-block'>
-        <%= link_to "New #{sub_model.model_name.human}", send(paths[:new_path].to_sym, main_model), class: 'btn btn-primary btn-sm pull-right' %>
+        <%= link_to t(:button_new_for, item: sub_model.model_name.human), send(paths[:new_path].to_sym, main_model), class: 'btn btn-primary btn-sm pull-right' %>
       </div>
     </div>
     <% field_count = show_fields.count+ (defined?(extra_fields) ? extra_fields.count : 0); #adjusted to accomodate for extra fields %>
@@ -58,7 +58,7 @@
                   </th>
                 <% end %>
               <% end %>
-              <th>Options</th>
+              <th><%= t(:label_options) %></th>
             </tr>
           </thead>
           <%# = Make path names %>
@@ -92,11 +92,11 @@
                 <% end %>
               <% end %>
               <td>
-                <%= link_to 'Edit', send(paths[:edit_path].to_sym, main_model, model), class: 'btn btn-secondary btn-sm' %>
-                <%= link_to 'Remove',
+                <%= link_to t(:button_edit), send(paths[:edit_path].to_sym, main_model, model), class: 'btn btn-secondary btn-sm' %>
+                <%= link_to t(:button_remove),
                   send(paths[:delete_path].to_sym, main_model, model),
                   method: :delete,class: 'btn btn-danger btn-sm',
-                  data: {confirm: "Really delete #{sub_model.model_name.human}?"} %>
+                  data: {confirm: t(:prompt_really_delete, item: sub_model.model_name.human)} %>
               </td>
             </tr>
           <% end %>

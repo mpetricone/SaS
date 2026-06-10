@@ -1,8 +1,5 @@
 class AddressDistributersController < ApplicationController
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:distributer_attribute) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer_attribute) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:distributer_attribute) }
+  before_action { authorize AddressDistributer }
 
   def new
     populate_new
@@ -13,7 +10,7 @@ class AddressDistributersController < ApplicationController
 
     respond_to do |f|
       if @address_distributer.save
-        f.html { redirect_to @distributer, notice: "#{AddressDistributer.model_name.human} added." }
+        f.html { redirect_to @distributer, notice: t(:notice_added, item: AddressDistributer.model_name.human) }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content }
@@ -33,7 +30,7 @@ class AddressDistributersController < ApplicationController
 
     respond_to do |f|
       if @address_distributer.update new_params
-        f.html { redirect_to @distributer, notice: "Updated #{AddressDistributer.model_name.human}." }
+        f.html { redirect_to @distributer, notice: t(:notice_updated, item: AddressDistributer.model_name.human) }
         f.json { json_success }
       else
         f.html { render :edit, status: :unprocessable_content }
@@ -49,10 +46,10 @@ class AddressDistributersController < ApplicationController
 
     respond_to do |f|
       if @address_distributer.delete
-        f.html { redirect_to @distributer, notice: "Removed #{AddressDistributer.model_name.human}." }
+        f.html { redirect_to @distributer, notice: t(:notice_removed, item: AddressDistributer.model_name.human) }
         f.json { json_success }
       else
-        f.html { render :show, alert: "Deletion failed." }
+        f.html { render :show, alert: t(:alert_not_removed, item: AddressDistributer.model_name.human) }
         f.json { json_failure @address_distributer.errors }
       end
 

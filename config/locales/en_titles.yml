@@ -33,3 +33,19 @@ en:
   title_attach_image: 'Attach Image'
   title_edit_image: 'Alter Image'
   title_client_ticket: "Ticket %{ref} for %{client}"
+  title_labor_timers: 'Labor Timers'
+  title_login: "%{model} Login"
+  title_account: 'Account'
+  title_two_factor_code: 'Two-factor code'
+  title_set_password: 'Set a new password'
+  title_reset_password: 'Reset your password'
+  title_save_recovery_codes: 'Save your recovery codes'
+  title_two_factor_enabled: 'Two-factor authentication: enabled'
+  title_two_factor_disabled: 'Two-factor authentication: disabled'
+  title_brand: 'Sales and Services Systems'
+  title_brand_tagline: 'IT Customer Management and POS'
+  title_my_open_tickets: "%{name}'s open tickets"
+  title_listing: 'Listing %{items}'
+  title_listing_for: 'Listing %{items} for %{for}'
+  title_show_record: '%{item} Record'
+  title_accounts_receivable_by_client: 'Accounts Receivable by Client'

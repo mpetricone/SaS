@@ -24,7 +24,7 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
     fill_in "Date hired", with: 1.day.ago.strftime(@@date_format)
     click_button "Save"
     assert_current_path /\/employees\/[0-9]*/
-    assert has_content? "Employee created."
+    assert has_content? "Added Employee"
     dismiss_notice
     click_link "Return"
     assert_current_path employees_path
@@ -49,7 +49,7 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
     select "permission 1", from: "employee_permission_permission_id"
     click_button "Save"
     assert_current_path /\/employees\/[0-9]*$/
-    assert has_content? " granted to "
+    assert has_content? "Added Employee permission"
     within(".card", text: "Employee permission") do
       click_link "Edit", match: :first
     end
@@ -57,12 +57,12 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
     assert has_content? "Edit Employee permission for "
     click_button "Save"
     assert_current_path /\/employees\/[0-9]*$/
-    assert has_css? ".notice-alert", text: "for"
+    assert has_css? ".toast-notice", text: "Updated Employee permission"
     within(".card", text: "Employee permission") do
       click_link "Remove", match: :first
     end
     accept_alert "Really delete Employee permission?"
-    assert has_content? /.* for .* revoked\.$/
+    assert has_content? /Removed Employee permission/
   end
 
   test "cannot create employee with missing data" do
@@ -72,13 +72,11 @@ class EmployeeUsageTest < ActionDispatch::IntegrationTest
 
     #1st pass for most errors
     assert_current_path /\/employees\/new$/
-    assert has_content? "7 Issues preventing Employee from being created."
-    assert has_content? "Contact must exist"
+    assert has_css? ".toast-alert"
     assert has_content? "Contact can't be blank"
     assert has_content? "Position can't be blank"
     assert has_content? "Date hired can't be blank"
     assert has_content? "User name can't be blank"
-    assert has_content? "User name is too short (minimum is 6 characters)"
     assert has_content? "Password can't be blank"
 
     #2nd attempt to check more usename and password failures

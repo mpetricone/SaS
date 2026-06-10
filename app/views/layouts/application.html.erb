@@ -11,17 +11,20 @@
   </head>
   <body>
     <div class='container-fluid'>
-      <div class='row justify-content-center alert gx-0'>
-        <% flash.each do | key, msg | %>
-          <div id='alert-cont' class='col-md-12'>
-            <%# the class needs to have "alert" for js. there is a conflict between flash key and bootstrap class" %>
-            <div class="<%= "#{key}-alert" %>" role="alert">
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-              </button>
-              <%= "#{msg}" %>
+      <div class="toast-container position-fixed top-0 end-0 p-3 mt-5" style="z-index: 1200">
+        <% flash.each do |key, msg| %>
+          <div class="toast align-items-center <%= flash_toast_class(key) %> border-0"
+               role="alert"
+               aria-live="assertive"
+               aria-atomic="true"
+               data-controller="flash">
+            <div class="d-flex">
+              <div class="toast-body"><%= msg %></div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-action="click->flash#close" aria-label="Close"></button>
             </div>
-          <%end%>
           </div>
+        <% end %>
+        <%= yield :validation_toast %>
       </div>
 
       <%= render partial: 'shared/nav/main_navbar' %>

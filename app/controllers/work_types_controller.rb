@@ -1,8 +1,5 @@
 class WorkTypesController < ApplicationController
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:ticket_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_attribute) }
-	before_action(only: [:new, :create]) {process_permission has_create_permission(:ticket_attribute) }
-	before_action(only: [:destroy]) {process_permission has_delete_permission(:ticket_attribute) }
+  before_action { authorize WorkType }
 
 	def show
 		@work_type = WorkType.find params[:id]
@@ -43,7 +40,7 @@ class WorkTypesController < ApplicationController
 		@work_type = WorkType.new new_params
 		respond_to do |f|
 			if @work_type.save
-				f.html { redirect_to work_types_path, notice: "#{WorkType.model_name.human} #{@work_type.name} added." }
+				f.html { redirect_to work_types_path, notice: t(:notice_added, item: WorkType.model_name.human) }
 				f.json { json_success}
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -62,7 +59,7 @@ class WorkTypesController < ApplicationController
 		@work_type = WorkType.find params[:id]
 		respond_to do |f|
 			if @work_type.update new_params
-				f.html { redirect_to work_types_path, notice: "#{WorkType.model_name.human} #{@work_type.name} altered." }
+				f.html { redirect_to work_types_path, notice: t(:notice_updated, item: WorkType.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit,status: :unprocessable_content }
@@ -77,10 +74,10 @@ class WorkTypesController < ApplicationController
 		@work_type = WorkType.find params[:id]
 		respond_to do |f|
 			if @work_type.destroy
-				f.html { redirect_to work_types_path, notice: "#{WorkType.model_name.human} removed." }
+				f.html { redirect_to work_types_path, notice: t(:notice_removed, item: WorkType.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to work_types_path, notice: "Error removing #{WorkType.model_name.human}." }
+				f.html { redirect_to work_types_path, alert: t(:alert_not_removed, item: WorkType.model_name.human) }
 				f.json { json_failure @work_type.errors }
 			end
 

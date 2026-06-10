@@ -45,7 +45,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
 # GIT_REPO_URL is an SSH-style URL (e.g. git@gitstore:/data/git/repo.git).
 # GIT_SSH_KEY is injected as a BuildKit secret so the private key never appears in image layers.
 ARG GIT_REPO_URL
-ARG GIT_BRANCH=master
+ARG GIT_BRANCH=production-4.0
 
 RUN --mount=type=secret,id=git_ssh_key \
     GIT_SSH_COMMAND="ssh -i /run/secrets/git_ssh_key -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \

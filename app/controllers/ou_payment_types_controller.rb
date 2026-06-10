@@ -1,9 +1,6 @@
 class OuPaymentTypesController < ApplicationController
+  before_action { authorize OuPaymentType }
 	before_action :set_ou_payment_type, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:expense_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:expense_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:expense_attribute) }
-	before_action(only: [:delete]) {process_permission has_delete_permission(:expense_attribute) }
 
 	# GET /ou_payment_types
 	# GET /ou_payment_types.json
@@ -53,7 +50,7 @@ class OuPaymentTypesController < ApplicationController
 
 		respond_to do |f|
 			if @ou_payment_type.save
-				f.html { redirect_to @ou_payment_type, notice: 'Ou payment type was successfully created.' }
+				f.html { redirect_to @ou_payment_type, notice: t(:notice_added, item: OuPaymentType.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -69,7 +66,7 @@ class OuPaymentTypesController < ApplicationController
 	def update
 		respond_to do |f|
 			if @ou_payment_type.update(ou_payment_type_params)
-				f.html { redirect_to @ou_payment_type, notice: 'Ou payment type was successfully updated.' }
+				f.html { redirect_to @ou_payment_type, notice: t(:notice_updated, item: OuPaymentType.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -85,7 +82,7 @@ class OuPaymentTypesController < ApplicationController
 	def destroy
 		@ou_payment_type.destroy
 		respond_to do |f|
-			f.html { redirect_to ou_payment_types_url, notice: 'Ou payment type was successfully destroyed.' }
+			f.html { redirect_to ou_payment_types_url, notice: t(:notice_removed, item: OuPaymentType.model_name.human) }
 			f.json { json_success }
 		end
 

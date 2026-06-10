@@ -1,9 +1,5 @@
 class ClientStatementsController < ApplicationController
-  before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:client) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:client) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:client) }
-  before_action(only: [:destroy ]) { process_permission has_delete_permission(:client) }
-  before_action(only: [:generate]) { process_permission has_read_permission(:accounting_restricted) }
+  before_action { authorize :client_statement }
 
   def index
     @client = Client.find params[:client_id]

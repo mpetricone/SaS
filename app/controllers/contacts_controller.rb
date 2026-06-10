@@ -1,9 +1,6 @@
 class ContactsController < ApplicationController
+  before_action { authorize Contact }
 	before_action :set_contact, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:contact) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:contact) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:contact) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:contact) }
 
 	# GET /contacts
 	# GET /contacts.json
@@ -74,7 +71,7 @@ class ContactsController < ApplicationController
 		@contact = Contact.new(contact_params)
 		respond_to do |format|
 			if @contact.save
-				format.html { redirect_to @contact, notice: 'Contact was successfully created.' }
+				format.html { redirect_to @contact, notice: t(:notice_added, item: Contact.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -90,7 +87,7 @@ class ContactsController < ApplicationController
 	def update
 		respond_to do |format|
 			if @contact.update(contact_params)
-				format.html { redirect_to @contact, notice: 'Contact was successfully updated.' }
+				format.html { redirect_to @contact, notice: t(:notice_updated, item: Contact.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -106,7 +103,7 @@ class ContactsController < ApplicationController
 	def destroy
 		@contact.destroy
 		respond_to do |format|
-			format.html { redirect_to contacts_url, notice: 'Contact was successfully destroyed.' }
+			format.html { redirect_to contacts_url, notice: t(:notice_removed, item: Contact.model_name.human) }
 			format.json { json_success }
 		end
 

@@ -44,6 +44,8 @@ Searcher.prototype.updateList = function(data) {
 }
 
 Searcher.prototype.onError = function(data, msg, e) {
-  alert("There was a problem Searching. Please try again later.")
+  var fallback = "There was a problem Searching. Please try again later.";
+  var msgFromInput = $(this.input).data("search-error-msg");
+  alert(msgFromInput || fallback);
 }
 

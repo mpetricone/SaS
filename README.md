@@ -33,8 +33,6 @@ A `.devcontainer` configuration is included for VS Code / Dev Containers — it 
 
 ### First-time setup
 
-Before seeding and running Rails, replace the word "REMOVED" from config/secrets.yml and db/seeds.db with appropriate secrets and data.
-
 ```bash
 bundle install
 yarn install
@@ -44,7 +42,7 @@ rails db:create db:migrate db:seed
 RAILS_ENV=test rails db:create db:migrate
 ```
 
-`db:seed` populates required lookup data (ticket statuses, work types, standings, etc.). It is safe to re-run. Ai Added this, Pretty sure it's a lie, don't keep running it. -Matt.
+`db:seed` populates required lookup data (ticket statuses, work types, standings, etc.). It is safe to re-run.
 
 ### Branding
 
@@ -97,9 +95,15 @@ Edit `.env.production` and fill in all values:
 | `APP_HOST` | Hostname used in mailer URLs (e.g. `sas.example.lan`) |
 | `APP_PROTOCOL` | `http` or `https` |
 | `SMTP_*` | SMTP relay settings |
+| `MAIL_FROM` | "From" address for outgoing mail (password resets, quotes, invoices). Defaults to `noreply@example.com` if unset. |
+| `FORCE_SSL` | `true` to enforce HTTPS / HSTS, `false` to allow plain HTTP (default: `true`). |
 | `GIT_REPO_URL` | SSH URL of the repository (e.g. `git@host:/path/repo.git`) |
 | `GIT_BRANCH` | Branch to build from (default: `master`) |
 | `GIT_SSH_KEY_PATH` | Absolute host path to the SSH private key for git access |
+| `AR_ENCRYPTION_PRIMARY_KEY` | Rails attribute-encryption primary key. Generate with `bin/rails db:encryption:init`. **Lose this and 2FA secrets become unreadable.** |
+| `AR_ENCRYPTION_DETERMINISTIC_KEY` | Rails attribute-encryption deterministic key (same generator output) |
+| `AR_ENCRYPTION_KEY_DERIVATION_SALT` | Rails attribute-encryption key-derivation salt (same generator output) |
+| `SOLID_QUEUE_IN_PUMA` | Set to `true` to run the SolidQueue background-job worker in the Puma process. Required for password-reset emails. |
 
 ### 2. Prepare the storage directory
 
@@ -142,34 +146,95 @@ docker compose --env-file .env.production -f compose.prod.yml up -d
 
 ---
 
-## Database backups
+## Authentication & security
 
-Dump the production database from the running container:
+Employee authentication uses Rails 8's session model with bcrypt password hashing. Authorization is handled by [Pundit](https://github.com/varvet/pundit) policies under `app/policies/`, backed by the existing `Permission` / `EmployeePermission` tables — admins continue to manage per-employee permissions through the same UI.
+
+### Login flow
+
+| Step | Behavior |
+|---|---|
+| Login form | `GET /login` (or `GET /session/new`) |
+| Failed login | Increments `failed_attempts`. After 10 failed attempts the account is locked for 30 minutes. |
+| Successful login | Resets `failed_attempts`, clears `locked_at`, starts a new `Session` row, sets a signed `session_id` cookie (`Secure` in production, `HttpOnly`, `SameSite=Lax`). |
+| 2FA-enabled account | Password success redirects to `/two_factor_challenge/new`; the session is only created after a valid TOTP or recovery code. |
+| Logout | `DELETE /logout` — destroys the `Session` row and deletes the cookie. |
+
+### Rate limiting
+
+[Rack::Attack](https://github.com/rack/rack-attack) throttles abusive requests:
+
+- 5 login attempts per IP per 20 seconds
+- 5 login attempts per username per 20 seconds (defense against distributed-IP guessing)
+- 5 password-reset requests per IP per hour
+
+Throttled requests receive HTTP 429 and are written to the `Log` audit table with category `rack_attack_throttle`.
+
+### Security audit events
+
+Security-significant actions emit named events to the `logs` table with `category: "security"` via `Audit.event(:name, ...)`. This is separate from the routine per-request log written by `Auditor#auto_log` — the security stream is intentional and queryable.
+
+Events currently emitted:
+
+| Event | When |
+|---|---|
+| `login_success` | Password (and 2FA, if enabled) verified, session created |
+| `login_failure` | Bad credentials, account locked, or OU disabled |
+| `account_locked` | 10th consecutive failed attempt on an unlocked account |
+| `account_unlocked` | Admin clicked "Unlock account" on the employee edit page |
+| `logout` | Session deleted |
+| `password_reset_requested` | `/passwords` POST (regardless of whether email was sent) |
+| `password_reset_completed` | New password successfully set via reset token |
+| `two_factor_enabled` | TOTP enrollment verified, 2FA turned on |
+| `two_factor_disabled` | TOTP disabled (after password re-confirmation) |
+| `two_factor_success` / `two_factor_failure` | Login-time TOTP challenge outcome |
+| `admin_granted` | `rails employees:grant_admin[user_name]` rake task |
+
+Each row's `details` column is JSON containing the IP, user agent, and event-specific context (e.g. the attempted username for failed logins).
+
+To view the security audit trail:
+
+```ruby
+Log.where(category: "security").order(event_at: :desc)
+Log.where(category: "security", in_method: "login_failure")
+```
+
+### Password reset
+
+Employees can request a reset from the login page (`/passwords/new`). The reset link is sent via `PasswordsMailer` to the first address on file in `Contact#contact_emails`. Tokens are signed and expire after 15 minutes; changing the password invalidates any outstanding tokens. To avoid username enumeration, the response is identical whether the username exists, has an email on file, or doesn't exist at all.
+
+Password reset emails are delivered via `deliver_later`, so SolidQueue must be running (`SOLID_QUEUE_IN_PUMA=true`).
+
+### Two-factor authentication (TOTP)
+
+2FA is **optional and employee-initiated**. From the navbar, an employee opens the dropdown under their name → *Account*, scans the QR code in any authenticator app (Google Authenticator, 1Password, Authy, etc.), and confirms a 6-digit code. On success, the system displays 10 one-time recovery codes — these are shown **once** and stored as bcrypt hashes, so save them at enrollment time.
+
+To disable 2FA, the employee re-enters their current password.
+
+`otp_secret` and `otp_recovery_codes` are encrypted at the application layer via Rails attribute encryption (see the `AR_ENCRYPTION_*` env vars above). Losing those keys makes existing 2FA secrets unreadable; users would have to re-enroll.
+
+### Admin recovery
+
+If you lock yourself out, two rake tasks bypass the web flow and operate directly on the database:
 
 ```bash
-docker exec cecil-db-1 mariadb-dump --defaults-file=/root/.my.cnf sas_production > sas_production_$(date +%Y%m%d).sql
+# Grant admin permission to an employee
+docker exec -it cecil-app-1 ./bin/rails employees:grant_admin[username]
+
+# Unlock a locked account (clears failed_attempts and locked_at)
+docker exec -it cecil-app-1 ./bin/rails employees:unlock[username]
 ```
 
-To automate, add a cron entry on the host (runs at 2 AM daily, retains 30 days):
+### Cutover from the legacy auth system
 
-```
-0 2 * * * docker exec cecil-db-1 mariadb-dump --defaults-file=/root/.my.cnf sas_production > /var/backups/sas/sas_production_$(date +\%Y\%m\%d).sql
-0 2 * * * find /var/backups/sas -name "*.sql" -mtime +30 -delete
-```
+The first deploy that includes the auth revamp drops the old `authenticity_tokens` table. **Every active session is invalidated** and every employee is required to log in again. Communicate this to your users before the deploy. Their passwords are not affected — bcrypt hashes carry forward unchanged.
 
-Store credentials in `/root/.my.cnf` (mode 600) rather than on the command line:
+Steps:
 
-```ini
-[client]
-user=root
-password=yourpassword
-```
-
-To restore:
-
-```bash
-docker exec -i cecil-db-1 mariadb -u root -p sas_production < sas_production_20260101.sql
-```
+1. Set the new env vars in `.env.production`: `AR_ENCRYPTION_PRIMARY_KEY`, `AR_ENCRYPTION_DETERMINISTIC_KEY`, `AR_ENCRYPTION_KEY_DERIVATION_SALT`, and `SOLID_QUEUE_IN_PUMA=true`. Generate the encryption keys with `docker exec -it cecil-app-1 ./bin/rails db:encryption:init` and copy the printed values.
+2. Rebuild and start: `docker compose --env-file .env.production -f compose.prod.yml up -d --build`.
+3. Run migrations: `docker exec -it cecil-app-1 ./bin/rails db:migrate`. The migration drops `authenticity_tokens`, creates `sessions` and the SolidQueue tables, and adds lockout / 2FA columns to `employees`.
+4. Smoke-test login as an admin, then confirm the permission-management UI still works.
 
 ---
 

@@ -1,9 +1,6 @@
 class EmployeePermissionsController < ApplicationController
+  before_action { authorize EmployeePermission }
 	before_action :populate_edit, only: [ :edit, :update, :destroy]
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:permission_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:permission_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:permission_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:permission_attribute) }
 
 	def new
 		populate_new
@@ -16,7 +13,7 @@ class EmployeePermissionsController < ApplicationController
 			if @employee_permission.save
 				f.html {
 					redirect_to @employee,
-					notice: "#{EmployeePermission.model_name.human} #{@employee_permission.permission.name} granted to #{@employee.contact.full_name}." }
+					notice: t(:notice_added, item: EmployeePermission.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -35,7 +32,7 @@ class EmployeePermissionsController < ApplicationController
 			if (@employee_permission.update new_params)
 				f.html {
 					redirect_to @employee,
-					notice: "#{EmployeePermission.model_name.human} #{@employee_permission.permission.name} for #{@employee.contact.full_name} updated." }
+					notice: t(:notice_updated, item: EmployeePermission.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -47,17 +44,16 @@ class EmployeePermissionsController < ApplicationController
 	end
 
 	def destroy
-		permission = @employee_permission.permission.name
 		respond_to do |f|
 			if @employee_permission.delete
 				f.html {
 					redirect_to @employee,
-					notice: "#{EmployeePermission.model_name.human} #{permission} for #{@employee.contact.full_name} revoked." }
+					notice: t(:notice_removed, item: EmployeePermission.model_name.human) }
 				f.json { json_success }
 			else
 				f.html {
 					redirect_to @employee,
-					alert: "Error revoking #{EmployeePermission.model_name.human} #{permission} for #{@employee.contact.full_name}" }
+					alert: t(:alert_not_removed, item: EmployeePermission.model_name.human) }
 				f.json { json_failure }
 			end
 

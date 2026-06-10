@@ -1,8 +1,5 @@
 class ProductTicketsController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-	before_action(only: [ :update]) { process_permission has_write_permission(:ticket_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
+  before_action { authorize ProductTicket }
 
 	def new
 		populate_new
@@ -12,7 +9,7 @@ class ProductTicketsController < ApplicationController
 		populate_new new_params
 		respond_to do |f|
 			if @product_ticket.save
-				f.html { redirect_to @ticket, notice: "#{@product_ticket.product.name} added to #{Ticket.model_name.human}" }
+				f.html { redirect_to @ticket, notice: t(:notice_added, item: Ticket.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -27,7 +24,7 @@ class ProductTicketsController < ApplicationController
 		populate_edit
 		respond_to do |f|
 			if @product_ticket.update new_params
-				f.html { redirect_to @ticket, notice: "#{@product_ticket.product.name} updated." }
+				f.html { redirect_to @ticket, notice: t(:notice_updated, item: @product_ticket.product.name) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -42,10 +39,10 @@ class ProductTicketsController < ApplicationController
 		populate_edit
 		respond_to do |f|
 			if @product_ticket.delete
-				f.html { redirect_to @ticket, notice: "#{Product.model_name.human} removed from #{Ticket.model_name.human}" }
+				f.html { redirect_to @ticket, notice: t(:notice_removed, item: Product.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @ticket, alert: "Error removing #{Product.model_name.human} from #{Ticket.model_name.human}" }
+				f.html { redirect_to @ticket, alert: t(:alert_not_removed, item: Product.model_name.human) }
 				f.json { json_failure @product_ticket.errors }
 			end
 

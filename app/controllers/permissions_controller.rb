@@ -1,8 +1,5 @@
 class PermissionsController < ApplicationController
-	before_action(only: [:index, :show, :search_by_name]) { process_permission has_read_permission(:permission) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:permission) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:permission) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:permission) }
+  before_action { authorize Permission }
 
 	def index
 		respond_to do |f|
@@ -44,7 +41,7 @@ class PermissionsController < ApplicationController
 
 		respond_to do |f|
 			if @permission.save
-				f.html { redirect_to permissions_path, notice: "#{@permission.name} added." }
+				f.html { redirect_to permissions_path, notice: t(:notice_added, item: @permission.name) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -64,7 +61,7 @@ class PermissionsController < ApplicationController
 
 		respond_to do |f|
 			if @permission.update new_params
-				f.html { redirect_to permissions_path, notice: "#{@permission.name} updated." }
+				f.html { redirect_to permissions_path, notice: t(:notice_updated, item: @permission.name) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -77,17 +74,16 @@ class PermissionsController < ApplicationController
 
 	def destroy
 		@permission = Permission.find params[:id]
-		name = @permission.name
 		respond_to do |f|
 			if @permission.destroy
 				f.html {
-					flash.notice = "#{Permission.model_name.human} #{name} deleted."
+					flash.notice = t(:notice_removed, item: Permission.model_name.human)
 					redirect_to permissions_path
 				}
 				f.json { json_success }
 			else
 				f.html {
-					flash.alert = "Error deleting #{Permission.model_name.human} #{name}"
+					flash.alert = t(:alert_not_removed, item: Permission.model_name.human)
 					redirect_to permissions_path
 				}
 				f.json { json_failure @permission.errors }

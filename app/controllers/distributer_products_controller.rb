@@ -1,8 +1,5 @@
 class DistributerProductsController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:distributer_permission) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer_permission) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer_permission) }
-	before_action(only: [:create]) { process_permission has_delete_permission(:distributer_permission) }
+  before_action { authorize DistributerProduct }
 
 	def new
 		populate_new
@@ -13,10 +10,10 @@ class DistributerProductsController < ApplicationController
 
 		respond_to do |f|
 			if (@distributer_product.save)
-				f.html { redirect_to @product, notice: "#{@product.name} added to #{@distributer_product.distributer.name}." }
+				f.html { redirect_to @product, notice: t(:notice_added, item: DistributerProduct.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @product, alert: "Error adding #{@product.name}." }
+				f.html { redirect_to @product, alert: t(:alert_not_added, item: DistributerProduct.model_name.human) }
 				f.json { json_failure @distributer_product.errors }
 			end
 		end
@@ -31,10 +28,10 @@ class DistributerProductsController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_product.update new_params
-				f.html { redirect_to @product, notice: "#{@product.name} altered succesfully." }
+				f.html { redirect_to @product, notice: t(:notice_updated, item: DistributerProduct.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @product, alert: "Error editing #{@product.name}." }
+				f.html { redirect_to @product, alert: t(:alert_not_updated, item: DistributerProduct.model_name.human) }
 				f.json { json_failure @distributer_product.errors }
 			end
 		end
@@ -45,10 +42,10 @@ class DistributerProductsController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_product.delete
-				f.html { redirect_to @product, notice: "#{DistributerProduct.model_name.human} deleted." }
+				f.html { redirect_to @product, notice: t(:notice_removed, item: DistributerProduct.model_name.human) }
 				f.json { json_success }
 			else
-				f.html { redirect_to @product, alert: "Could not delete #{@product.name}." }
+				f.html { redirect_to @product, alert: t(:alert_not_removed, item: DistributerProduct.model_name.human) }
 				f.json { json_failure @distributer_product.errors }
 			end
 		end

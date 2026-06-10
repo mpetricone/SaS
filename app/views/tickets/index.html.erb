@@ -23,24 +23,24 @@
                 </div>
                 <div class="col">
                   <%= check_box_tag :search_dates %>
-                  <label>Use Date Range</label>
+                  <label><%= t(:label_use_date_range) %></label>
                 </div>
               </div>
               <div class='form-row'>
                 <div class='col'>
-                  <label for="date_start">Start</label>
+                  <label for="date_start"><%= t(:label_date_start) %></label>
                   <%= date_field :date_params, :date_start, value: Date.today, class: 'form-control' %><br/>
                 </div>
                 <div class='col'>
-                  <label for="date_end">End</label>
+                  <label for="date_end"><%= t(:label_date_end) %></label>
                   <%= date_field :date_params, :date_end, value: Date.today, class: 'form-control' %><br/>
                 </div>
               </div>
             </div>
             <div class='col-xs-3'>
               <div class='btn-group' role='group' aria-label='form_buttons'>
-                <%= button_tag ficon('search', "Search"),type: 'submit',  name: nil, class: 'btn btn-info' %>
-                <%= button_tag ficon('rotate-left','Reset'), type: 'reset', class: 'btn btn-warning' %>
+                <%= button_tag ficon('search', t(:button_search)),type: 'submit',  name: nil, class: 'btn btn-info' %>
+                <%= button_tag ficon('rotate-left', t(:button_reset)), type: 'reset', class: 'btn btn-warning' %>
               </div>
             </div>
           </div>

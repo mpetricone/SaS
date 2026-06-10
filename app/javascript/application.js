@@ -4,7 +4,7 @@ require("@rails/activestorage").start()
 import "@popperjs/core"
 import "@hotwired/turbo-rails"
 import  "@fortawesome/fontawesome-free/js/all.js"
-import "bootstrap"
+import * as bootstrap from "bootstrap"
 import "@rails/activestorage"
 ActiveStorage.start()
 import './search.js'
@@ -15,3 +15,7 @@ import './alerts.js'
 import './itable.js'
 import './home.js'
 import "./controllers"
+
+document.addEventListener('turbo:load', () => {
+  document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => new bootstrap.Tooltip(el))
+})

@@ -8,7 +8,7 @@
          data-bs-target='#mainNavbar'
          aria-controls='mainNavbar'
          aria-expanded='false',
-         aria-label='Main Menu'>
+         aria-label="<%= t(:menu_title_main) %>">
         <span class='navbar-toggler-icon'></span>
       </button>
         <%= link_to 'SaS', home_index_path, class: 'navbar-brand' %>
@@ -23,6 +23,14 @@
                     { type: :link,
                       view: Ticket.model_name.human(count: 2),
                       link: tickets_path
+                    },
+                    { type: :link,
+                      view: Quote.model_name.human(count: 2),
+                      link: quotes_path
+                    },
+                    { type: :link,
+                      view: t(:button_labor_timers),
+                      link: labor_timers_path
                     },
                     { type: :link,
                       view: Client.model_name.human(count: 2),
@@ -91,6 +99,10 @@
                       view: Permission.model_name.human(count: 2),
                       link: permissions_path
                     },
+                    { type: :link,
+                      view: PaymentTerm.model_name.human(count: 2),
+                      link: payment_terms_path
+                    },
                     { type: :div },
                     { type: :link,
                       view: Standing.model_name.human(count: 2),
@@ -139,15 +151,25 @@
 
         <div class='d-flex text-right'>
           <% if @current_employee %>
-            <div class='nav-item navbar-text'>
-              <%= ficon('user-circle', "#{current_employee.contact.full_name}&nbsp") %>
-            </div>
-            <div class='nav-item navbar-text'>
-              <%= link_to ficon('power-off', "Logout"), logout_path, method: :delete %>
-            </div>
+            <ul class='navbar-nav'>
+              <li class='nav-item dropdown'>
+                <a class='nav-link dropdown-toggle' href='#' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
+                  <%= ficon('user-circle', current_employee.contact.full_name) %>
+                </a>
+                <ul class='dropdown-menu dropdown-menu-end'>
+                  <li><%= link_to t(:button_account), account_path, class: 'dropdown-item' %></li>
+                  <li><hr class='dropdown-divider'></li>
+                  <li>
+                    <%= button_to logout_path, method: :delete, class: 'dropdown-item', form: { class: 'm-0' } do %>
+                      <%= ficon('power-off', t(:button_logout)) %>
+                    <% end %>
+                  </li>
+                </ul>
+              </li>
+            </ul>
           <%else%>
             <div class='nav-item navbar-text'>
-              <%= link_to ficon('power-off', "Login"), login_path %>
+              <%= link_to ficon('power-off', t(:button_login)), login_path %>
             </div>
           <%end%>
         </div>

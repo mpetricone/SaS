@@ -11,14 +11,14 @@
                 </td>
                 <td>
                   <h2>
-                    <% type = "Invoice" %>
+                    <% type = t(:label_invoice_doc) %>
                     <% begin %>
                       <% if params.has_key?(:receipt) && params[:receipt]=="true" then %>
-                        <% type = "Receipt" %>
+                        <% type = t(:label_receipt_doc) %>
                       <% end %>
                     <% rescue %>
                     <% end %>
-                    <%= "#{type} for #{@ticket.client.name}, #{@ticket.invoice_or_ticket_date.strftime("%m/%d/%Y")},Reference # #{@ticket.id}" %>
+                    <%= t(:label_invoice_heading, type: type, client: @ticket.client.name, date: @ticket.invoice_or_ticket_date.strftime("%m/%d/%Y"), ref: @ticket.id) %>
                     <br/>
                     <small><%= "#{@ticket.short_description}" %></small>
                     <% if @ticket.field_location %>
@@ -53,6 +53,26 @@
                 </td>
               </tr>
             </table>
+            <% if @ticket.originating_quotes.any? %>
+              <table class='email-sub-table'>
+                <thead>
+                  <tr>
+                    <th class='email-title'>
+                      <%= content_tag :h4, t(:label_quote_reference) %>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <% @ticket.originating_quotes.each do |q| %>
+                        <%= q.code %><br/>
+                      <% end %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            <% end %>
             <% if @ticket.work_types.count >0 %>
               <table class='email-sub-table'>
                 <thead>
@@ -84,16 +104,16 @@
                   </tr>
                   <tr>
                     <th>
-                      Quantity
+                      <%= t(:label_quantity) %>
                     </th>
                     <th>
-                      Item
+                      <%= t(:label_item) %>
                     </th>
                     <th>
-                      Price
+                      <%= t(:label_price) %>
                     </th>
                     <th>
-                      Total
+                      <%= t(:label_total) %>
                     </th>
                   </tr>
                 </thead>
@@ -115,7 +135,7 @@
                 <% end %>
                 <tr class='email-sub-totals'>
                   <td colspan=3>
-                    Total:
+                    <%= t(:label_total) %>:
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:product] %>
@@ -134,13 +154,13 @@
                   </tr>
                   <tr>
                     <th>
-                      Date
+                      <%= t(:label_date) %>
                     </th>
                     <th>
-                      Action Taken
+                      <%= t(:label_action_taken) %>
                     </th>
                     <th>
-                      Status
+                      <%= t(:label_status) %>
                     </th>
                   </tr>
                 </thead>
@@ -169,16 +189,16 @@
                   </tr>
                   <tr>
                     <th>
-                      Date
+                      <%= t(:label_date) %>
                     </th>
                     <th>
-                      Start
+                      <%= t(:label_start) %>
                     </th>
                     <th>
-                      End
+                      <%= t(:label_end) %>
                     </th>
                     <th>
-                      Hours
+                      <%= t(:label_hours) %>
                     </th>
                   </tr>
                 </thead>
@@ -200,13 +220,13 @@
                 <% end %>
                 <tr class='email-sub-totals' >
                   <td>
-                    Rate:
+                    <%= t(:label_rate) %>:
                   </td>
                   <td>
                     <%= number_to_currency @ticket.rate.rate %>
                   </td>
                   <td>
-                    Total Hours:
+                    <%= t(:label_total_hours) %>:
                   </td>
                   <td>
                     <%= @ticket_totals[:hours] %>
@@ -214,7 +234,7 @@
                 </tr>
                 <tr class='email-sub-totals'>
                   <td></td><td></td>
-                  <td>Cost</td>
+                  <td><%= t(:label_cost) %></td>
                   <td><%= number_to_currency @ticket_totals[:hourly_cost] %></td>
                 </tr>
               </table>
@@ -270,14 +290,14 @@
               <thead>
                 <tr>
                   <th class='email-title' colspan='2'>
-                    <%= content_tag :h4, "Totals" %>
+                    <%= content_tag :h4, t(:label_totals) %>
                   </th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>
-                    Total Labor Cost
+                    <%= t(:label_total_labor_cost) %>
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:labor] %>
@@ -285,7 +305,7 @@
                 </tr>
                 <tr>
                   <td>
-                    Expense Totals
+                    <%= t(:label_expense_totals) %>
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:expenses] %>
@@ -293,7 +313,7 @@
                 </tr>
                 <tr>
                   <td>
-                    Product Totals
+                    <%= t(:label_product_totals) %>
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:product] %>
@@ -301,7 +321,7 @@
                 </tr>
                 <tr>
                   <td>
-                    Sub Total
+                    <%= t(:label_sub_total) %>
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:sub] %>
@@ -309,7 +329,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <%= "Tax @ #{@ticket.tax_rate}" %>
+                    <%= t(:label_tax_at, rate: @ticket.tax_rate) %>
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:tax] %>
@@ -317,7 +337,7 @@
                 </tr>
                 <tr class='email-sub-totals'>
                   <td>
-                    Total
+                    <%= t(:label_total) %>
                   </td>
                   <td>
                     <%= number_to_currency @ticket_totals[:grand] %>

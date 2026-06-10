@@ -1,9 +1,6 @@
 class ExpensesController < ApplicationController
+  before_action { authorize Expense }
 	before_action :set_expense, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index, :search_by_name]) {process_permission has_read_permission(:expense) }
-	before_action(only: [:update, :edit]) { process_permission has_write_permission(:expense) }
-	before_action(only: [:create, :new]) { process_permission has_create_permission(:expense) }
-	before_action(only: [:delete]) { process_permission has_delete_permission(:expense) }
 
 	# GET /expenses
 	# GET /expenses.json
@@ -51,7 +48,7 @@ class ExpensesController < ApplicationController
 
 		respond_to do |format|
 			if @expense.save
-				format.html { redirect_to @expense, notice: 'Expense was successfully created.' }
+				format.html { redirect_to @expense, notice: t(:notice_added, item: Expense.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -67,7 +64,7 @@ class ExpensesController < ApplicationController
 	def update
 		respond_to do |format|
 			if @expense.update(expense_params)
-				format.html { redirect_to @expense, notice: 'Expense was successfully updated.' }
+				format.html { redirect_to @expense, notice: t(:notice_updated, item: Expense.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -83,7 +80,7 @@ class ExpensesController < ApplicationController
 	def destroy
 		@expense.destroy
 		respond_to do |format|
-			format.html { redirect_to expenses_url, notice: 'Expense was successfully destroyed.' }
+			format.html { redirect_to expenses_url, notice: t(:notice_removed, item: Expense.model_name.human) }
 			format.json { json_success }
 		end
 

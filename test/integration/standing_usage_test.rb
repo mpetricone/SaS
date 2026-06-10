@@ -15,18 +15,18 @@ class StandingUsageTest < ActionDispatch::IntegrationTest
     fill_in 'standing_name', with: 'std name'
     click_button 'Save'
     page.assert_current_path standings_path
-    assert has_content? 'Standing was successfully created.'
+    assert has_content? 'Added Standing'
     click_link 'Edit', match: :first
     assert_current_path /\/standings\/[0-9]*\/edit$/
     click_button 'Save'
     page.assert_current_path standings_path
-    assert has_content? 'Standing was successfully updated.'
+    assert has_content? 'Updated Standing'
     click_link 'Show', match: :first
     assert_current_path /\/standings\/[0-9]*$/
     click_link 'Return'
     assert_current_path standings_path
     click_link 'Delete', match: :first
     accept_alert /Really delete Standing .*\?/
-    assert has_content? 'Standing was successfully destroyed.'
+    assert has_content? 'Removed Standing'
   end
 end

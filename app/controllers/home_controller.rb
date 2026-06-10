@@ -1,4 +1,6 @@
 class HomeController < ApplicationController
+  def skip_pundit? = true
+
   def index
       @ous = Ou.all.where(root: nil)
       if logged_in

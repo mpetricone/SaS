@@ -12,13 +12,13 @@ module ExpensesHelper
     def getPaymentInfo
         amt=calculateAmountPayed
         cost = number_with_precision(@expense.cost.to_f, precision: 2)
-        retstr = "Amount Payed " +amt+"<br/>"
+        retstr = I18n.t(:label_amount_paid_html, amount: amt) + "<br/>"
         if amt>cost
-            retstr << "Overpayed by "+(-calculatePaymentDifference.to_f).to_s+"<br/>"
+            retstr << I18n.t(:label_overpaid_by_html, amount: -calculatePaymentDifference.to_f) + "<br/>"
         elsif amt==cost
-            retstr << "Payed In Full<br/>"
+            retstr << I18n.t(:label_paid_in_full) + "<br/>"
         else
-            retstr << "Debt Outstanding " +calculatePaymentDifference+"<br/>"
+            retstr << I18n.t(:label_debt_outstanding_html, amount: calculatePaymentDifference) + "<br/>"
         end
         return retstr.html_safe
     end

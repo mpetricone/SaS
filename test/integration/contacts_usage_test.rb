@@ -23,7 +23,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
     has_selector?(sel)
     first(sel).click_link 'Delete'
     accept_alert('Really delete Contact?')
-    assert page.has_content? 'Contact was successfully destroyed.'
+    assert page.has_content? 'Removed Contact'
   end
 
   test "can edit contact" do
@@ -35,7 +35,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
 
     assert is_contact_page?
-    assert page.has_content? 'Contact was successfully updated.'
+    assert page.has_content? 'Updated Contact'
   end
 
   test "can_add_contact_email" do
@@ -46,7 +46,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     assert is_contact_page?
-    assert page.has_content? 'Contact email was successfully created.'
+    assert page.has_content? 'Added Contact E-Mail'
   end
 
   test "can edit contact email" do
@@ -60,7 +60,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     assert is_contact_page?
-    assert page.has_content? 'Contact email was successfully updated.'
+    assert page.has_content? 'Updated Contact E-Mail'
   end
 
   test "can delete contact email" do
@@ -73,7 +73,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
 
     accept_alert('Really delete Contact E-Mail?')
 
-    assert page.has_content? 'Contact email was successfully removed.'
+    assert page.has_content? 'Removed Contact E-Mail'
   end
 
   test "can_add_contact_phone_number" do
@@ -86,7 +86,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     assert is_contact_page?
-    assert page.has_content? "Contact phone was succ"
+    assert page.has_content? "Added Contact Phone Number"
   end
 
   test "can edit contact phone number" do
@@ -100,7 +100,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     assert is_contact_page?
-    assert page.has_content? 'Contact phone was successfully updated.'
+    assert page.has_content? 'Updated Contact Phone Number'
   end
 
   test "can remove contact phone number" do
@@ -113,7 +113,7 @@ class ContactsUsageTest < ActionDispatch::IntegrationTest
 
     accept_alert('Really delete Contact Phone Number?')
 
-    assert page.has_content? 'Contact phone was successfully removed.'
+    assert page.has_content? 'Removed Contact Phone Number'
   end
 
   test "can_add_contact_address" do

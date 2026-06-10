@@ -2,3 +2,29 @@ en:
   prompt_remove: Remove %{item}?
   prompt_confirm_disable: "Really delete %{item}? This may impact the business."
   prompt_confirm_enable: "Are you sure, enable %{item}?"
+  prompt_mark_invoice_sent: "Mark invoice as sent? This will set the invoice date to now and prevent new timers from being started."
+  prompt_stop_all_timers: "Stop all running labor timers?"
+  prompt_remove_time_entry: "Remove entry?"
+  prompt_convert_to_ticket: "Convert this quote to a Ticket?"
+  prompt_add_addendum: "Create an addendum to this quote?"
+  prompt_confirm: 'Are you sure?'
+  prompt_delete_picture: 'Delete Picture?'
+  prompt_delete_note: 'Delete Note?'
+  prompt_void_sale: 'Void sale of %{item}?'
+  prompt_remove_payment: 'Remove payment of %{amount}?'
+  prompt_send_bill: 'Send bill to %{email}?'
+  prompt_close_ticket: 'Close Ticket?'
+  prompt_reopen_ticket: 'Re-Open Ticket?'
+  prompt_disable_2fa: 'Are you sure you want to disable two-factor authentication?'
+  prompt_delete_ticket_warning: 'Really delete %{item} **? You would probably be better off closing it.'
+  prompt_really_delete: 'Really delete %{item}?'
+  prompt_delete_ticket_action_status: 'Really delete %{item}? This could break many %{tickets}.'
+  prompt_delete_tax: 'Really delete %{item}? This could cause irreperable damage.'
+  prompt_delete_address: 'Really delete %{item}? This could cause deliveries and bills to go missing!'
+  prompt_delete_permission: 'Really delete %{item}? This could criple the system'
+  prompt_delete_ou: 'Really delete %{item}? This is usually not done.'
+  prompt_delete_distributer: "Really delete %{item}? It's usually best to set the disabled date."
+  prompt_delete_client_contact: 'Really delete %{item}? This could criple the system.'
+  prompt_delete_expense_type: 'Really delete %{item}? '
+  prompt_remove_item: 'Remove %{item}?'
+  prompt_delete_item_short: 'Delete %{item}?'

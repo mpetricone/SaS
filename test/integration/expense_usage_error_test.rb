@@ -17,7 +17,7 @@ class ExpenseUsageErrorTest < ActionDispatch::IntegrationTest
 
     assert_current_path /\/expenses\/new$/
 
-    assert has_content? "3 Issues preventing Expense from being created."
+    assert has_css? ".toast-alert"
     assert has_content? "Name can't be blank"
     assert has_content? "Cost can't be blank"
     assert has_content? "Cost is not a number"
@@ -32,7 +32,7 @@ class ExpenseUsageErrorTest < ActionDispatch::IntegrationTest
 
      assert_current_path /\/expenses\/[0-9]*\/expense_payments\/new$/
 
-     assert has_content? "2 Issues preventing Expense Payment from being recorded."
+     assert has_css? ".toast-alert"
      assert has_content? "Amount can't be blank"
      assert has_content? "Amount is not a number"
   end

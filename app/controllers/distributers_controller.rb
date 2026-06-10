@@ -1,9 +1,5 @@
 class DistributersController < ApplicationController
-  include Auditor
-	before_action(only: [:index, :show, :search_by_name]) { process_permission has_read_permission(:distributer) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer) }
-	before_action(only: [:delete]) { process_permission has_delete_permission(:distributer) }
+  before_action { authorize Distributer }
 
 	def index
 		respond_to do |f|
@@ -19,9 +15,8 @@ class DistributersController < ApplicationController
 	def show
 		@distributer = Distributer.find params[:id]
 		respond_to do |f|
-        log_success( request, params)
-			f.html { 
-        render :show 
+			f.html {
+        render :show
       }
 			f.json { render json: {
 				distributer: @distributer,
@@ -62,7 +57,7 @@ class DistributersController < ApplicationController
 
 		respond_to do |f|
 			if @distributer.save
-				f.html { redirect_to distributers_path, notice:  "Created #{Distributer.model_name.human} #{@distributer.name}." }
+				f.html { redirect_to distributers_path, notice: t(:notice_added, item: Distributer.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -82,7 +77,7 @@ class DistributersController < ApplicationController
 
 		respond_to do |f|
 			if @distributer.update new_params
-				f.html { redirect_to @distributer, notice: "Changes to #{@distributer.name} saved." }
+				f.html { redirect_to @distributer, notice: t(:notice_updated, item: Distributer.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -98,7 +93,7 @@ class DistributersController < ApplicationController
 		@distributer.destroy
 
 		respond_to do |f|
-			f.html { redirect_to distributers_path, notice: "Removed #{Distributer.model_name.human}" }
+			f.html { redirect_to distributers_path, notice: t(:notice_removed, item: Distributer.model_name.human) }
 			f.json { json_success }
 		end
 

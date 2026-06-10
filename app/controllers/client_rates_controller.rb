@@ -1,8 +1,5 @@
 class ClientRatesController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:client_attribute) }
-	before_action(only: [:edit, :update]) {process_permission has_write_permission(:client_attribute) }
-	before_action(only: [:new, :create]) {process_permission has_create_permission(:client_atrtibute) }
-	before_action(only: [:desroy]) {process_permission has_delete_permission(:client_attribute) }
+  before_action { authorize ClientRate }
 
 	def new
 		populate_new
@@ -15,7 +12,7 @@ class ClientRatesController < ApplicationController
 
 		respond_to do |f|
 			if @client_rate.save
-				f.html { redirect_to clients_show2_path(@client), notice: "Added #{ClientRate.model_name.human}." }
+				f.html { redirect_to clients_show2_path(@client), notice: t(:notice_added, item: ClientRate.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -35,7 +32,7 @@ class ClientRatesController < ApplicationController
 
 		respond_to do |f|
 			if @client_rate.update new_params
-				f.html { redirect_to clients_show2_path(@client), notice: "Updated #{ClientRate.model_name.human}." }
+				f.html { redirect_to clients_show2_path(@client), notice: t(:notice_updated, item: ClientRate.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -50,7 +47,7 @@ class ClientRatesController < ApplicationController
 		populate_edit
 		@client_rate.delete
 		respond_to do |f|
-			f.html { redirect_to clients_show2_path(@client), notice: "Removed #{ClientRate.model_name.human}." }
+			f.html { redirect_to clients_show2_path(@client), notice: t(:notice_removed, item: ClientRate.model_name.human) }
 			f.json { json_success }
 		end
 

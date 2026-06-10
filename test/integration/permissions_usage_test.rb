@@ -21,20 +21,20 @@ class PermissionsUsageTest < ActionDispatch::IntegrationTest
     check "permission_admin"
     click_button "Save"
     page.assert_current_path permissions_path
-    assert page.has_content? /\ added.$/
+    assert page.has_content? /Added/
     click_link "Edit", match: :first
     page.assert_current_path /\/permissions\/[0-9]*\/edit$/
     assert page.has_content? "Editing Permission"
     click_button "Save"
     page.assert_current_path permissions_path
-    assert page.has_content? /\ updated.$/
+    assert page.has_content? /Updated/
     click_link "Show", match: :first
     page.assert_current_path /\/permissions\/[0-9]*$/
     click_link "Return"
     assert_current_path permissions_path
     click_link "Delete", match: :first
     accept_alert "Really delete Permission? This could criple the system"
-    assert has_content? /#{Permission.model_name.human} .* deleted.$/
+    assert has_content? /Removed #{Permission.model_name.human}/
   end
 
   def create_permission
@@ -49,7 +49,7 @@ class PermissionsUsageTest < ActionDispatch::IntegrationTest
     create_permission
     create_permission
     assert_current_path /\/permissions\/new$/
-    assert has_content? "1 Issue preventing Permission from being created."
+    assert has_css? ".toast-alert"
     assert has_content? "Name has already been taken"
   end
 end

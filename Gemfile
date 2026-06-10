@@ -27,13 +27,25 @@ gem 'bcrypt', '~> 3.1'
 # CSS in Emails
 gem 'roadie-rails'
 # mysql
-#gem 'mysql2'#, '~> 0.5'
+gem 'mysql2'#, '~> 0.5'
 gem 'trilogy'
 
 # pagination (kaminari)
 gem 'kaminari'
 
 gem 'rack-cors', require: 'rack/cors'
+
+gem 'rack-attack'
+
+# Background job adapter
+gem 'solid_queue'
+
+# TOTP-based 2FA
+gem 'rotp'
+gem 'rqrcode'
+
+# Authorization
+gem 'pundit'
 
 #debuging
 gem "byebug"

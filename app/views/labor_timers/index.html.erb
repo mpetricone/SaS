@@ -1,0 +1,157 @@
+<div class='container-fluid mt-4'>
+  <div class='d-flex justify-content-between align-items-center mb-3'>
+    <h2><%= t(:title_labor_timers) %></h2>
+    <% if @is_admin %>
+      <%= link_to ficon('stop-circle', t(:button_stop_all_timers)),
+          stop_all_labor_timers_path,
+          method: :post,
+          data: { confirm: t(:prompt_stop_all_timers) },
+          class: 'btn btn-danger' %>
+    <% end %>
+  </div>
+
+  <%# Running and Stopped Timers %>
+  <turbo-frame id="running-timers-frame" data-controller="poll-frame" data-poll-frame-seconds-value="5">
+    <div class='mb-4'>
+      <h4 class='mb-3'><%= t(:label_running_timers) %></h4>
+      <% if @running_timers.empty? && @stopped_timers.empty? %>
+        <p class='text-muted'><%= t(:label_no_running_timers) %></p>
+      <% else %>
+        <div class='row g-3'>
+          <% @running_timers.each do |timer| %>
+            <div class='col-md-4'>
+              <div class='card h-100'
+                   style='background-color: #c8dcc8; cursor: pointer;'
+                   data-controller="labor-timer"
+                   data-labor-timer-ticket-id-value="<%= timer.ticket_id %>"
+                   data-labor-timer-running-id-value="<%= timer.id %>"
+                   data-labor-timer-started-at-value="<%= timer.timer_started_at.iso8601 %>"
+                   data-action="click->labor-timer#toggle">
+                <div class='card-body'>
+                  <h5 class='card-title mb-1'><%= timer.ticket.client.name %></h5>
+                  <p class='card-text text-muted mb-1 text-truncate'
+                     <%= "data-bs-toggle='tooltip' title='#{timer.ticket.short_description}'" if timer.ticket.short_description.present? %>>
+                    #<%= timer.ticket_id %><% if timer.ticket.short_description.present? %> &mdash; <%= timer.ticket.short_description %><% end %>
+                  </p>
+                  <% if @is_admin && timer.employee %>
+                    <span class='badge bg-secondary mb-2'><%= timer.employee.name %></span>
+                  <% end %>
+                  <div class='d-flex align-items-center justify-content-between mt-3'>
+                    <span data-labor-timer-target="display"
+                          class='font-monospace fs-4 fw-bold text-danger'>00:00:00</span>
+                    <span data-labor-timer-target="stopBtn" class='text-muted'>
+                      <%= ficon('stop') %>
+                    </span>
+                  </div>
+                </div>
+                <div class='card-footer small' style='background-color: #b8ceb8; border-top-color: #a8bea8;'>
+                  <%= t(:label_timer_started_at, time: timer.timer_started_at.strftime('%I:%M %p, %b %d')) %>
+                  &mdash; <%= link_to t(:label_go_to_ticket), ticket_path(timer.ticket), class: 'text-decoration-none', data: { turbo_frame: '_top' } %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% @stopped_timers.each do |timer| %>
+            <div class='col-md-4'>
+              <div class='card h-100'
+                   style='background-color: #dcc8c8; cursor: pointer;'
+                   data-controller="labor-timer"
+                   data-labor-timer-ticket-id-value="<%= timer.ticket_id %>"
+                   data-labor-timer-running-id-value="0"
+                   data-labor-timer-resumable-id-value="<%= timer.id %>"
+                   data-labor-timer-started-at-value=""
+                   data-action="click->labor-timer#toggle">
+                <div class='card-body'>
+                  <h5 class='card-title mb-1'><%= timer.ticket.client.name %></h5>
+                  <p class='card-text text-muted mb-1 text-truncate'
+                     <%= "data-bs-toggle='tooltip' title='#{timer.ticket.short_description}'" if timer.ticket.short_description.present? %>>
+                    #<%= timer.ticket_id %><% if timer.ticket.short_description.present? %> &mdash; <%= timer.ticket.short_description %><% end %>
+                  </p>
+                  <% if @is_admin && timer.employee %>
+                    <span class='badge bg-secondary mb-2'><%= timer.employee.name %></span>
+                  <% end %>
+                  <div class='d-flex align-items-center justify-content-between mt-3'>
+                    <span data-labor-timer-target="display"
+                          class='font-monospace fs-4 fw-bold text-danger d-none'>00:00:00</span>
+                    <span data-labor-timer-target="startBtn" class='font-monospace fw-bold text-secondary'>
+                      <%= timer.hours %> hrs
+                    </span>
+                    <span data-labor-timer-target="stopBtn" class='text-muted d-none'>
+                      <%= ficon('stop') %>
+                    </span>
+                  </div>
+                </div>
+                <div class='card-footer small' style='background-color: #ccb8b8; border-top-color: #bcaaaa;'>
+                  <%= t(:label_timer_started_at, time: timer.timer_started_at.strftime('%I:%M %p, %b %d')) %>
+                  <% if timer.timer_stopped_at %>
+                    &mdash; <%= t(:label_stopped_at, time: timer.timer_stopped_at.strftime('%I:%M %p')) %>
+                  <% end %>
+                  &mdash; <%= link_to t(:label_go_to_ticket), ticket_path(timer.ticket), class: 'text-decoration-none', data: { turbo_frame: '_top' } %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </turbo-frame>
+
+  <%# Start New Timer %>
+  <div class='card'>
+    <div class='card-header'>
+      <h5 class='mb-0'><%= t(:label_start_new_labor_timer) %></h5>
+    </div>
+    <div class='card-body'>
+      <%= form_with url: labor_timers_path, method: :get, local: true, class: 'row g-2 align-items-end mb-4' do |f| %>
+        <div class='col-auto flex-grow-1'>
+          <%= f.text_field :client_name,
+              value: @search_client,
+              placeholder: t(:label_search_client_name),
+              class: 'form-control' %>
+        </div>
+        <div class='col-auto'>
+          <%= f.submit t(:label_search_short), class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+
+      <% if @search_tickets %>
+        <% if @search_tickets.empty? %>
+          <p class='text-muted'><%= t(:msg_no_tickets_for_client, client: @search_client) %></p>
+        <% else %>
+          <div class='row g-3'>
+            <% @search_tickets.each do |ticket| %>
+              <div class='col-md-4'>
+                <div class='card h-100'
+                     data-controller="labor-timer"
+                     data-labor-timer-ticket-id-value="<%= ticket.id %>"
+                     data-labor-timer-running-id-value="0"
+                     data-labor-timer-started-at-value="">
+                  <div class='card-body'>
+                    <h5 class='card-title mb-1'><%= ticket.client.name %></h5>
+                    <p class='card-text text-muted mb-0 text-truncate'
+                       <%= "data-bs-toggle='tooltip' title='#{ticket.short_description}'" if ticket.short_description.present? %>>
+                      #<%= ticket.id %><% if ticket.short_description.present? %> &mdash; <%= ticket.short_description %><% end %>
+                    </p>
+                  </div>
+                  <div class='card-footer d-flex gap-2'>
+                    <button data-labor-timer-target="startBtn"
+                            data-action="click->labor-timer#start"
+                            class='btn btn-success btn-sm flex-grow-1'>
+                      <%= ficon('play', t(:button_start_timer)) %>
+                    </button>
+                    <%= link_to ficon('plus', t(:button_manual_entry)),
+                        new_ticket_ticket_time_path(ticket),
+                        class: 'btn btn-outline-secondary btn-sm' %>
+                    <%= link_to ficon('ticket', t(:label_view_ticket)),
+                        ticket_path(ticket),
+                        class: 'btn btn-outline-primary btn-sm' %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

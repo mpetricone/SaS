@@ -38,7 +38,7 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
       fill_in "Description", with: "someone's email"
     end
     click_button "Save"
-    assert page.has_content? "Created #{Distributer.model_name.human} "
+    assert page.has_content? "Added #{Distributer.model_name.human}"
     page.assert_current_path distributers_path
   end
 
@@ -49,7 +49,7 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     page.assert_current_path /\/distributers\/[0-9]*\/edit$/
     assert page.has_content? "Editing "
     click_button "Save"
-    assert page.has_content? /Changes to .* saved./
+    assert page.has_content? /Updated #{Distributer.model_name.human}/
     page.assert_current_path /\/distributers\/[0-9]*$/
     dismiss_notice
     click_link "Return"
@@ -70,19 +70,19 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     fill_in "Description", with: "a person"
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*/
-    assert page.has_content? " added."
+    assert page.has_content? "Added"
     within(".card", text: "Distributer Contacts") do
       click_link "Edit", match: :first
     end
     assert page.has_content? "Edit Distributer Contact for "
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*$/
-    assert page.has_content? "#{ContactDistributer.model_name.human} updated."
+    assert page.has_content? "Updated #{ContactDistributer.model_name.human}"
     within(".card", text: "Distributer Contacts") do
       click_link "Remove", match: :first
     end
     accept_alert "Really delete Distributer Contact?"
-    assert page.has_content? "#{ContactDistributer.model_name.human} deleted."
+    assert page.has_content? "Removed #{ContactDistributer.model_name.human}"
   end
 
   test "can use distributer address" do
@@ -101,7 +101,7 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     fill_in "Status", with: 2
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*$/
-    assert page.has_content? "#{AddressDistributer.model_name.human} added."
+    assert page.has_content? "Added #{AddressDistributer.model_name.human}"
     # capy/selenium can't find .card, I see it, not sure what's up
     within("table", text: "Street") do
       click_link "Edit", match: :first
@@ -109,12 +109,12 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     assert page.has_content? "Edit Distributer Address for "
     click_button "Save"
     page.assert_current_path /\/distributers\/[0-9]*$/
-    assert page.has_content? "Updated #{AddressDistributer.model_name.human}."
+    assert page.has_content? "Updated #{AddressDistributer.model_name.human}"
     within("table", text: "Street") do
       click_link "Remove", match: :first
     end
     accept_alert "Really delete Distributer Address?"
-    assert page.has_content? "Removed #{AddressDistributer.model_name.human}."
+    assert page.has_content? "Removed #{AddressDistributer.model_name.human}"
   end
 
   test "can use distributer phone" do
@@ -125,19 +125,19 @@ class DistributerUsageTest < ActionDispatch::IntegrationTest
     fill_in "Number", with: "897-000-1234"
     fill_in "Description", with: "a number"
     click_button "Save"
-    assert page.has_content? /#{DistributerPhone.model_name.human} .* added./
+    assert page.has_content? /Added #{DistributerPhone.model_name.human}/
 
     within(".card", text: "Distributer Phone") do
       click_link "Edit", match: :first
     end
     assert page.has_content? "Edit Distributer Phone for "
     click_button "Save"
-    assert page.has_content? "#{DistributerPhone.model_name.human} updated."
+    assert page.has_content? "Updated #{DistributerPhone.model_name.human}"
 
     within(".card", text: "Distributer Phone") do
       click_link "Remove", match: :first
     end
     accept_alert "Really delete Distributer Phone?"
-    assert page.has_content? "#{DistributerPhone.model_name.human} removed."
+    assert page.has_content? "Removed #{DistributerPhone.model_name.human}"
   end
 end

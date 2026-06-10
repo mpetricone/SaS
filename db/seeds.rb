@@ -86,17 +86,33 @@ permission_seeds = [
     ['Tax Admin'                , 'tax',                    true,   true,   true,   true,   false],
     ['Tax  User'                , 'tax',                    true,   true,   false,  false,  false], #Don't see the need to allow users to create new tax entries
     ['Expense Admin'            , 'expense',                true,   true,   true,   true,   false],
-    ['Expense User'             , 'expense_attribute',      true,   false,  true,   false,  false]]
+    ['Expense User'             , 'expense_attribute',      true,   false,  true,   false,  false],
+    ['Quote Admin'              , 'quote',                  true,   true,   true,   true,   false],
+    ['Quote User'               , 'quote',                  true,   true,   true,   false,  false],
+    ['Quote Attrib Admin'       , 'quote_attribute',        true,   true,   true,   true,   false],
+    ['Quote Attrib User'        , 'quote_attribute',        true,   true,   true,   false,  false],
+    ['Payment Term Admin'       , 'payment_term',           true,   true,   true,   true,   false],
+    ['Payment Term User'        , 'payment_term',           true,   false,  false,  false,  false]]
 permission_seeds.each do |p|
     Permission.create!(name: p[0], object_name: p[1], read_record: p[2], write_record: p[3], create_record: p[4], delete_record: p[5], admin: p[6])
+end
+
+payment_term_seeds = [
+    ['Paid on Completion',         'Payment in full is due upon completion of the work.'],
+    ['50% on Acceptance',          '50% deposit due on acceptance of the quote; remaining balance due on completion.'],
+    ['Cash Before Shipment',       'Full payment received before any items are shipped.'],
+    ['Net 30',                     'Payment due within 30 days of invoice date.'],
+    ['Net 15',                     'Payment due within 15 days of invoice date.']]
+payment_term_seeds.each do |p|
+    PaymentTerm.create!(name: p[0], description: p[1], active: true)
 end
 # The following records should be modified for the user prior to setup.
 # Put the first contact here, to be used for the Initial admin account
 
 # Addresses for employee and Ou
-seed_ou_address = Address.create!(street1: REMOVED , street2: REMOVED, city: REMOVED, postal_code: REMOVED, country: "US", status: 1)
+seed_ou_address = Address.create!(street1: "123 Main St.", city: "Anytown", postal_code: "12345", country: "US", status: 1)
 seed_employee_address = seed_ou_address
-employee_contact = Contact.create!( fname: REMOVED, lname: REMVOED, mname: REMOVED, description: "The Man", standing_id: Standing.find_by(name: "GOOD").id)
+employee_contact = Contact.create!( fname: "Matthew", lname: "Admin", description: "Initial admin", standing_id: Standing.find_by(name: "GOOD").id)
 AddressContact.create!( contact_id: employee_contact.id, address_id: seed_employee_address.id, delivery: true, invoice: true)
 # This should be the initial, primary OU
 ## Tax entry
@@ -106,8 +122,8 @@ seed_ou = Ou.create!(name: "Main", description: "Primary OU", tax:  tax)
 OuAddress.create!(ou_id: seed_ou.id, address_id: seed_ou_address.id, delivery: true, invoice: true)
 
 # The initial admin, and it's admin permission
-Employee.create!(contact_id: Contact.find_by(lname: REMOVED).id, ou_id: Ou.find_by(name: "Main").id, date_hired: "01-01-0001", position: "Owner", user_name: REMOVED, password: REMOVED, password_confirmation: REMOVED)
-EmployeePermission.create!(employee_id: Employee.find_by(user_name: REMOVED).id, permission_id: Permission.find_by( name: 'Admin').id)
+Employee.create!(contact_id: Contact.find_by(lname: "Admin").id, ou_id: Ou.find_by(name: "Main").id, date_hired: "01-01-0001", position: "Owner", user_name: "matthew", password: "testtest", password_confirmation: "testtest")
+EmployeePermission.create!(employee_id: Employee.find_by(user_name: "matthew").id, permission_id: Permission.find_by( name: 'Admin').id)
 
 #***********************************************#
 # Following are records intended for development#
@@ -115,14 +131,14 @@ EmployeePermission.create!(employee_id: Employee.find_by(user_name: REMOVED).id,
 
 #=begin
 # Comment from here to file end for production
-Address.create!(street1: REMOVED, street2: REMOVED, city: REMOVED, state: REMOVED, postal_code: REMOVED, country: "USA")
-Address.create!(street1: REMOVED ,city: REMOVED, state: REMOVED, postal_code: REMOVED, country: "USA")
+Address.create!(street1: "123 Main St.", city: "Anytown", state: "Anystate", postal_code: "12345", country: "USA")
+Address.create!(street1: "456 Example Ave.", city: "Newark", state: "New Jersey", postal_code: "07111", country: "USA")
 Address.create!(street1: "77 Imaginary Ln.", city: 'Emerald City',state: 'Not Kansas', postal_code: '29143', country: 'OZ')
 
 Ou.create!(name: "Secondary", description: "Secondary OU", root_id: Ou.find_by(name: "Main").id, tax: tax)
 
 OuAddress.create!(ou_id: Ou.find_by(name: "Main").id, address_id: Address.find_by(city: "Newark").id)
-OuAddress.create!(ou_id: Ou.find_by(name: "Secondary").id, address_id: Address.find_by(city: "Kearny").id)
+OuAddress.create!(ou_id: Ou.find_by(name: "Secondary").id, address_id: Address.find_by(city: "Anytown").id)
 Ou.all.each_with_index do  |insert, i| 
     OuPhone.create!(number: i, description: "Phone # #{i}", ou_id: insert.id) 
     OuEmail.create!(address: "Email#{i}@co.com", description: "N.#{i}", ou_id: insert.id)

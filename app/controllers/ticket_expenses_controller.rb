@@ -1,7 +1,5 @@
 class TicketExpensesController < ApplicationController
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_expense) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_expense) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_expense) }
+  before_action { authorize TicketExpense }
 
 	def new
 		populate_new
@@ -52,7 +50,7 @@ class TicketExpensesController < ApplicationController
 				f.html { redirect_to @ticket, notice: t(:notice_removed, item: TicketExpense.model_name.human)  }
 				f.json { json_success }
 			else
-				f.html { redirect_to @ticket, alert: t(:alert_not_removed, item: TickeExpense.model_name.human)  }
+				f.html { redirect_to @ticket, alert: t(:alert_not_removed, item: TicketExpense.model_name.human)  }
 				f.json { json_failure @ticket_expense.errors }
 			end
 
@@ -73,7 +71,7 @@ class TicketExpensesController < ApplicationController
 
 		@ticket = Ticket.find params[:ticket_id]
 		@ticket_expense.ticket = @ticket
-		@ticket_expense.employee = get_current_employee
+		@ticket_expense.employee = current_employee
 	end
 
 	def populate_edit

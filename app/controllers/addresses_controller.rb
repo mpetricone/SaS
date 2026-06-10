@@ -1,8 +1,5 @@
 class AddressesController < ApplicationController
-	before_action(only: [ :index, :show, :search_by_name]) { process_permission has_read_permission(:address) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:address) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:address) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:address) }
+  before_action { authorize Address }
 
 	def index
 		respond_to do |f|
@@ -80,7 +77,7 @@ class AddressesController < ApplicationController
 		@address = Address.find(params[:id])
 		@address.destroy
 		respond_to do |format|
-			format.html { redirect_to  addresses_url, notice: "Record destroyed." }
+			format.html { redirect_to  addresses_url, notice: t(:notice_record_removed) }
 			format.json { json_success }
 		end
 

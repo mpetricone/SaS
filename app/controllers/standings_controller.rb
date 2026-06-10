@@ -1,9 +1,6 @@
 class StandingsController < ApplicationController
+  before_action { authorize Standing }
 	before_action :set_standing, only: [:show, :edit, :update, :destroy]
-	before_action(only: [ :index, :show, :search_by_name]) { process_permission has_read_permission(:standing) }
-	before_action(only: [ :edit, :update]) { process_permission has_write_permission(:standing) }
-	before_action(only: [ :new, :create]) { process_permission has_create_permission(:standing) }
-	before_action(only: [ :destroy]) { process_permission has_delete_permission(:standing) }
 
 	# GET /standings
 	# GET /standings.json
@@ -55,7 +52,7 @@ class StandingsController < ApplicationController
 
 		respond_to do |f|
 			if @standing.save
-				f.html { redirect_to standings_path, notice: 'Standing was successfully created.' }
+				f.html { redirect_to standings_path, notice: t(:notice_added, item: Standing.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -71,7 +68,7 @@ class StandingsController < ApplicationController
 	def update
 		respond_to do |f|
 			if @standing.update(standing_params)
-				f.html { redirect_to standings_path, notice: 'Standing was successfully updated.' }
+				f.html { redirect_to standings_path, notice: t(:notice_updated, item: Standing.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -87,7 +84,7 @@ class StandingsController < ApplicationController
 	def destroy
 		@standing.destroy
 		respond_to do |f|
-			f.html { redirect_to standings_url, notice: 'Standing was successfully destroyed.' }
+			f.html { redirect_to standings_url, notice: t(:notice_removed, item: Standing.model_name.human) }
 			f.json { json_success }
 		end
 

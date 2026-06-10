@@ -2,5 +2,5 @@
     locals: {
     main_model: @standings,
     show_fields: [:name],
-    delete_msg: "Really delete #{Standing.model_name.human} **?",
+    delete_msg: t(:prompt_really_delete, item: "#{Standing.model_name.human} **"),
     delete_msg_ident: :name} %>

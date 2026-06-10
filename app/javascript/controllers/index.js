@@ -6,3 +6,15 @@ import { application } from "./application"
 
 import PagNavController from "./pag_nav_controller"
 application.register("pag_nav", PagNavController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
+import LaborTimerController from "./labor_timer_controller"
+application.register("labor-timer", LaborTimerController)
+
+import PollFrameController from "./poll_frame_controller"
+application.register("poll-frame", PollFrameController)
+
+import OptionFilterController from "./option_filter_controller"
+application.register("option-filter", OptionFilterController)

@@ -1,15 +1,15 @@
-<h1>Contact E-mail Record</h1>
+<h1><%= t(:title_show_record, item: ContactEmail.model_name.human) %></h1>
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Address:</strong>
+  <strong><%= ContactEmail.human_attribute_name(:address) %>:</strong>
   <%= @contact_email.address %>
 </p>
 
 <p>
-  <strong>Contact:</strong>
-  <%= @contact.fname %> <%= @contact.lname %>
+  <strong><%= Contact.model_name.human %>:</strong>
+  <%= @contact.full_name %>
 </p>
 
-<%= link_to 'Edit', edit_contact_contact_email_path(@contact, @contact_email) %> |
-<%= link_to 'Back', contact_contact_emails_path(@contact) %>
+<%= link_to t(:button_edit), edit_contact_contact_email_path(@contact, @contact_email) %> |
+<%= link_to t(:button_back), contact_contact_emails_path(@contact) %>

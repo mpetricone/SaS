@@ -1,0 +1,56 @@
+<%= render partial: 'shared/search_index', locals: { url: quotes_search_by_name_path, model: Quote } %>
+
+<div class='card'>
+  <div class='card-header d-flex justify-content-between'>
+    <h4><%= Quote.model_name.human(count: @quotes.total_count) %></h4>
+    <%= link_to t(:button_new_quote), new_quote_path, class: 'btn btn-primary pull-right' %>
+  </div>
+  <div class='card-body'>
+    <div class='table-responsive'>
+      <table class='table table-sm table-striped table-hover'>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th><%= Quote.human_attribute_name(:code) %></th>
+            <th><%= Client.model_name.human %></th>
+            <th><%= Quote.human_attribute_name(:title) %></th>
+            <th><%= Quote.human_attribute_name(:status) %></th>
+            <th><%= Quote.human_attribute_name(:created_at) %></th>
+            <th class='text-center'><%= t(:label_options) %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @quotes.each do |q| %>
+            <tr>
+              <td><%= q.id %></td>
+              <td><%= q.code %></td>
+              <td><%= q.client.name %></td>
+              <td>
+                <%= q.title %>
+                <% if q.addendum? %>
+                  <span class='badge bg-info'><%= t(:label_addendum_to, code: q.parent_quote.code) %></span>
+                <% end %>
+              </td>
+              <td><span class='badge bg-secondary'><%= q.status.humanize %></span></td>
+              <td><%= q.created_at.strftime('%Y-%m-%d') %></td>
+              <td class='col-xs-2 text-center'>
+                <div class='btn-group' role='group'>
+                  <% if q.editable? %>
+                    <%= link_to t(:button_edit), edit_quote_path(q), class: 'btn btn-secondary' %>
+                  <% end %>
+                  <%= link_to t(:button_show), q, class: 'btn btn-primary' %>
+                  <% if q.editable? %>
+                    <%= link_to t(:button_delete), quote_path(q), method: :delete,
+                          data: { confirm: t(:prompt_really_delete, item: "#{Quote.model_name.human} #{q.code}") },
+                          class: 'btn btn-danger' %>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<%= render partial: 'shared/pagination/pagination_bubble', locals: { remote: false, main_model: @quotes, param_name: :page } %>

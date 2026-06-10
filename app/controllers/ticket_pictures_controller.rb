@@ -1,9 +1,6 @@
 class TicketPicturesController < ApplicationController
+  before_action { authorize TicketPicture }
   include ActiveStorage::SetCurrent
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
 
   def new
     populate_new

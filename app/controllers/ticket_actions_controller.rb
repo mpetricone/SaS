@@ -1,8 +1,5 @@
 class TicketActionsController < ApplicationController
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:ticket_attribute) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:ticket_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ticket_attribute) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ticket_attribute) }
+  before_action { authorize TicketAction }
 
   def new
     populate_new
@@ -11,10 +8,10 @@ class TicketActionsController < ApplicationController
 
   def create
     populate_new new_params
-    @ticket_action.employee = get_current_employee
+    @ticket_action.employee = current_employee
     respond_to do |f|
       if (@ticket_action.save)
-        f.html { redirect_to @ticket, notice: "Added #{TicketAction.model_name.human}." }
+        f.html { redirect_to @ticket, notice: t(:notice_added, item: TicketAction.model_name.human) }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content }
@@ -31,7 +28,7 @@ class TicketActionsController < ApplicationController
     populate_edit
     respond_to do |f|
       if (@ticket_action.update new_params)
-        f.html { redirect_to @ticket, notice: "Altered #{TicketAction.model_name.human}." }
+        f.html { redirect_to @ticket, notice: t(:notice_updated, item: TicketAction.model_name.human) }
         f.json { json_success }
       else
         f.html { render :edit, status: :unprocessable_content }
@@ -44,10 +41,10 @@ class TicketActionsController < ApplicationController
     populate_edit
     respond_to do |f|
       if @ticket_action.destroy
-        f.html { redirect_to @ticket, notice: "Removed #{TicketAction.model_name.human}." }
+        f.html { redirect_to @ticket, notice: t(:notice_removed, item: TicketAction.model_name.human) }
         f.json { json_success }
       else
-        f.html { redirect_to @ticket, alert: "Error removing #{TickertAction.model_name.human}." }
+        f.html { redirect_to @ticket, alert: t(:alert_not_removed, item: TicketAction.model_name.human) }
         f.json { json_failure @ticket_action.errors }
       end
     end

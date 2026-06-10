@@ -9,7 +9,7 @@
         <%= label_tag t(:label_name), nil, for: :search_name, class: 'sr-only' %>
         <div class='input-group'>
           <%= content_tag :div, ficon('search'), class: 'input-group-addon' %>
-          <%= text_field_tag :search_name, nil, class: 'form-control', placeholder: t(:label_name) %>
+          <%= text_field_tag :search_name, nil, class: 'form-control', placeholder: t(:label_name), data: { 'search-error-msg': t(:alert_search_failed) } %>
           <div class='input-group-btn'>
             <%= submit_tag t(:label_search_short), class: 'btn btn-info' %>
           </div>

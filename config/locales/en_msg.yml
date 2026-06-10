@@ -1,2 +1,3 @@
 en:
   msg_pick_better_dates: Try choosing dates farther apart.
+  msg_no_tickets_for_client: 'No open hourly-billing tickets found for "%{client}".'

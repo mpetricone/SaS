@@ -1,0 +1,33 @@
+<%= form_with model: [@quote, @quote_labor], local: true do |f| %>
+  <% if @quote_labor.errors.any? %>
+    <div class='alert alert-danger'><%= @quote_labor.errors.full_messages.to_sentence %></div>
+  <% end %>
+
+  <div class='row g-3'>
+    <div class='col-md-8'>
+      <%= f.label :description, class: 'form-label' %>
+      <%= f.text_field :description, class: 'form-control' %>
+    </div>
+    <div class='col-md-4'>
+      <%= f.label :billing, class: 'form-label' %>
+      <%= f.select :billing, QuoteLabor.billings.keys.map { |k| [k.humanize, k] }, {}, class: 'form-select' %>
+    </div>
+    <div class='col-md-4'>
+      <%= f.label :amount, "Amount (fixed)", class: 'form-label' %>
+      <%= f.text_field :amount, class: 'form-control' %>
+    </div>
+    <div class='col-md-4'>
+      <%= f.label :rate_id, Rate.model_name.human, class: 'form-label' %>
+      <%= f.collection_select :rate_id, Rate.where(current: true).order(:rate), :id, :rate, { include_blank: true }, class: 'form-select' %>
+    </div>
+    <div class='col-md-4'>
+      <%= f.label :estimated_hours, class: 'form-label' %>
+      <%= f.number_field :estimated_hours, step: 'any', class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class='mt-3'>
+    <%= f.submit (f.object.new_record? ? t(:button_add_labor_estimate) : t(:button_update_labor_estimate)), class: 'btn btn-primary' %>
+    <%= link_to ficon('remove', 'Cancel'), quote_path(@quote), class: 'btn btn-danger' %>
+  </div>
+<% end %>

@@ -18,7 +18,7 @@ class TaxUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Date enabled', with: Time.now.strftime(@@date_format)
     click_button 'Save'
     page.assert_current_path taxes_path
-    assert page.has_content? /#{Tax.model_name.human} #{Tax.human_attribute_name :rate} .* added.$/
+    assert page.has_content? /Added #{Tax.model_name.human}/
     click_link 'Edit', match: :first
     page.assert_current_path /\/taxes\/[0-9]*\/edit$/
     assert page.has_content? 'Editing Tax'
@@ -34,7 +34,7 @@ class TaxUsageTest < ActionDispatch::IntegrationTest
     click_link 'Return'
     click_link 'Delete', match: :first
     accept_alert /Really delete Tax .*\? This could cause irreperable damage./
-    assert page.has_content? /#{Tax.model_name.human} .* remove.$/
+    assert page.has_content? /Removed #{Tax.model_name.human}/
   end
   
   test "cannot create tax with missing data" do
@@ -44,7 +44,7 @@ class TaxUsageTest < ActionDispatch::IntegrationTest
     click_button 'Save'
 
     assert_current_path /\/taxes\/new$/
-    assert has_content? "3 Issues preventing Tax from being created."
+    assert has_css? ".toast-alert"
     assert has_content? "Rate can't be blank"
     assert has_content? "Name can't be blank"
     assert has_content? "Region can't be blank"

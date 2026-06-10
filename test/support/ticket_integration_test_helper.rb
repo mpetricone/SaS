@@ -12,7 +12,10 @@ module TicketIntegrationTestHelper
     check 'search_solved' if solved
 
     click_button 'Search'
-    page.has_css?('tbody tr a', text: 'client_')
+    unless page.has_css?('tbody tr a', text: 'client_', wait: 4)
+      click_button 'Search'
+    end
+    assert_selector 'tbody tr a', text: 'client_'
     find('tbody tr a', text: 'client_', match: :first).click
     page.assert_current_path tickets_path
   end

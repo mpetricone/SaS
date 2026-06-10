@@ -2,5 +2,5 @@
     locals: {
     main_model: @taxes,
     show_fields: [:name, :rate, :region, :date_enabled, :date_retired],
-    delete_msg: "Really delete #{Tax.model_name.human} **? This could cause irreperable damage.",
+    delete_msg: t(:prompt_delete_tax, item: "#{Tax.model_name.human} **"),
     delete_msg_ident: :name } %>

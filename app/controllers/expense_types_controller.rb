@@ -1,9 +1,6 @@
 class ExpenseTypesController < ApplicationController
+  before_action { authorize ExpenseType }
 	before_action :set_expense_type, only: [:show, :edit, :update, :destroy]
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:expense_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:expense_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:expense_attribute) }
-	before_action(only: [:delete]) { process_permission has_delete_permission(:expense_attribute) }
 
 	# GET /expense_types
 	# GET /expense_types.json
@@ -55,7 +52,7 @@ class ExpenseTypesController < ApplicationController
 
 		respond_to do |f|
 			if @expense_type.save
-				f.html { redirect_to expense_types_path, notice: 'Expense type was successfully created.' }
+				f.html { redirect_to expense_types_path, notice: t(:notice_added, item: ExpenseType.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -71,7 +68,7 @@ class ExpenseTypesController < ApplicationController
 	def update
 		respond_to do |f|
 			if @expense_type.update(expense_type_params)
-				f.html { redirect_to @expense_type, notice: 'Expense type was successfully updated.' }
+				f.html { redirect_to @expense_type, notice: t(:notice_updated, item: ExpenseType.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -90,7 +87,7 @@ class ExpenseTypesController < ApplicationController
 		#@expense_type.destroy
 		respond_to do |f|
       #Still display a note.
-      f.html { redirect_to expense_types_url, notice: 'Expense Types cannot be destroyed.'}
+      f.html { redirect_to expense_types_url, alert: t(:alert_expense_types_undeletable) }
       f.json { json_success } #may be altered soon, not currently used.
 		end
 

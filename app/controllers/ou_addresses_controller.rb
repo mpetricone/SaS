@@ -1,8 +1,5 @@
 class OuAddressesController < ApplicationController
-  before_action(only: [:show, :index]) { process_permission has_read_permission(:ou_attribute) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:ou_attribute) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:ou_attribute) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:ou_attribute) }
+  before_action { authorize OuAddress }
 
   def new
     @ouAddress = OuAddress.new
@@ -17,7 +14,7 @@ class OuAddressesController < ApplicationController
     @ouAddress.ou = @ou
     respond_to do |f|
       if @ouAddress.save
-        f.html { redirect_to @ou, notice: "#{OuAddress.model_name.human} added."}
+        f.html { redirect_to @ou, notice: t(:notice_added, item: OuAddress.model_name.human)}
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content}
@@ -31,10 +28,10 @@ class OuAddressesController < ApplicationController
     @ou = Ou.find params[:ou_id]
     respond_to do |f|
       if @ouAddress.delete
-        f.html { redirect_to @ou, notice: "#{OuAddress.model_name.human} removed."}
+        f.html { redirect_to @ou, notice: t(:notice_removed, item: OuAddress.model_name.human)}
         f.json { json_success }
       else
-        f.html { redirect_to @ou, alert: "Error removing #{OuAddress.model_name.human}." }
+        f.html { redirect_to @ou, alert: t(:alert_not_removed, item: OuAddress.model_name.human) }
         f.json { json_failure }
       end
     end
@@ -51,7 +48,7 @@ class OuAddressesController < ApplicationController
     @ouAddress.ou = @ou
     respond_to do |f|
       if @ouAddress.update update_params
-        f.html { redirect_to @ou, {notice: "#{OuAddress.model_name.human} updated."} }
+        f.html { redirect_to @ou, {notice: t(:notice_updated, item: OuAddress.model_name.human)} }
         f.json { json_success }
       else
         f.html {render :edit, status: :unprocessable_content }

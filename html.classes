@@ -1,0 +1,31 @@
+OUTDATED: Migrating to bootstrap
+div.field { form fields }
+div.fields_for {form fields_for }
+div.actions { form actions (submit) }
+div.user_info { session user info}
+div.user_info_empty { session user if no one logged in }
+
+div.form_cancel { form, cancel link, may be buttoned later }
+
+body_title { page body titles } [h1]
+
+div.show_field { show field }
+
+div.show_nav_buttons { show.html nav buttons }
+table.list_table { index}
+table.dblist_header {index table header}
+
+table.ticket_show { ticket show }
+.ticket_show_label { labels for show table} [th, td]
+tr.ticket_label { label row }
+td.index_links { index table links }
+strong.view_label { show labels }
+
+h2.form_name { form title - not often used }
+
+
+ajax: { 
+div.aj_search_box { search params }
+div.aj_ticket_box { tickets search results }
+}
+

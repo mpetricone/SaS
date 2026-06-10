@@ -1,8 +1,5 @@
 class ClientsController < ApplicationController
-  before_action(only: [:show, :index, :search_by_name, :search_statement]) { process_permission has_read_permission(:contact) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:client) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:client) }
-  before_action(only: [:destroy ]) { process_permission has_delete_permission(:client) }
+  before_action { authorize Client }
 
   def new
     @client = Client.new
@@ -75,7 +72,7 @@ class ClientsController < ApplicationController
       if @client.update(new_params)
         # ensure there are defaults
         @client.enforce_address_compatibility
-        f.html { redirect_to @client, notice: "Updated record." }
+        f.html { redirect_to @client, notice: t(:notice_record_updated) }
         f.json { json_success }
       else
         f.html { render :edit, status: :unprocessable_content}
@@ -104,7 +101,7 @@ class ClientsController < ApplicationController
       if (@client.save)
         #makes sure there are default delivery/invoce addresses
         @client.enforce_address_compatibility
-        f.html { redirect_to clients_path, notice: "Created record" }
+        f.html { redirect_to clients_path, notice: t(:notice_record_added) }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content }
@@ -117,7 +114,7 @@ class ClientsController < ApplicationController
     @client = Client.find params[:id]
     @client.destroy
     respond_to do |f|
-      f.html { redirect_to clients_path, notice: "Record destroyed" }
+      f.html { redirect_to clients_path, notice: t(:notice_record_removed) }
       f.json { json_success }
     end
   end

@@ -1,8 +1,5 @@
 class DistributerEmailsController < ApplicationController
-	before_action(only: [:show, :index]) { process_permission has_read_permission(:distributer_attribute) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:distributer_attribute) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:distributer_attribute) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:distributer_attribute) }
+  before_action { authorize DistributerEmail }
 	def new
 		populate_new
 	end
@@ -12,7 +9,7 @@ class DistributerEmailsController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_email.save
-				f.html { redirect_to @distributer, notice: "#{DistributerEmail.model_name.human} #{@distributer_email.email} added." }
+				f.html { redirect_to @distributer, notice: t(:notice_added, item: DistributerEmail.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :new, status: :unprocessable_content }
@@ -32,7 +29,7 @@ class DistributerEmailsController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_email.update new_params
-				f.html { redirect_to @distributer, notice: "#{DistributerEmail.model_name.human} #{@distributer_email.email} updated." }
+				f.html { redirect_to @distributer, notice: t(:notice_updated, item: DistributerEmail.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { render :edit, status: :unprocessable_content }
@@ -48,7 +45,7 @@ class DistributerEmailsController < ApplicationController
 
 		respond_to do |f|
 			if @distributer_email.destroy
-				f.html { redirect_to @distributer, notice: "#{DistributerEmail.model_name.human} deleted" }
+				f.html { redirect_to @distributer, notice: t(:notice_removed, item: DistributerEmail.model_name.human) }
 				f.json { json_success }
 			else
 				f.html { redirect_to @distributer, alrt: "Error deleting #{Distributer.model_name.human}." }

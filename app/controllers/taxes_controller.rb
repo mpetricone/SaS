@@ -1,8 +1,5 @@
 class TaxesController < ApplicationController
-	before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:tax) }
-	before_action(only: [:edit, :update]) { process_permission has_write_permission(:tax) }
-	before_action(only: [:new, :create]) { process_permission has_create_permission(:tax) }
-	before_action(only: [:destroy]) { process_permission has_delete_permission(:tax) }
+  before_action { authorize Tax }
 
 	def index
 		respond_to do |f|
@@ -45,7 +42,7 @@ class TaxesController < ApplicationController
 
 		respond_to do | format|
 			if @tax.save
-				format.html { redirect_to taxes_path, notice: "#{Tax.model_name.human} #{Tax.human_attribute_name :rate} #{@tax.rate} added." }
+				format.html { redirect_to taxes_path, notice: t(:notice_added, item: Tax.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :new, status: :unprocessable_content }
@@ -64,7 +61,7 @@ class TaxesController < ApplicationController
 		populate_edit
 		respond_to do | format|
 			if @tax.update new_params
-				format.html { redirect_to @tax, notice: "#{Tax.model_name.human} #{@tax.name} updated." }
+				format.html { redirect_to @tax, notice: t(:notice_updated, item: Tax.model_name.human) }
 				format.json { json_success }
 			else
 				format.html { render :edit, status: :unprocessable_content }
@@ -80,10 +77,10 @@ class TaxesController < ApplicationController
 		name = @tax.name;
 		respond_to do |format|
 			if @tax.destroy
-				format.html { redirect_to taxes_path, notice: "#{Tax.model_name.human} #{name} remove."}
+				format.html { redirect_to taxes_path, notice: t(:notice_removed, item: Tax.model_name.human)}
 				format.json { json_success }
 			else
-				forma.html { redirect_to taxes_path, notice: "Error removing #{Tax.model_name.human} #{name}." }
+				format.html { redirect_to taxes_path, alert: t(:alert_not_removed, item: Tax.model_name.human) }
 				format.json { json_failure @tax.errors }
 			end
 

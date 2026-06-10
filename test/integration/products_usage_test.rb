@@ -34,7 +34,7 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Current cost', with: '10.00'
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
-    assert page.has_content? /#{Product.model_name.human} .* added\./
+    assert page.has_content? /Added #{Product.model_name.human}/
     dismiss_notice
     click_link 'Return'
     page.assert_current_path products_path
@@ -47,13 +47,13 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     assert page.has_content? 'Editing Product'
     click_button "Save"
     page.assert_current_path /\/products\/[0-9]*$/
-    assert page.has_content? /#{Product.model_name.human} .* updated\./
+    assert page.has_content? /Updated #{Product.model_name.human}/
     dismiss_notice
     click_link 'Return'
     page.assert_current_path products_path
     first('tbody tr a', text: 'Delete').click
     accept_alert /Really delete Product .*\?/
-    assert page.has_content? "#{Product.model_name.human} removed."
+    assert page.has_content? "Removed #{Product.model_name.human}"
   end
   
   test "can use distributer products" do
@@ -68,7 +68,7 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Distributer item number', with: 'SHOULDBEUNIQUE100'
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
-    assert page.has_content? /.* added to .*\.$/
+    assert page.has_content? /Added Distributer product/
 
     within(".card", text: 'Distributer product') do
       click_link 'Edit', match: :first
@@ -76,13 +76,13 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     page.assert_current_path /\/products\/[0-9]*\/distributer_products\/[0-9]*\/edit$/
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
-    assert page.has_content? /.* altered succesfully.$/
+    assert page.has_content? /Updated/
 
     within(".card", text: 'Distributer product') do
       click_link 'Remove', match: :first
     end
     accept_alert 'Really delete Distributer product?'
-    assert page.has_content? "#{DistributerProduct.model_name.human} deleted."
+    assert page.has_content? "Removed #{DistributerProduct.model_name.human}"
   end
 
   test "can use product note" do
@@ -95,7 +95,7 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Note', with: 'hey there, what is going on?'
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
-    assert page.has_content? /^#{ProductNote.model_name.human} .* added.$/
+    assert page.has_content? /Added #{ProductNote.model_name.human}/
 
     within('.card', text: 'Product note') do
       click_link 'Edit', match: :first
@@ -104,12 +104,12 @@ class ProductsUsageTest < ActionDispatch::IntegrationTest
     assert page.has_content? /Edit Product note for .*$/
     click_button 'Save'
     page.assert_current_path /\/products\/[0-9]*$/
-    assert page.has_content? /^#{ProductNote.model_name.human} .* updated.$/
+    assert page.has_content? /Updated #{ProductNote.model_name.human}/
     within('.card', text: 'Product note') do
       click_link 'Remove', match: :first
     end
     accept_alert "Really delete Product note?"
-    assert page.has_content? "#{ProductNote.model_name.human} removed."
+    assert page.has_content? "Removed #{ProductNote.model_name.human}"
   end
     
 end

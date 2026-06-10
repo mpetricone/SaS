@@ -1,0 +1,6 @@
+<%= render partial: 'shared/index_list',
+    locals: {
+    main_model: @payment_terms,
+    show_fields: [:name, :description, :active],
+    delete_msg: t(:prompt_really_delete, item: "#{PaymentTerm.model_name.human} **"),
+    delete_msg_ident: :name } %>

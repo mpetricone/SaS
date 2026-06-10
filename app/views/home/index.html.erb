@@ -8,10 +8,10 @@
         <div class='col-md-8'>
           <div class='card-body gx-0'>
             <h1>
-              Sales and Services Systems
+              <%= t(:title_brand) %>
             </h1>
             <h4>
-              IT Customer Management and POS
+              <%= t(:title_brand_tagline) %>
             </h4>
           </div>
         </div>
@@ -26,6 +26,6 @@
   <div class="row" id="tickets">
   </div>
   <div class="row" id="employee_tickets">
-    <%= render partial: "tickets/index_latest", locals: { title: "#{current_employee.name}'s open tickets", tickets: @employee_tickets } %>
+    <%= render partial: "tickets/index_latest", locals: { title: t(:title_my_open_tickets, name: current_employee.name), tickets: @employee_tickets } %>
   </div>
 <% end %>

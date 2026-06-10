@@ -1,6 +1,5 @@
 class LogsController < ApplicationController
-  before_action(only: [:index, :show]) { process_permission has_read_permission(:auditor)}
-  before_action(only: [:ack]) { process_permission has_write_permission(:auditor)}
+  before_action { authorize Log }
 
   def show
     @log = Log.find(params[:id])
@@ -11,11 +10,9 @@ class LogsController < ApplicationController
     @log.ack_at = Time.now
     respond_to do |f|
       if @log.save
-        log_success(request, params)
-        f.html { 
+        f.html {
           redirect_to @log, notice: t(:notice_updated, item: Log.model_name.human) }
       else
-        log_failure(request, params)
         f.html { render :show, status: :unprocessable_content }
       end
     end
@@ -25,7 +22,6 @@ class LogsController < ApplicationController
   def index
     respond_to do |f|
       f.html {
-        log_success( request, params)
         @logs = Log.order(event_at: :desc).page(params[:page])
         render :index
       }

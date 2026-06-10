@@ -31,7 +31,7 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
     click_button "Save"
 
     page.assert_current_path(%r{tickets/[0-9]*})
-    assert page.has_content? "updated."
+    assert page.has_content? "Updated"
   end
 
   test "ticket can email client" do
@@ -55,12 +55,12 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
       click_button "Save"
 
       page.assert_current_path @@path_to_tickets
-      assert page.has_content? "#{TicketWorkType.model_name.human} added."
+      assert page.has_content? "Added #{TicketWorkType.model_name.human}"
     end
 
     assert page.has_css?(".label-badge a")
     find(".label-badge a", match: :first).click
-    assert page.has_content? "#{TicketWorkType.model_name.human} removed."
+    assert page.has_content? "Removed #{TicketWorkType.model_name.human}"
   end
 
   test "can close and open ticket" do
@@ -89,14 +89,14 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
       click_button "Save"
 
       page.assert_current_path @@path_to_tickets
-      assert page.has_content? "Added #{TicketAction.model_name.human}."
+      assert page.has_content? "Added #{TicketAction.model_name.human}"
     end
 
     first("tr", text: "test action").click_link "Remove"
 
     accept_alert "Remove #{TicketAction.model_name.human}?"
 
-    assert page.has_content? "Removed #{TicketAction.model_name.human}."
+    assert page.has_content? "Removed #{TicketAction.model_name.human}"
   end
 
   test "can add and remove merchandise from ticket" do
@@ -113,13 +113,13 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
 
     click_button "Save"
 
-    assert page.has_content? "added to #{Ticket.model_name.human}"
+    assert page.has_content? "Added #{Ticket.model_name.human}"
 
     click_link "Void", match: :first
 
     accept_alert "Void sale of"
 
-    assert page.has_content? "removed from #{Ticket.model_name.human}"
+    assert page.has_content? "Removed #{Product.model_name.human}"
   end
 
   test "can add and remove hours from ticket" do
@@ -131,7 +131,7 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
 
     click_button "Save"
 
-    assert page.has_content? "#{TicketTime.model_name.human} altered."
+    assert page.has_content? "Updated #{TicketTime.model_name.human}"
 
     get_ticket_view
 
@@ -139,7 +139,7 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
 
     accept_alert "Remove entry?"
 
-    assert page.has_content? "Hours Billed altered."
+    assert page.has_content? "Updated Hours Billed"
   end
 
   test "can add and remove expenses from ticket" do
@@ -235,6 +235,6 @@ class TicketsUsageTest < ActionDispatch::IntegrationTest
     assert page.has_link? "Edit"
     # the right options?
     assert page.has_content? t(:label_hours_billed)
-    assert page.has_content? "Service Cost"
+    assert page.has_content? t(:label_billing_fixed)
   end
 end

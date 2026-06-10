@@ -12,3 +12,20 @@ en:
   no_user: "No User"
   is_disabled: "Disabled: %{state}"
   click_image_for_full_size: "Click image for full size"
+  text_2fa_qr_instructions: 'Scan this QR code with an authenticator app (Google Authenticator, 1Password, Authy, etc.), then enter the 6-digit code to confirm.'
+  text_2fa_secret_help_html: "Can't scan? Enter this secret manually: <code>%{secret}</code>"
+  text_2fa_disable_help: 'To disable two-factor authentication, confirm your password.'
+  text_2fa_challenge_help: 'Enter the 6-digit code from your authenticator app, or a one-time recovery code.'
+  text_recovery_codes_warning: 'Save these codes now.'
+  text_recovery_codes_help: 'Each code can be used once if you lose access to your authenticator app.'
+  text_recovery_codes_one_time_use: 'They will not be shown again.'
+  text_password_reset_instructions: 'If an account exists for this user name and has an email on file, reset instructions will be sent.'
+  text_form_errors_check_highlighted: ' — please check the highlighted fields.'
+  text_form_errors_pluralize:
+    one: '1 error'
+    other: '%{count} errors'
+  text_quote_no_recipients_html: 'No quote recipients are configured for <strong>%{client}</strong>. Add a client email, or check <strong>%{flag}</strong> on a client contact and provide them with at least one email address.'
+  text_no_products_yet: 'No products yet.'
+  text_no_labor_yet: 'No labor entries yet.'
+  text_no_associated_tickets: 'No associated tickets yet.'
+  text_acceptance_signature_line_html: 'Accepted by: __________________________ &nbsp;&nbsp; Date: ____________'

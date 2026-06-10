@@ -5,6 +5,6 @@
    related_models: [ :ou_phones, :addresses ],
    related_field_names: [Ou.human_attribute_name(:ou_phone_id), Ou.human_attribute_name(:ou_address_id) ],
    related_fields: { ou_phones: [:number], addresses: [ :name_long] },
-   delete_msg: "Really delete #{Ou.model_name.human} **?, This is usually not done.",
+   delete_msg: t(:prompt_delete_ou, item: "#{Ou.model_name.human} **"),
    delete_msg_ident: :name,
    disable_delete: true} %>

@@ -84,7 +84,7 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Description', with: 'whos emai?'
     click_button 'Save'
     page.assert_current_path wp
-    assert page.has_content? "E-mail record created"
+    assert page.has_content? "Added #{OuEmail.model_name.human}"
     within('.card', text: 'OU E-Mail') do
       click_link 'Edit', match: :first
     end
@@ -95,7 +95,7 @@ class OuUsageTest < ActionDispatch::IntegrationTest
       click_link 'Remove', match: :first
     end
     accept_alert "Really delete OU E-Mail?"
-    assert page.has_content? "#{OuEmail.model_name.human} removed."
+    assert page.has_content? "Removed #{OuEmail.model_name.human}"
   end
 
   test "can use ou address" do
@@ -117,7 +117,7 @@ class OuUsageTest < ActionDispatch::IntegrationTest
     fill_in 'Status', with: '1'
     click_button 'Save'
     page.assert_current_path wp
-    assert page.has_content? "#{OuAddress.model_name.human} added."
+    assert page.has_content? "Added #{OuAddress.model_name.human}"
     within('.card', text: 'OU Address') do
       click_link 'Edit', match: :first
     end
@@ -129,6 +129,6 @@ class OuUsageTest < ActionDispatch::IntegrationTest
       click_link 'Remove', match: :first
     end
     accept_alert 'Really delete OU Address?'
-    assert page.has_content? "#{OuAddress.model_name.human} removed."
+    assert page.has_content? "Removed #{OuAddress.model_name.human}"
   end
 end

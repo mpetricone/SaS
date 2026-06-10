@@ -1,0 +1,31 @@
+<%= t(:label_quote_id) %>:    <%= @quote.code %>
+<%= t(:label_for) %>:         <%= @quote.client.name %>
+<% if @quote.employee %><%= t(:label_prepared_by) %>: <%= @quote.employee.name %><% end %>
+<% if @quote.description.present? %>
+
+<%= Quote.human_attribute_name(:description) %>:
+<%= @quote.description %>
+<% end %>
+
+<% @quote.quote_products.each do |qp| %>
+<%= qp.product.name %> x <%= qp.quantity %> @ <%= qp.price %> = <%= number_to_currency(qp.total) %>
+<% end %>
+
+<% @quote.quote_labors.each do |ql| %>
+<% if ql.fixed? %>
+<%= ql.description %>: <%= number_to_currency(ql.line_total) %> (<%= t(:label_billing_fixed).downcase %>)
+<% else %>
+<%= ql.description %>: <%= ql.estimated_hours %> hrs @ <%= ql.rate&.rate %> = <%= number_to_currency(ql.line_total) %>
+<% end %>
+<% end %>
+
+<%= t(:label_products) %>: <%= number_to_currency(@quote_totals[:product]) %>
+<%= t(:label_labor) %>:    <%= number_to_currency(@quote_totals[:labor]) %>
+<%= t(:label_subtotal) %>: <%= number_to_currency(@quote_totals[:sub]) %>
+<%= t(:label_tax) %>:      <%= number_to_currency(@quote_totals[:tax]) %>
+<%= t(:label_total) %>:    <%= number_to_currency(@quote_totals[:grand]) %>
+<% if @quote.resolved_payment_terms.present? %>
+
+<%= t(:label_payment_terms) %>:
+<%= @quote.resolved_payment_terms %>
+<% end %>

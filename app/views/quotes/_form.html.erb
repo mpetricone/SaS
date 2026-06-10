@@ -1,0 +1,79 @@
+<%= form_with model: quote, local: true do |f| %>
+  <% if quote.errors.any? %>
+    <div class='alert alert-danger'>
+      <%= quote.errors.full_messages.to_sentence %>
+    </div>
+  <% end %>
+
+  <div class='row g-3'>
+    <div class='col-md-6'>
+      <%= label_tag :client_search, Client.model_name.human, class: 'form-label' %>
+      <input list='quote_client_options' id='client_search' name='client_search'
+             class='form-control' autocomplete='off'
+             value='<%= quote.client&.name %>'
+             placeholder='Type to search clients...'>
+      <datalist id='quote_client_options'>
+        <% Client.order(:name).each do |c| %>
+          <option value='<%= c.name %>'></option>
+        <% end %>
+      </datalist>
+    </div>
+
+    <div class='col-md-3'>
+      <%= f.label :rate_id, Rate.model_name.human, class: 'form-label' %>
+      <%= f.collection_select :rate_id, Rate.where(current: true).order(:rate), :id, :rate, { include_blank: true }, class: 'form-select' %>
+    </div>
+
+    <div class='col-md-3'>
+      <%= f.label :expires_at, t(:label_expires_at), class: 'form-label' %>
+      <%= f.date_field :expires_at,
+            value: (quote.expires_at || (Time.current + 2.weeks)).to_date,
+            class: 'form-control' %>
+    </div>
+
+    <div class='col-12'>
+      <%= f.label :title, Quote.human_attribute_name(:title), class: 'form-label' %>
+      <%= f.text_field :title, class: 'form-control' %>
+    </div>
+
+    <div class='col-12'>
+      <%= f.label :description, Quote.human_attribute_name(:description), class: 'form-label' %>
+      <%= f.text_area :description, rows: 3, class: 'form-control' %>
+    </div>
+
+    <div class='col-md-4 d-flex align-items-end'>
+      <div class='form-check'>
+        <%= f.check_box :taxable, class: 'form-check-input' %>
+        <%= f.label :taxable, Quote.human_attribute_name(:taxable), class: 'form-check-label' %>
+      </div>
+    </div>
+
+    <div class='col-md-4 d-flex align-items-end'>
+      <div class='form-check'>
+        <%= f.check_box :taxable_labor, class: 'form-check-input' %>
+        <%= f.label :taxable_labor, Quote.human_attribute_name(:taxable_labor), class: 'form-check-label' %>
+      </div>
+    </div>
+
+    <div class='col-md-4'>
+      <%= f.label :tax_rate, Quote.human_attribute_name(:tax_rate), class: 'form-label' %>
+      <%= f.select :tax_rate,
+            options_for_select(Tax.all.map { |t| [t.description, t.rate] }, quote.tax_rate),
+            { include_blank: true }, class: 'form-select' %>
+    </div>
+
+    <div class='col-md-6'>
+      <%= f.label :payment_term_id, t(:label_payment_terms), class: 'form-label' %>
+      <%= f.collection_select :payment_term_id, PaymentTerm.active.ordered, :id, :name,
+            { include_blank: t(:label_none) }, class: 'form-select' %>
+    </div>
+
+    <div class='col-md-6'>
+      <%= f.label :payment_terms_override, t(:label_payment_terms_override), class: 'form-label' %>
+      <%= f.text_area :payment_terms_override, rows: 2, class: 'form-control',
+            placeholder: t(:placeholder_payment_terms_override) %>
+    </div>
+  </div>
+
+  <%= render_actions f, (quote.persisted? ? quote_path(quote) : quotes_path) %>
+<% end %>

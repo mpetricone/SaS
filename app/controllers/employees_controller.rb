@@ -1,8 +1,5 @@
 class EmployeesController < ApplicationController
-  before_action(only: [:show, :index, :search_by_name]) { process_permission has_read_permission(:employee) }
-  before_action(only: [:edit, :update]) { process_permission has_write_permission(:employee) }
-  before_action(only: [:new, :create]) { process_permission has_create_permission(:employee) }
-  before_action(only: [:destroy]) { process_permission has_delete_permission(:employee) }
+  before_action { authorize Employee }
 
   def index
     respond_to do |f|
@@ -56,7 +53,7 @@ class EmployeesController < ApplicationController
     @employee = Employee.find(params[:id])
     respond_to do |f|
       if @employee.update(update_params)
-        f.html { redirect_to @employee, notice: "Record updated." }
+        f.html { redirect_to @employee, notice: t(:notice_record_updated) }
         f.json { json_success }
       else
         f.html { render :edit, status: :unprocessable_content }
@@ -78,7 +75,7 @@ class EmployeesController < ApplicationController
 
     respond_to do |f|
       if  @employee.save
-        f.html { redirect_to @employee, notice: "Employee created." }
+        f.html { redirect_to @employee, notice: t(:notice_added, item: Employee.model_name.human) }
         f.json { json_success }
       else
         f.html { render :new, status: :unprocessable_content }
@@ -89,6 +86,16 @@ class EmployeesController < ApplicationController
 
   def show
     @employee = Employee.find(params[:id])
+  end
+
+  def unlock
+    @employee = Employee.find(params[:id])
+    @employee.unlock!
+    Audit.event(:account_unlocked,
+                employee: @employee,
+                request:  request,
+                details:  { by_employee_id: current_employee.id })
+    redirect_to edit_employee_path(@employee), notice: t(:notice_unlocked, name: @employee.contact.full_name)
   end
 
   ##def destroy

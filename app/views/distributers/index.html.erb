@@ -9,5 +9,5 @@
         related_fields: {
             distributer_phones: [:number],
             distributer_emails: [:email] },
-        delete_msg: "Really delete #{Distributer.model_name.human} **? It's usually best to set the disabled date.",
+        delete_msg: t(:prompt_delete_distributer, item: "#{Distributer.model_name.human} **"),
         delete_msg_ident: :name } %>

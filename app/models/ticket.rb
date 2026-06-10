@@ -25,14 +25,16 @@ class Ticket < ActiveRecord::Base
 
 	has_many :ticket_expenses, dependent: :destroy
 
+	has_many :originating_quotes, class_name: 'Quote', foreign_key: 'converted_ticket_id'
+
 	accepts_nested_attributes_for :ticket_infos
 	accepts_nested_attributes_for :shipment_trackings
 	accepts_nested_attributes_for :ticket_work_types
 	accepts_nested_attributes_for :product_tickets
 
-	validates :client, presence: true
-	validates :ticket_status, presence: true
-	validates :ou, presence: true
+	validates :client_id, presence: true
+	validates :ticket_status_id, presence: true
+	validates :ou_id, presence: true
 
 	def calculate_hours
 		begin
@@ -47,9 +49,13 @@ class Ticket < ActiveRecord::Base
 		# cost: has been renamed hourly_cost:
 		total = { hours: 0.0, hourly_cost: 0.0 }
 		if billing_hourly
-			self.ticket_times.each do |t|
-				ct = t.time_end.to_f-t.time_start.to_f
-				total[:hours]+=ct
+			self.ticket_times.where(running: false).each do |t|
+				ct = if t.timer_started_at && t.timer_stopped_at
+					t.timer_stopped_at.to_f - t.timer_started_at.to_f
+				else
+					t.time_end.to_f - t.time_start.to_f
+				end
+				total[:hours] += ct
 				t.update hours: (ct/60/60).round(2)
 			end
 
@@ -66,6 +72,18 @@ class Ticket < ActiveRecord::Base
 		total[:hours] = total[:hours].round(2) # this is here so as to not mess up existing calcs, should really before rate checka
 
 		return total
+	end
+
+	def stop_running_timers!
+		ticket_times.where(running: true).each(&:stop_timer!)
+	end
+
+	def has_running_timers?
+		ticket_times.exists?(running: true)
+	end
+
+	def invoice_sent?
+		payment_requested?
 	end
 
 	def calculate_product_cost

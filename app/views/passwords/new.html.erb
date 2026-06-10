@@ -1,0 +1,26 @@
+<div class="row justify-content-center">
+  <div class="col-6">
+    <div class="card">
+      <h1 class="card-header"><%= t(:title_reset_password) %></h1>
+      <div class="card-body">
+        <%= form_with(url: passwords_path, method: :post, local: true, class: 'form-horizontal') do |f| %>
+          <div class='form-group'>
+            <%= label_tag :user_name, t(:label_user_name), class: 'col-xs-5 control-label' %>
+            <div class='col-xs-7'>
+              <%= text_field_tag :user_name, nil, class: 'form-control' %>
+            </div>
+          </div>
+          <p class="text-muted small">
+            <%= t(:text_password_reset_instructions) %>
+          </p>
+          <div class='form-group d-flex justify-content-center p-2'>
+            <%= button_tag t(:button_email_reset_link), type: 'submit', class: 'btn btn-primary btn-block' %>
+          </div>
+          <p class="text-center mt-3">
+            <%= link_to t(:button_back_to_login), new_session_path %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

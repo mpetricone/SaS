@@ -1,0 +1,12 @@
+ql_draft_fixed:
+    quote: draft_quote
+    description: "Fixed labor line"
+    billing: 0
+    amount: "100.00"
+
+ql_draft_hourly:
+    quote: draft_quote
+    rate: rate_0
+    description: "Hourly labor line"
+    billing: 1
+    estimated_hours: 4.0

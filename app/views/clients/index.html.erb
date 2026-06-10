@@ -15,5 +15,5 @@
             addresses: [:name_long] },
     belongs_to_models: [:standing],
     belongs_to_fields: { standing: [:name] },
-    delete_msg: "Really delete #{Contact.model_name.human}? This could criple the system.",
+    delete_msg: t(:prompt_delete_client_contact, item: Contact.model_name.human),
     delete_msg_ident: :name } %>

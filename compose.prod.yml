@@ -46,13 +46,22 @@ services:
       RAILS_MAX_THREADS: "5"
       APP_HOST: ${APP_HOST}
       APP_PROTOCOL: ${APP_PROTOCOL}
+      # Rails attribute-encryption keys (used for 2FA otp_secret / recovery codes).
+      # Required in production — the app raises on boot if any is missing.
+      # Generate with: ./bin/rails db:encryption:init
+      AR_ENCRYPTION_PRIMARY_KEY: ${AR_ENCRYPTION_PRIMARY_KEY}
+      AR_ENCRYPTION_DETERMINISTIC_KEY: ${AR_ENCRYPTION_DETERMINISTIC_KEY}
+      AR_ENCRYPTION_KEY_DERIVATION_SALT: ${AR_ENCRYPTION_KEY_DERIVATION_SALT}
+      # Run the SolidQueue worker inside Puma. Required for password-reset emails
+      # (delivered via deliver_later) and the hourly recurring.yml cleanup job.
+      SOLID_QUEUE_IN_PUMA: ${SOLID_QUEUE_IN_PUMA:-true}
+      # SMTP relay is IP-authenticated; no user_name/password/authentication needed.
       SMTP_ADDRESS: ${SMTP_ADDRESS}
       SMTP_PORT: ${SMTP_PORT}
       SMTP_DOMAIN: ${SMTP_DOMAIN}
-      SMTP_USER_NAME: ${SMTP_USER_NAME}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
-      SMTP_AUTHENTICATION: ${SMTP_AUTHENTICATION}
       SMTP_ENABLE_STARTTLS_AUTO: ${SMTP_ENABLE_STARTTLS_AUTO}
+      MAIL_FROM: ${MAIL_FROM:-noreply@example.com}
+      FORCE_SSL: ${FORCE_SSL:-true}
     ports:
       - "80:3000"
     volumes:
@@ -63,12 +72,6 @@ services:
         condition: service_healthy
     networks:
       - sasnet
-    devices:
-      - /dev/fuse
-    cap_add:
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
 
 volumes:
   mysql_data:

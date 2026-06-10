@@ -1,0 +1,41 @@
+# Minimal quote fixtures. Most tests create quotes via the model in setup so
+# that lock/conversion state is explicit.
+
+draft_quote:
+    client: client_0
+    ou: ou_0
+    rate: rate_0
+    employee: admin
+    title: "Draft test quote"
+    status: 0
+    taxable: false
+    taxable_labor: false
+    tax_rate: 0
+    code: "Q00001-TEST01"
+
+sent_quote:
+    client: client_1
+    ou: ou_1
+    rate: rate_1
+    employee: admin
+    title: "Sent test quote"
+    status: 1
+    sent_at: <%= 1.day.ago %>
+    taxable: true
+    taxable_labor: false
+    tax_rate: 0.07
+    code: "Q00002-TEST02"
+
+accepted_quote:
+    client: client_2
+    ou: ou_2
+    rate: rate_2
+    employee: admin
+    title: "Accepted test quote"
+    status: 2
+    sent_at: <%= 2.days.ago %>
+    accepted_at: <%= 1.day.ago %>
+    taxable: false
+    taxable_labor: false
+    tax_rate: 0
+    code: "Q00003-TEST03"

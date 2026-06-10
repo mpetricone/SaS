@@ -28,7 +28,7 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = ENV.fetch("FORCE_SSL", "true") == "true"
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -50,7 +50,8 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  # config.active_job.queue_adapter = :resque
+  # SolidQueue runs on the primary database (tables created by CreateSolidQueueTables migration).
+  config.active_job.queue_adapter = :solid_queue
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -63,18 +64,22 @@ Rails.application.configure do
   }
 
   # Outgoing SMTP relay, configured entirely via environment variables.
+  # Leave SMTP_USER_NAME blank for IP-authenticated relays (no SMTP login).
   config.action_mailer.delivery_method       = :smtp
   config.action_mailer.perform_deliveries    = true
   config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.smtp_settings = {
+  smtp_settings = {
     address:              ENV["SMTP_ADDRESS"],
     port:                 Integer(ENV.fetch("SMTP_PORT", 587)),
     domain:               ENV.fetch("SMTP_DOMAIN", ENV.fetch("APP_HOST", "localhost")),
-    user_name:            ENV["SMTP_USER_NAME"],
-    password:             ENV["SMTP_PASSWORD"],
-    authentication:       ENV.fetch("SMTP_AUTHENTICATION", "plain").to_sym,
     enable_starttls_auto: ENV.fetch("SMTP_ENABLE_STARTTLS_AUTO", "true") == "true"
   }
+  if ENV["SMTP_USER_NAME"].present?
+    smtp_settings[:user_name]      = ENV["SMTP_USER_NAME"]
+    smtp_settings[:password]       = ENV["SMTP_PASSWORD"]
+    smtp_settings[:authentication] = ENV.fetch("SMTP_AUTHENTICATION", "plain").to_sym
+  end
+  config.action_mailer.smtp_settings = smtp_settings
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).

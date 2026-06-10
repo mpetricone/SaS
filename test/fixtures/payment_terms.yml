@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+paid_on_completion:
+  name: 'Paid on Completion'
+  description: 'Payment in full is due upon completion of the work.'
+  active: true
+
+fifty_on_acceptance:
+  name: '50% on Acceptance'
+  description: '50% deposit due on acceptance; balance due on completion.'
+  active: true
+
+net_30:
+  name: 'Net 30'
+  description: 'Payment due within 30 days of invoice date.'
+  active: true
+
+inactive_term:
+  name: 'Legacy Net 60'
+  description: 'No longer offered.'
+  active: false

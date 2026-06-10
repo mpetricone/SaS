@@ -1,48 +1,41 @@
 module Auditor
-  @@type_success = "SUCCESS"
-  @@type_fail = "FAIL"
-
-  def log_success request, details
-    log request, @@type_success, caller_locations(1, 1)[0].label, details
-  end
-
-  def log_failure request, details
-    log request, @@type_fail, caller_locations(1, 1)[0].label, details
-  end
+  SENSITIVE_PARAM_KEYS = %w[password password_confirmation token otp_code recovery_code].freeze
 
   def auto_log
-    user = nil
-    if @current_employee
-      user = @current_employee.id
-    end
+    user = @current_employee&.id
     begin
       Log.create!(
         command: request.method,
         category: "user action",
-        module_name: self.to_s,
+        module_name: self.class.name,
         in_method: self.action_name.to_s,
         employee_id: user,
-        details: params.inspect,
+        details: filter_sensitive_params(params).inspect,
         event_at: Time.now
       )
-    rescue  => e
-      Rails.logger.info "Error saving user access: #{e.to_s}" 
+    rescue => e
+      Rails.logger.info "Error saving user access: #{e.to_s}"
     end
   end
 
-  def log request, category, method, details
+  def filter_sensitive_params(input)
+    case input
+    when ActionController::Parameters
+      filter_sensitive_params(input.to_unsafe_h)
+    when Hash
+      input.each_with_object({}) { |(k, v), h| h[k] = filter_sensitive_value(k, v) }
+    else
+      input
+    end
+  end
 
-    begin
-      Log.create!(
-        command: request.method, 
-        category: category, 
-        module_name: self.to_s, 
-        in_method: method, 
-        employee_id: @current_employee.id, 
-        details: details.to_json,
-        event_at: Time.now);
-    rescue ActiveRecord::RecordInvalid
-      Rails.logger.error "Error saving audit event:  #{request.inspect}, #{method.inspect}, #{@current_employee.id}, #{details}, #{log_type}" 
+  def filter_sensitive_value(key, value)
+    if SENSITIVE_PARAM_KEYS.include?(key.to_s)
+      "[FILTERED]"
+    elsif value.is_a?(Hash) || value.is_a?(ActionController::Parameters)
+      filter_sensitive_params(value)
+    else
+      value
     end
   end
 
